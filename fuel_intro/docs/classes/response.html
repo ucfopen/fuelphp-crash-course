@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Response Class - Fuel Documentation</title>
+	<link href="../assets/css/main.css" media="screen" rel="stylesheet" />
+	<script type="text/javascript" src="../assets/js/jquery-1.4.4.min.js"></script>
+	<script type="text/javascript" src="../assets/js/nav.js"></script>
+	<script type="text/javascript" src="../assets/js/highlight.pack.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			show_nav('classes', '../');
+		});
+		hljs.tabReplace = '    ';
+		hljs.initHighlightingOnLoad();
+	</script>
+</head>
+<body>
+
+	<header>
+		<h1>Fuel Documentation</h1>
+	</header>
+
+	<div id="main-nav"></div>
+
+	<section id="content">
+		<h2>Response Class</h2>
+
+		<p>The response class contains the methods to deal with HTTP response and browser output.</p>
+
+		<article>
+			<h4>Setting the Status Header</h4>
+			<p>The status header is treated as a &quot;special&quot; header in Fuel.  You do not set it as you would
+				other headers.  The status header is set as follows in the controller:</p>
+			<pre class="php"><code>$this->response->status = 404;</code></pre>
+			<p>You simply set the <kbd>$status</kbd> variable to the status number for the request.</p>
+		</article>
+
+		<article>
+			<h4 id="method_set_header">set_header($name, $value)</h4>
+			<p>The <strong>set_header</strong> method allows set custom HTTP headers.</p>
+			<p class="note">This function must calles from within a controller method as the response object is one of the controller's propperties.</p>
+			<table class="method">
+				<tbody>
+				<tr>
+					<th class="legend">Static</th>
+					<td>No</td>
+				</tr>
+				<tr>
+					<th>Parameters</th>
+					<td>
+						<table class="parameters">
+							<tr>
+								<th>Param</th>
+								<th>Default</th>
+								<th class="description">Description</th>
+							</tr>
+							<tr>
+								<th><kbd>$name</kbd></th>
+								<td><i>Required</i></td>
+								<td>Name of the header to add. Note that names are unique, overwriting each other if the same name is used.</td>
+							</tr>
+							<tr>
+								<th><kbd>$value</kbd></th>
+								<td><i>Required</i></td>
+								<td>The string that needs to be added to the HTTP header.</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<th>Returns</th>
+					<td>void</td>
+				</tr>
+				<tr>
+					<th>Example</th>
+					<td>
+						<pre class="php"><code>// We'll be outputting a PDF
+$this->response->set_header('Content-Type', 'application/pdf');
+
+// It will be called downloaded.pdf
+$this->response->set_header('Content-Disposition', 'attachment; filename="downloaded.pdf"');
+
+// Set no cache
+$this->response->set_header('Cache-Control', 'no-cache, no-store, max-age=0, must-revalidate');
+$this->response->set_header('Expires', 'Mon, 26 Jul 1997 05:00:00 GMT');
+$this->response->set_header('Pragma', 'no-cache');
+
+// More examples
+$this->response->set_header('Content-Language', 'en');
+$this->response->set_header('Content-Type', 'text/html; charset=utf-8');</code></pre>
+					</td>
+				</tr>
+				</tbody>
+			</table>
+		</article>
+
+		<article>
+			<h4 id="method_send_headers">send_headers()</h4>
+			<p>The <strong>send_headers</strong> method sends the set headers out to the browser, including the HTTP status of the request.</p>
+			<p class="note">This function must calles from within a controller method as the response object is one of the controller's propperties.</p>
+			<table class="method">
+				<tbody>
+				<tr>
+					<th class="legend">Static</th>
+					<td>No</td>
+				</tr>
+				<tr>
+					<th>Parameters</th>
+					<td><i>None</i></td>
+				</tr>
+				<tr>
+					<th>Returns</th>
+					<td>void</td>
+				</tr>
+				<tr>
+					<th>Example</th>
+					<td>
+						<pre class="php"><code>$this->response->send_headers();</code></pre>
+					</td>
+				</tr>
+				</tbody>
+			</table>
+			<p>Note that you normally don't have to call this method manually. Fuel will take care of this as part of processing the request.</p>
+		</article>
+
+		<article>
+			<h4 id="method_redirect">redirect($url = '', $method = 'location', $redirect_code = 302)</h4>
+			<p>The <strong>redirect</strong> method offers different methods of redirecting to a new URL.</p>
+			<table class="method">
+				<tbody>
+				<tr>
+					<th class="legend">Static</th>
+					<td>Yes</td>
+				</tr>
+				<tr>
+					<th>Parameters</th>
+					<td>
+						<table class="parameters">
+							<tr>
+								<th>Param</th>
+								<th>Default</th>
+								<th class="description">Description</th>
+							</tr>
+							<tr>
+								<th><kbd>$url</kbd></th>
+								<td><pre class="php"><code>''</code></pre></td>
+								<td>URL to redirect to.</td>
+							</tr>
+							<tr>
+								<th><kbd>$method</kbd></th>
+								<td><pre class="php"><code>'location'</code></pre></td>
+								<td>Redirection method to use. Supported are 'location' and 'refresh'.</td>
+							</tr>
+							<tr>
+								<th><kbd>$redirect_code</kbd></th>
+								<td><pre class="php"><code>302</code></pre></td>
+								<td>HTTP status code to send back as part of the redirect.</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<th>Returns</th>
+					<td>This method terminates the current script, it does not return.</td>
+				</tr>
+				<tr>
+					<th>Example</th>
+					<td>
+						<pre class="php"><code>Response::redirect('http://example.com/home', 'refresh');</code></pre>
+					</td>
+				</tr>
+				</tbody>
+			</table>
+		</article>
+
+	</section>
+
+	<section id="footer">
+		<p>
+			<a href="http://fuelphp.com">Fuel</a> is released under the MIT license.<br />
+			&copy; 2010 - 2011 Fuel Development Team
+		</p>
+	</section>
+
+</body>
+</html>
