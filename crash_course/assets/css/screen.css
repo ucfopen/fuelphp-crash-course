@@ -1,0 +1,1039 @@
+@charset "utf-8";
+/*   
+Skin Name: Default
+Version: 1.1
+Skin URI: www.techrangers.ucf.edu
+Description: This one is pretty plain.
+Author: Chet Bortz
+Author URI: www.techrangers.ucf.edu
+*/
+
+
+/*	*	*	*	*	*	*	*	*	*	*
+ *										*
+ *			   GLOBAL STYLES			*
+ *										*
+ *	*	*	*	*	*	*	*	*	*	*/
+
+html,body,div,h1,ul,li { padding:0; margin:0; border:0; }
+abbr { border-bottom: 1px dotted; }
+body { font-family: Helvetica, "Trebuchet MS", Arial, sans-serif; font-size: 14px; background-color: #939290}
+.input-error { padding: 1em; font-weight: bold; }
+#email-notice { float:right; margin-top:2em; margin-right:150px; }
+.error, .error input, .error textarea, .input-error { color: #993300; font-weight: bold; }
+.error input, .error textarea, .input-error { border: 1px #993300 solid !important; border-left: 5px solid #993300 !important }
+
+.search-results { padding-left: 0; width: 95%; margin: 0 auto; }
+.search-results > li { list-style-type:none; border-top:1px #ccc dotted; margin-bottom:22px; padding-left: 0; margin-left: 0; }
+.post-date { font-size:.9em; font-style:italic; float:right; margin-top:-1.5em; }
+.tut-date {font-size:.9em; font-style:italic; float:right; margin: -5px 0 15px 0;}
+.single-tut-date{font-size:.9em; font-style:italic; margin-bottom:15px;};
+.flickrTag-container { float:right; width:245px; margin:10px; }
+
+
+/*	*	*	*	*	*	*	*	*	*	*
+ *										*
+ *			    LINK STYLES				*
+ *										*
+ *	*	*	*	*	*	*	*	*	*	*/
+
+a { color: #663300; }
+a:hover { color: #993300; }
+a img { border: 2px #663300 solid !important; }
+a:hover img { border: 2px #993300 solid !important; }
+
+
+/*	*	*	*	*	*	*	*	*	*	*
+ *										*
+ *			   HEADER STYLES			*
+ *										*
+ *	*	*	*	*	*	*	*	*	*	*/
+
+#head { background: #fff; height: 100px; }
+#head-content { position: relative; width: 910px; height: 100px; margin: 0 auto; padding: 20px 25px; }
+h1 { position: absolute; top: 35px; width: 342px; height: 38px; background: transparent url("images/interface/logo.gif") no-repeat; }
+h1 a { display: block; width: 342px; height: 38px; text-indent: -5000px; overflow:hidden; }
+#description { position: absolute; top: 20px; width: 320px; height: 14px; background: transparent url("images/interface/description.png") no-repeat; }
+#description a { display: block; width: 320px; height: 14px; text-indent: -5000px; overflow:hidden; }
+#search-form { position: absolute; top: 25px; right: 20px; width: 350px; border: 1px #cbcdc7 solid; height: 30px; padding: 10px 0; }
+#search-form fieldset { border: 0; padding: 0; margin: 0; }
+#search-form legend { display: none; }
+#search-form #search-box-container { width: 254px; height: 30px; float: left; background-color: transparent; background-image: url("images/input/search-form-input.gif"); background-repeat: no-repeat; background-attachment: scroll; background-position: 0% 0%; margin: 0 0 0 10px; padding: 0; }
+#search-form #search-box-container #search-for { width: 225px; height: 20px; background-color: transparent; border: 0; color: #555; font-weight: bold; margin: 0; padding: 5px 0 0 5px; }
+
+#search-form #searchsubmit
+{
+	position:relative;
+	width:75px;
+	height:30px;
+	margin:0 10px 0 0;
+	padding:0;
+	border:0;
+	background: transparent url(images/input/search-form-btn.gif) no-repeat center top;
+	cursor:pointer;
+	text-indent: -2000px;
+	overflow: hidden;
+	display:inline-block;
+	line-height:0;
+}
+
+/*	*	*	*	*	*	*	*	*	*	*
+ *										*
+ *		    NAVIGATION STYLES			*
+ *										*
+ *	*	*	*	*	*	*	*	*	*	*/
+
+#nav-links { position:relative; height: 41px; z-index: 5; width:979px; padding-bottom: 12px; margin: 0 0 0 -10px; }
+#nav-links .pagenav h2 { position: absolute; text-indent: -1000px; font-size: 0; }
+#nav-links > ul { width:979px; height:41px; margin: 0 auto; background: transparent url("images/interface/nav-bg.png") no-repeat; }
+#nav-links li { display: block; }
+#nav-links .pagenav ul { width: 934px; margin-left: 45px; }
+#nav-links .pagenav li { display: block; float: left; height: 41px; padding: 0; line-height: 33px; }
+#nav-links .pagenav li a { display: block; height: 33px; padding: 0 15px; color: #663300; text-decoration: none; }
+#nav-links .pagenav li a:hover { background: transparent url("images/interface/nav-hover.gif") repeat-x; color: #663300; }
+#nav-links .current_page_item, 
+#nav-links .current_page_ancestor { background: transparent url("images/interface/nav-active.png") no-repeat top center; }
+#nav-links .pagenav li.current_page_item a, 
+#nav-links .pagenav li.current_page_item a:hover,
+#nav-links .pagenav li.current_page_ancestor a, 
+#nav-links .pagenav li.current_page_ancestor a:hover { color: #fff; font-weight: bold; background: transparent; }
+
+
+/*	*	*	*	*	*	*	*	*	*	*
+ *										*
+ *		    PAGE HEADERS STYLES			*
+ *										*
+ *	*	*	*	*	*	*	*	*	*	*/
+
+#content h2#about-us { background: transparent url("images/h2/about-us.png") no-repeat; }
+#content h2#biographies { background: transparent url("images/h2/biographies.png") no-repeat; }
+#content h2#tech-time { background: transparent url("images/h2/techtime.png") no-repeat; }
+#content h2#tutorials { background: transparent url("images/h2/tutorials.png") no-repeat; }
+#content h2#showcase { background: transparent url("images/h2/showcase.png") no-repeat; }
+#content h2#join-us { background: transparent url("images/h2/join-us.png") no-repeat; }
+#content h2#support { background: transparent url("images/h2/support.png") no-repeat; }
+#content h2#techranger-application-form { background: transparent url("images/h2/application.png") no-repeat; }
+#content h2#page-not-found { background: transparent url("images/h2/page-not-found.png") no-repeat; }
+#content h2#no-results { background: transparent url("images/h2/no-results.png") no-repeat; }
+#content h2#search-results { background: transparent url("images/h2/search-results.png") no-repeat; }
+
+
+/*	*	*	*	*	*	*	*	*	*	*
+ *										*
+ *		 DEFAULT CONTENT STYLES			*
+ *										*
+ *	*	*	*	*	*	*	*	*	*	*/
+
+#content-container 
+{ 
+	position: relative;
+	height: auto;
+	width: 959px; 
+	clear: both; 
+	margin: 0px auto;
+	color: #666c56;
+	padding: 0px 10px 40px 10px;
+	background: transparent url("images/interface/page-shadow3.png") repeat-y center;
+}
+
+#content 
+{ 
+	position: relative;
+	width: 593px; 
+	float: left;
+	background: transparent url("images/interface/main-bg.gif") no-repeat bottom;
+	padding-bottom: 20px;
+	margin-bottom: 20px;
+	margin-left: 32px;
+	z-index: 15;
+}
+
+#content h2
+{
+	text-indent: -2000px;
+	overflow: hidden;
+	margin-bottom: 1em;
+	height: 26px;
+}
+
+#content h3
+{
+	color: #996600;
+}
+
+#content h4
+{
+	color: #333;
+}
+
+#content .post
+{
+	position: relative;
+	background: url("images/interface/main-top-bg.gif") no-repeat transparent;
+	padding: 10px 20px 0 20px;
+	min-height: 500px;
+}
+
+/*
+	A NOTE ABOUT THIS CLASS.
+	THIS IS USED FOR H2'S SO THAT INDIVIDUAL POST THAT DISPLAY AN H2 DO NOT NEED TO HAVE AN IMAGE.
+	MAKE SURE TO IMPLEMENT THIS CLASS SO THAT THESE PAGES WILL DISPLAY AN H2 PROPERLY
+*/
+#content .post .single_post{
+	color: #500f00;
+	font-size: 32px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	height: 40px;
+	text-indent: 0; !important
+}
+
+#content .entry
+{
+	position: relative;
+	width: 550px;
+}
+
+#content .entry  ul
+{
+	margin-left: 2em;
+}
+
+#content .entry > ul > li > ul
+{
+	margin-left: 2em;
+}
+
+#content #last-update
+{
+	text-align: right;
+	font-style: italic;
+	border-top: 1px #ccc dotted;
+	padding-top: 1em;
+	clear: both;
+}
+
+
+/*	*	*	*	*	*	*	*	*	*	*
+ *										*
+ *			 SIDE BAR STYLES			*
+ *										*
+ *	*	*	*	*	*	*	*	*	*	*/
+
+#sidebar h2
+{
+	display: none;
+}
+
+#sidebar
+{
+	position: relative;
+	display: block;
+	width: 292px;
+	margin-right: 35px;
+	float: right;
+	margin-bottom: 20px;
+}
+
+#sidebar > ul > li
+{
+	display: block;
+	width: 292px;
+	background: transparent url("images/interface/widget-bg2.gif") no-repeat bottom;
+	margin-bottom: 5px;
+}
+
+#sidebar > ul > li > .content
+{
+	background: transparent url("images/interface/widget-bg.gif") no-repeat;
+	padding-top: 10px;
+	min-height: 250px;
+	height:auto;
+}
+
+#sidebar > ul > li > .content > h3
+{
+	padding: 0;
+	margin: 0 auto 1em auto;
+	height: 33px;
+	text-indent: -2000px;
+	overflow: hidden;
+}
+
+#sidebar > ul > li > .content > h3 > a
+{
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+#sidebar > ul > li#systems-status > .content > h3
+{
+	width: 203px;
+	background: transparent url("images/h3/system-status.png") no-repeat;
+}
+
+#sidebar > ul > li#tutorials > .content > h3
+{
+	width: 203px;
+	background: url("images/h3/tutorials.png") no-repeat scroll 35px 10px transparent;
+}
+
+
+#sidebar > ul > li#recent-updates > .content > h3
+{
+	width: 222px;
+	background: transparent url("images/h3/recent-updates.png") no-repeat;
+}
+
+#sidebar > ul > li#twitter-feed > .content > h3
+{
+	width: 222px;
+	background: transparent url("images/h3/twitter-feed.png") no-repeat;
+}
+
+#sidebar > ul > li#now-hiring > .content > h3
+{
+	width: 222px;
+	background: transparent url("images/h3/now-hiring.png") no-repeat;
+}
+
+#sidebar > ul > li#question-sidebar > .content > h3
+{
+	width: 216px;
+	background: transparent url("images/h3/support.png") no-repeat;
+}
+
+#sidebar > ul > li#recent-updates > .content > ol
+{
+	padding-bottom: 1em;
+}
+#sidebar > ul > li#recent-updates > .content > ol > li
+{
+	padding-bottom: 1em;
+}
+
+#sidebar > ul >li#systems-status > .content > ul > li,
+#sidebar > ul > li#twitter-feed > .content > ul > li
+{
+	min-height:1em !important;
+	margin-right:25px;
+	margin-bottom:0;
+	padding:10px;
+	border-top: 1px #ccc dotted;
+}
+
+#sidebar > ul >li#systems-status > .content > ul > li p,
+#sidebar > ul >li#twitter-feed > .content > ul > li p {
+	font-size:.8em;
+	text-align:right;
+	margin:0;
+	padding:3px;
+	font-style:italic;
+}
+
+#sidebar ul > li ul > li
+{
+	list-style-type: none;
+	margin-bottom: 1em;
+}
+
+#sidebar > ul > li > .content > ul
+{
+	margin:0 15px;
+}
+
+#sidebar ol { padding-left:15px; }
+
+#sidebar ol li,
+#sidebar p
+{
+	margin:0 15px;
+	letter-spacing: .025em;
+}
+
+#sidebar p {
+	margin:1em 15px;
+}
+
+#sidebar p#ask-a-question
+{
+	width: 272px;
+	height: 46px;
+	background: transparent url("images/input/widget-support-ask-btn.png") no-repeat;
+	text-indent: -2000px;
+	overflow: hidden;
+	margin: 0 auto;
+	padding: 0 0 2em 0;
+}
+
+#sidebar p#ask-a-question a
+{
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+#sidebar p#apply-now
+{
+	width: 272px;
+	height: 46px;
+	background: transparent url("images/input/widget-hiring-apply-btn.png") no-repeat;
+	text-indent: -2000px;
+	overflow: hidden;
+	margin: 0 auto;
+	padding: 0 0 2em 0;
+}
+
+#sidebar p#apply-now a
+{
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+#sidebar #rss-feed-system-status,
+#sidebar #twitter-follow-us
+{
+	width: 85%;
+	padding: 1em 0;
+	border-top: 1px #ccc dotted;
+	font-size: .8em;
+	margin: 1em 0 1em 18px;
+}
+
+#sidebar #rss-feed-system-status a
+{
+	display:block;
+	background: transparent url("images/interface/rss-feed-16x16.png") no-repeat left center !important;
+	padding:0 0 0 18px;
+	height:20px;
+	line-height:20px;
+}
+
+#sidebar #twitter-follow-us a
+{
+	display:block;
+	background: transparent url("images/interface/twitter-feed-16x16.png") no-repeat left center !important;
+	padding:0 0 0 18px;
+	height:20px;
+	line-height:20px;
+}
+
+
+/*	*	*	*	*	*	*	*	*	*	*
+ *										*
+ *			   FOOTER STYLES			*
+ *										*
+ *	*	*	*	*	*	*	*	*	*	*/
+
+#foot 
+{ 
+	clear: both;
+	width: 979px; 
+	margin: 0 0 0 -10px;
+	position: relative; 
+	padding-top: 11px;
+	text-align: center;
+	background: transparent url("images/interface/foot-bg.png") no-repeat; 
+	height: 40px;
+}
+
+#foot-info
+{
+	display: block;
+	color: #333;
+	height: 24px;
+}
+
+#foot #foot-info li 
+{ 
+	display: inline; 
+	font-size: .8em; 
+	line-height: 24px; 
+	margin-left: 10px;
+}
+
+#foot #foot-info li.theme_switch { display: block; padding: 15px; list-style-type: none; }
+
+#foot #foot-info li.theme_switch form div { vertical-align: top; }
+#foot #foot-info li.theme_switch form button { padding: 0; margin: 0; }
+
+#foot #foot-info #first { margin-left: 0; }
+
+#foot #foot-info #first sup { font-size:.8em; }
+
+
+/*	*	*	*	*	*	*	*	*	*	*
+ *										*
+ *			 HOME PAGE STYLES			*
+ *										*
+ *	*	*	*	*	*	*	*	*	*	*/	
+
+#home-page #content h2#home { padding: 0; margin: 0; margin: 15px 0; width: 463px; height: 22px; background: transparent url("images/h2/hiring.png"); text-indent: -5000px; overflow: hidden; }
+
+#home-page #content h2#home-welcome { padding: 0; margin: 0; margin: 15px 0; width: 463px; background: transparent url("images/h2/meet-the-techrangers.png") no-repeat; text-indent: -5000px; overflow: hidden; }
+
+#home-page #content 
+{ 
+	position: relative;
+	float: none;
+	width: 893px; 
+	margin: 0 auto 0 auto !important; 
+	background: transparent url("images/interface/home-main-bg2.gif") no-repeat bottom;
+	padding-bottom: 20px;
+	line-height: 1.35em;
+}
+
+#home-page #content .post
+{
+	position: relative;
+	background: transparent url("images/interface/home-main-top-bg2.gif") no-repeat;
+	padding: 5px 20px 0 20px;
+	min-height: 330px;
+	height: auto;
+}
+
+#home-page #content .entry
+{
+	position: relative;
+	width: 463px;
+}
+
+#home-page #content #sign
+{
+	position: absolute;
+	top: 0;
+	left: 310px;
+	width: 420px;
+	padding-left: 165px;
+	padding-top: 260px;
+	background: transparent url("images/interface/hiring-arrow.png") no-repeat 10px 280px;
+}
+
+#home-page #content #sign h3
+{
+	position: absolute;
+	width: 419px;
+	height: 334px;
+	margin: 0; 
+	padding: 0; 
+	top: -30px !important;
+	right: -20px;
+	text-indent: -2000px;
+	overflow: hidden;
+	z-index: 6;
+	background: transparent url("images/interface/hiring-sign.png") no-repeat;
+	
+}
+
+#home-page #content #sign #apply-here
+{
+	width: 411px;
+	height: 55px;
+	background: transparent url("images/input/btn-apply-large.png") no-repeat;
+}
+
+#home-page #content #sign #apply-here a
+{
+	display: block;
+	width: 411px;
+	height: 55px;
+	text-indent: -2000px;
+	overflow: hidden;
+}
+
+#home-page #content #sign p
+{
+	position: relative;
+	text-align: center;
+	width: 411px;
+	padding: 0;
+	margin: 0;
+	margin-top: 5px;
+	z-index: 7;
+	font-size: .85em;
+}
+
+#home-page #content div.post div#team-photo
+{
+	width:385px;
+	float:right;
+}
+
+#home-page #content div.post div#team-photo img
+{
+	float:right;
+	margin-top:0px;
+	padding-left:5px;
+}
+
+#home-page #content div.post em
+{
+	float:right;
+	width:370px;
+	margin-top:5px;
+	font-size:.8em;
+}
+
+#home-page #sidebar
+{
+	position: relative;
+	display: block;
+	width: auto;
+	margin: 0;
+	float: none;
+}
+
+#home-page #sidebar > ul
+{
+	display: block;
+	margin: 10px 0 20px 25px;
+}
+
+#home-page #sidebar > ul > li
+{
+	margin-left: 8px;
+	float: left;
+	margin-bottom: 20px;
+}
+
+#home-page #sidebar { clear: both; }
+
+/*	*	*	*	*	*	*	*	*	*	*
+ *										*
+ *		        FORM STYLES			    *
+ *										*
+ *	*	*	*	*	*	*	*	*	*	*/
+ 
+#formmanager-spec { display: none; }
+.radio label { display: inline !important; }
+form input[type='text'] { width: 200px; border: 1px #ccc solid; height: 1.5em; }
+form > ul > li { clear: both; list-style-type: none; margin-bottom: 2em; }
+form > ul .section { border-top: 1px #ccc dotted; }
+form > ul #submit { padding-top: 15px; }
+form > ul > li ul { margin-left: 50px; }
+form > ul > li ul > li { list-style-type: disc; }
+form > ul > li ol > .question { display: block; margin-bottom: 1em; }
+form > ul > #personal ol { /*margin-left: 2em;*/ padding: 0; }
+form > ul > #personal ol > li { width: 45%; float: left; margin-bottom: 2em; padding-right: 10px; overflow: hidden; }
+form > ul > #personal ol > li > div > p { margin: 0; }
+
+
+/*	*	*	*	*	*	*	*	*	*	*
+ *										*
+ *		    APPLICATION STYLES			*
+ *										*
+ *	*	*	*	*	*	*	*	*	*	*/
+
+#application-page #content .entry > ul { margin-left: 0px; }
+#application-page #content .entry > ul ul { margin-left: 50px; }
+#application-page #content .post > form > ul > #skills-mc > dl { background-color: #e9e9e9; width: 250px; padding: 15px; margin-top: 0; margin-bottom: 1em; margin-left: 2em; float: left; }
+#application-page #content .post > form > ul > #skills-mc > dl > dt { font-weight: bold; margin-bottom: .5em; }
+#application-page #content .post > form > ul > #skills-mc > dl > dd { margin-left: 1em; margin-bottom: 1em; }
+#application-page #content .post > form > ul > #skills-mc > ol { display: block; float: left; margin-left: 1em; padding: 0; }
+#application-page #content .post > form > ul > #skills-mc > ol > li > label { margin-bottom: .25em; }
+#application-page #content .post > form > ul > #skills-mc > ol > li,
+#application-page #content .post > form > ul > #personal > ol > li,
+#application-page #content .post > form > ul > #skills-mc ol > li > label, 
+#application-page #content .post > form > ul > #personal ol > li > label { display: block; }
+
+#application-page #content .post > form > ul > li > input[type="submit"]
+{
+	width:269px;
+	height:42px;
+	margin:0;
+	padding:0;
+	border:0;
+	background: transparent url(images/input/btn-apply-now.png) no-repeat center top;
+	cursor:pointer;
+	text-indent: -2000px;
+	overflow: hidden;
+	display: block;
+	line-height:0;
+}
+
+
+/*	*	*	*	*	*	*	*	*	*	*
+ *										*
+ *		        EVENT STYLES		    *
+ *										*
+ *	*	*	*	*	*	*	*	*	*	*/
+#content #event-description { padding-top: 1em; }
+#content #event-description dl { background-color: #e9e9e9; padding: 15px; margin: 0 0 1em 1em; }
+#content #event-description dl dt { font-weight: bold; margin-bottom: .5em; }
+#content #event-description dl dd { margin-left: 1em; margin-bottom: 0.5em; }
+#signup { margin-top: 1em; }
+
+
+
+/*	*	*	*	*	*	*	*	*	*	*
+ *										*
+ *		       SIGNUP STYLES		    *
+ *										*
+ *	*	*	*	*	*	*	*	*	*	*/
+
+#signup > ul > li > ol { padding-left: 2em; } 
+#signup > ul > li > ol > li label { display: block; }
+#signup > ul > #submit > input[type="submit"], 
+#signup a
+{
+	width:179px;
+	height:41px;
+	margin:0;
+	padding:0;
+	border:0;
+	background: transparent url(images/input/btn-techtime-signup.png) no-repeat center top;
+	cursor:pointer;
+	text-indent: -2000px;
+	overflow: hidden;
+	display: block;
+	line-height:0;
+}
+
+/*	*	*	*	*	*	*	*	*	*	*
+ *										*
+ *		      SUPPORT STYLES			*
+ *										*
+ *	*	*	*	*	*	*	*	*	*	*/
+
+#support-page #content .post > div ul
+{
+	margin-left: 2em;
+}
+
+#support-page #content .post > #ask-form > form > fieldset
+{
+	border: 1px #ccc solid;
+	display: block;
+	padding: 10px;
+}
+
+#support-page #content .post > #ask-form > form > fieldset > ul
+{
+	margin-left: 1em;
+}
+
+#support-page #content .post > #ask-form > form > fieldset > ul > li > textarea
+{
+	width: 450px; height: 8em; border: 1px #ccc solid;
+}
+
+#support-page #content .post > #ask-form > form > fieldset > ul > li > input[type="text"]
+{
+	width: 250px; border: 1px #ccc solid; height: 1.5em;
+}
+
+#support-page #content .post > #ask-form ul > li
+{
+	display: block;
+	margin-bottom: 1em;
+	list-style-type: none;
+}
+
+#support-page #content .post > #ask-form ul > li > label
+{
+	display: block;
+	margin-bottom: .25em;
+}
+
+
+#support-page #content .post > #ask-form #final input[type="submit"]
+{
+	width:269px;
+	height:42px;
+	margin:0;
+	padding:0;
+	border:0;
+	background: transparent url(images/input/btn-submit-question.png) no-repeat center top;
+	cursor:pointer;
+	text-indent: -2000px;
+	overflow: hidden;
+	display:inline-block;
+	line-height:0;
+}
+
+#support-page #content .post > ul {
+	margin-left:15px;
+	list-style-type:none;
+}
+
+#support-page #content .post > ul li ul li {
+	margin-left:15px;
+}
+
+
+/*	*	*	*	*	*	*	*	*	*	*
+ *										*
+ *		   BIOGRAPHIES STYLES			*
+ *										*
+ *	*	*	*	*	*	*	*	*	*	*/
+
+#biographies-page #content .bio-image
+{
+	width: 170px;
+	min-height: 175px;
+	overflow: hidden;
+	margin: 0 4px 10px 5px;
+	float: left;
+	border: 1px #ccc solid;
+	text-align: center;
+
+}
+
+
+#biographies-page #content .bio-image > h4
+{
+	margin: .5em 0;
+}
+
+#content .staff_photos
+{
+	border: 1px #ccc solid;
+	width: 175px !important;
+	overflow: hidden;
+	float: left;
+	padding: 10px 0;
+	margin-bottom: 20px;
+}
+
+#content .staff_photos h4 { text-align: center; border-top: 1px #ccc dotted; padding-top: 20px; }
+
+#content .staff_photos img
+{
+	display: block;
+	margin: 0 auto;
+}
+
+#content .staff_photos p
+{
+	text-align: center;
+}
+#content .staff_photos .more_photos img { border: 0 !important; }
+
+#content .staff_photos .more_photos a { display: block; border: 1px dotted #ccc; padding: 5px; width: 60%; margin: 0 auto 5px auto; }
+
+#content .profile_information
+{
+	float: right;
+	width: 350px;
+	padding-bottom: 20px;
+}
+
+#content .profile_information p
+{
+	margin-left: 1em;
+}
+
+div#past-techrangers 
+{
+	clear: both; display: block; padding: 1.5em;
+}
+
+#biographies-page #content .photo-container
+{
+	width: 175px;
+	float: left;
+}
+
+#biographies-page #content img
+{
+	display: block;
+	margin: 0 auto;
+}
+
+#biographies-page #content .flickrTag-container .photo-list > li
+{
+	list-style-type: none;
+	display: block;
+	text-align: center;
+	padding: 0;
+}
+
+#biographies-page #content .flickrTag-container .photo-list > li > ul
+{
+	margin-top: .5em;
+}
+
+#biographies-page #content .flickrTag-container .photo-list > li > ul > li
+{
+	list-style-type: none;
+	text-align: center;
+}
+
+#biographies-page #content dl
+{
+	float: left;
+	width: 360px;
+	padding-left: 10px;
+	display: block;
+}
+
+#biographies-page #content dl > dt
+{
+	color: #333;
+	font-weight: bold;
+	margin-bottom: .5em;
+}
+
+#biographies-page #content dl > dd
+{
+	margin-bottom: 1em;
+}
+
+
+/*	*	*	*	*	*	*	*	*	*	*
+ *										*
+ *		     TECHTIME STYLES			*
+ *										*
+ *	*	*	*	*	*	*	*	*	*	*/
+
+#techtime-page #content .post > .events-block
+{
+	margin-left: 2em;
+}
+
+#techtime-page #content .post > .events-block > .event-description
+{
+	margin-bottom: 1.5em;
+	margin-left: 1em;
+}
+
+#techtime-page #content .post > .events-block > .event-date
+{
+	float:right;
+	margin:0;
+	margin-top:-2.5em;
+	padding:0;
+	font-style:italic;
+}
+
+
+/*	*	*	*	*	*	*	*	*	*	*
+ *										*
+ *		     SHOWCASE STYLES			*
+ *										*
+ *	*	*	*	*	*	*	*	*	*	*/
+
+#showcase-page #content .post > .showcase-link,
+#showcase-page #content .post > .showcase-entry,
+#showcase-page #content .post h4
+{
+	margin: 0 1em;
+}
+
+#showcase-page #content .post h4
+{
+	font-weight: bold;
+	color: #333;
+	margin-bottom: .5em;
+	border-top: 1px #ccc dotted;
+	padding-top: 10px;
+	clear: both;
+}
+
+#showcase-page #content .post > .showcase-entry > p,
+#showcase-page #content .post > .showcase-link > p
+{
+	margin-bottom: 1em;
+	letter-spacing: .03em;
+	font-size: .8em;
+}
+
+#showcase-page #content .post > .showcase-entry > p img
+{
+	display: block;
+	margin-left: 10px;
+	float: right;
+	margin-bottom: 15px;
+}
+
+
+#showcase-page #content .post > .showcase-entry > .read-more
+{
+	margin: .5em 0;
+	font-size: .8em;
+}
+
+.showcase-image
+{
+	width: 240px;
+	float: right;
+	margin-left: 10px;
+	margin-bottom: 10px;
+	margin-top:-5px;
+}
+
+
+/*	*	*	*	*	*	*	*	*	*	*
+ *										*
+ *		     JOIN US STYLES				*
+ *										*
+ *	*	*	*	*	*	*	*	*	*	*/
+
+
+div#apply-now p{
+	width: 272px;
+	height: 46px;
+	background: transparent url("images/input/widget-hiring-apply-btn.png") no-repeat;
+	text-indent: -2000px;
+	overflow: hidden;
+	margin: 1em auto;
+}
+
+div#apply-now p a
+{
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+pre
+{
+	border: 1px solid #c7c7c7;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	width: 530px;
+	overflow:auto;
+	padding: 10px;
+	float:right;
+}
+
+.center{ text-align:center; width:570px;}
+
+.post ul li, .post ol li{ margin-bottom: 10px; }
+.post ul li ul, .post ol li ol, .post ul li ol, .post ol li ul{ margin-top: 10px; }
+.post ul{ margin-left:30px;}
+
+
+/*	*	*	*	*	*	*	*	*	*	*
+ *										*
+ *		     Tutorial Styles			*
+ *										*
+ *	*	*	*	*	*	*	*	*	*	*/
+ 
+.post .tutorial-head{
+	background: #e0e0e0;
+	border: 1px solid #c7c7c7;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	float: right;
+	margin: 0 0 10px 10px;
+	width: 260px;
+}
+
+.post .tutorial-head h3{
+	float:left;
+	margin: 7px 30px 0 10px;
+}
+
+.post .table-o-contents{
+	list-style-stype:decimal !important;
+	margin: 0 0 0 20px;
+	width:200px;
+	padding: 35px 10px 0 30px;
+}
+
+.back_link{ float: right; margin: -30px 0 0 0;}
+
+.clear{ clear: both; }
