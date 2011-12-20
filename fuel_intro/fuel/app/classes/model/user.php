@@ -1,29 +1,46 @@
 <?php
 
-class Model_User extends Orm\Model
+class Model_User extends \Orm\Model
 {
-	protected static $_observers = array(
-		'Orm\Observer_CreatedAt' => array('before_insert'),
-		'Orm\Observer_UpdatedAt' => array('before_save'),
+	protected static $_properties = array(
+		'id',
+		'username',
+		'password',
+		'group',
+		'email',
+		'last_login',
+		'login_hash',
+		'profile_fields',
+		'created_at',
+		'updated_at'
 	);
-	
+
+	protected static $_observers = array(
+		'Orm\Observer_CreatedAt' => array(
+			'events' => array('before_insert'),
+			'mysql_timestamp' => false,
+		),
+		'Orm\Observer_UpdatedAt' => array(
+			'events' => array('before_save'),
+			'mysql_timestamp' => false,
+		),
+	);
 	public static function register(Fieldset $form)
 	{
 		$form->add('username', 'Username:')->add_rule('required');
 		$form->add('password', 'Choose Password:', array('type'=>'password'))->add_rule('required');
-		$form->add('password2', 'Re-type Password:', array('type' => 'password'));
-		$form->add('email', 'Email:')->add_rule('required')->add_rule('valid_email');
+		$form->add('password2', 'Re-type Password:', array('type'=>'password'));
+		$form->add('email', 'E-mail:')->add_rule('required')->add_rule('valid_email');
 		$form->add('submit', ' ', array('type'=>'submit', 'value' => 'Register'));
 		return $form;
 	}
-	
-	public function validate_registration(Fieldset $form, $auth)
+	public static function validate_registration(Fieldset $form, $auth)
 	{
 		$form->field('password')->add_rule('match_value', $form->field('password2')->get_attribute('value'));
 		$val = $form->validation();
-		$val->set_message('required', 'The field :field is required');
-		$val->set_message('valid_email', 'The field :field must be an email address');
-		$val->set_message('match_value', 'The passwords must match');
+		$val->set_message('required', 'The field :field is required.');
+		$val->set_message('valid_email', 'The field :field must be an e-mail address.');
+		$val->set_message('match_value', 'The passwords must match.');
 		if($val->run())
 		{
 			$username = $form->field('username')->get_attribute('value');
@@ -33,7 +50,7 @@ class Model_User extends Orm\Model
 			{
 				$user = $auth->create_user($username, $password, $email);
 			}
-			catch (Exception $e)
+			catch(Exception $e)
 			{
 				$error = $e->getMessage();
 			}
@@ -62,5 +79,3 @@ class Model_User extends Orm\Model
 		}
 	}
 }
-
-/* End of file user.php */

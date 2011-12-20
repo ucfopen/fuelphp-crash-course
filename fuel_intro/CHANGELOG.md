@@ -1,73 +1,81 @@
 # Changelog
 
-## v1.0.1
+## v1.1
 
-### Core
+[Full List of core changes since 1.0.1](https://github.com/fuel/core/compare/v1.0.1...v1.1)
 
-* Fixed #307 - Unrouted URIs could not have a colon in their URI followed by a letter, caused a 404 and multiple warnings. - Dan
-* Removed Controller\_Template::before() param, always called without params thus no reason to expect any. Related #356 - Jelmer
-* Fixed #333 - Html::img src attribute included index.php.  Thanks to @huglester for noticing this. - Dan
-* Fixed an issue in Html::audio() where the source parameter defaulted to an array instead of an empty string. - Dan
-* Fixed an issue with the autoloader where the namespace check was case-sensitive which caused issues with Modules with PascalCase namespaces. - Dan
-* Fixed typo in Upload::process() marking all uploaded files valid. - Harro
-* Added missing static keyword to Upload::get\_errors(). - Harro
-* Upload::is\_valid() would remain false regardless of successful upload. - Jason Lewis
-* Removed left-over email config file. - Harro
-* Fixed a migration issue which would cause a PHP error when a destination version was not set. - Phil
-* Fixed #360 - When no sub-namespace exists it would add a double // to the file path in the autoloader. - Dan
-* Fixed an issue where is certain situations, there is no buffer, which causes notices to be dumped when you don't want them to be. - Dan
-* Fixed #361: reference to Input class without calling it from global. - Jelmer
-* Fixed #374: ensured there is a connection before starting SQL transactions, also fixed a lot of code style issues. - Jelmer
-* Fixed Image resize\_crop() bugs - huglester
-* Fixed typos in Image config - huglester
-* Changed one config value as suggested per image class author - huglester
-* Fixed Imagick class - huglester
-* Fixed "Declaration of Fuel\Core\Image\_\*::\_rounded() should be compatible with..." and similar notices - huglester
-* When doing multiple crops, the actual canvas width gets a little screwy in imagick.php (thanks dudeami) - huglester
-* Bugfix - when using presets for resizing or crop resizing always getting black images because of bcdiv not calculating the ratios correctly due to type cast strangeness. - Rostislav Raykov
-* Better handling of errors prior to Fuel::init() but after core bootstrap. - Dan
-* Added break to switch which fixes a bug when 3 is passed, it returns 3rd3th - nbs
-* Fixed #341 by suffixing a directory separator to all dirnames, making them all strings and preventing renumbering by array_merge and conflicts with file indexes with numeric dirnames.
-* Fixed #338 - Added support for gzip encoding of output. - Jelmer
-* Fixed #393 - Fieldset_Field options were set twice during construction, solved by @DregondRahl - Jelmer
-* Removed the un-used Singleton class - Dan
-* Rest controller response() method can take a string or int as a param but the empty() check makes it 404 on '0'. Fix this. - phil-lavin
-* Fixed #399 - A proper 500 status header is sent back on fatal errors - Dan
-* Added 'HTTP\_X\_CLUSTER\_CLIENT\_IP' to the list of things to check for in Input::real\_ip() to fix #403 - Tom Schlick
-* Changed the way Upload::$valid is determined. is_valid() returns true if a validated file is present. - Harro
-* Added Inflector::words\_to\_upper() that uppercases the words in an underscored classname and made the Router class use it when searching for a controller. - Jelmer
+### System changes
 
-### Auth
+* Deprication of `Request::show_404()`, replaced with `throw new HttpNotFoundException` that has a handle method to show the 404
+* Support for `handle()` method that is run when an exception isn't caught before `Error::exception_handler()` catches it.
+* Support for special `_404_` route now in `public/index.php` thus no longer part of the core but still supported as a 'official default'
+* Closures are now also supported in routes, thus routing to a Closure instead of a controler/method uri. Also added support for any type of callable in Route extensions you write yourself.
+* Closure support in all getters & setters: if you get a value and also input a default the default can also be a Closure and you'll get the result of that. For setters the input can also be a closure and the result of the Closure will be set. (except for `View::set()` as one might want to pass a closure to the View)
+* Moved the Environment setting from the `app/config/config.php` file to the `app/bootstrap.php` file.
+* All `factory()` methods have been renamed to `forge()`.  This name better states the method's function.  The `factory()` methods are still there for backwards compatibility, but are deprecated and will log warning messages when used.
+* The `$this->response` Response object is now deprecated.  Your action methods should return either a string, View object, ViewModel object or a Response object.
+* Added the `fuel/app/vendor` directory to the default install.
+* You can now have an unlimited number of sub-directories for your controllers. (e.g. `classes/controller/admin/users/groups.php` with a class name of `Controller_Admin_Users_Groups` would be at `site.com/admin/users/groups`)
+* There is no longer a default controller for directories.  It used to be that going to something like `site.com/admin` would bring up `Controller_Admin_Admin` in `classes/controller/admin/admin.php`.  Now you must place that controller at it's expected location `classes/controller/admin.php` with a name of `Controller_Admin`.
+* A `Controller::after()` method now gets passed the response of the controller, it must return that response (or modified) as well.
+* Added new *function* `get_real_class()` to which you can pass a classname and it will return the actual class, to be used on classes of which you're not sure whether it is an alias or not.
+* Module routes are prepended to the routes array when Fuel detects the fist URI segment as a module, therefor parsing them before an `(:any)` route in the app config.
+* Config is now environment aware and allows partial/full overwriting of the base config from subdirectories in the config dir named after the environment.
+* Added a new `Theme` class.  It allows you to easily add Theme support to your applications.
+* `Fuel_Exception` has been renamed to `FuelException`
+* `Fuel::find_file()` and related methods are now deprecated.  Use the `Finder` class instead (e.g. `Finder::search()`).
+* Migrations are now supported in Modules and Packages
+* Routing has 3 new shortcuts:
+	* `:almun` matches all utf-8 alphabetical and numeric characters
+	* `:num` matches all numeric characters.
+	* `:alpha` matches all utf-8 alphabetical characters
+* Put the `Autoloader` class into `Fuel\Core` to allow extending it, it must now be required in the app bootstrap file which is also the location where you must require your own extension.
 
-* Auth BadFunctionCallException now has included class and function name so we know what's going on. - FrenkyNet
-* Fixes #20 fixed instruction in comment for login driver creating and get\_user\_array. - FrenkyNet
-* Added support for login with email or username instead of just username. Made the login $\_POST keys for login configurable. - FrenkyNet
+### Security related
 
-### Oil
+* Added Fuel's own response object class `Fuel\Core\Response` to default whitelist in `app/config/config.php` of objects that aren't encoded on output by the View when passed.
+* The `security.auto_encode_view_data` config option in `app/config/config.php` has been renamed to `security.auto_filter_output`.
+* `stdClass` was part of the default whitelisted classes from output encoding, this was a bug and it has been removed.
 
-* Adding param to controller generator to stop singularizing class name - Aaron Kuzemchak
-* oil g controller will now take plural or singular name for controller. - Phil
-* Fixed another pluralisation issue. Class names for controllers were being singularised by Inflector::classify when built via Scaffolding. - Phil
-* The standard notice message outputtery thing can now take an array too. - Phil
+### Specific classes
 
-### Orm
+* __Arr__: Added methods `Arr::get()`, `Arr::set()` and `Arr::prepend()`.
+* __Arr__: `Arr::element()` and `Arr::elements()` have been deprecated.  Use the new `Arr::get()` instead.
+* __Database__: Using transactions will no longer prevent exceptions, exceptions are thrown and should be handled by the dev. The `Database_Transaction` class has been deprecated as it has little use because of this change.
+* __File__: `File::read_dir()` (and related methods on Area and Directory handler) now return dirnames with directory separator suffix
+* __Fieldset_Field__: Parsing of validation rules has been moved from `Fieldset_Field::add_rule()` to `Validaton::_find_fule()`, from the outside the method still works the same but notices for inactive rules are now only shown when running the validation.
+* __Form__: Added inline error reporting, which must first be switched on in config and will replace an `{error_msg}` tag
+* __Form__: New default form template which puts it inside a table.
+* __Fuel__: Added `Fuel::value()` which checks if the given value is a Closure, and returns the result of the Closure if it is, otherwise, simply the value.
+* __Image__: No longer throws `Fuel_Exception` for any type of exception but instead `RuntimeException`, `InvalidArguementException` and `OutOfBoundsException` where appropriate.
+* __Input__: `Input::post(null)` doesn't work to get full post array anymore, just `Input::post()` without params - same for all other Input methods
+* __Input__: `Input::get_post()` has been deprecated and replaced by `Input::param()`.  It now also includes PUT and DELETE variables.
+* __Input / Uri__: `Uri::detect()` moved to `Input::uri()` as it is part of the input and thus should be part of the input class
+* __Request__: You can now also do external requests through the Request class, for now only a curl driver: `Request::forge('http//url', 'curl')` or `Request::forge('http//url', array('driver' => 'curl', 'method' => 'post', 'params' => array())`.
+* __Validation__: `Validation::errors()` is depricated and replaced by singular form `Validation::error()` to be more in line with other class methods
+* __Validation__: New 3rd parameter added to `Validation::run()` that allows adding callables for the duration of the run.
+* __View__: The view class has been refactored and works much better now.  Output filtering is vastly improved.
+* __View__: `View::capture()` has been split into two protected instance methods: `process_file()` and `get_data()`.  You will need to update your View class extensions.
+* __View__: `View::$auto_encode` has been removed.  It has been replaced but auto_filter, which is per-view instance.
+* __ViewModel__: Refactored the class internals to work more transparently with the `View`.
+* __ViewModel__: Deprecated `$this->_template` and renamed it to `$this->_view`.
+* __ViewModel__: Updated to work with the refactored `View` class.  Added `$this->bind()`.
+* __ViewModel__: Deprecated `$this->set_template()` and renamed it to `$this->set_view()`.
+* __Html__: Removed (not deprecated) the following methods: `Html::h()`, `Html::br()`, `Html::hr()`, `Html::nbs()`, `Html::title()`, `Html::header()`.  You should simply write the HTML yourself.
+* __Config__: Added Config file drivers for PHP, INI, JSON and Yaml.  They are detected by file extension (e.g. `Config::load('foo.yml')` will load and parse the Yaml).
 
-* Empty array inside build_query was causing a notice - David Anderson
-* Fixes #73 - PHP's current() function returns false on a false value and after the end of the array, the key() function can only return null when it's past the end of the array thus this check can't go wrong. (note: PHP accepts null as a key value but converts it to an empty string) - Jelmer
-* DELETE & UPDATE queries ignored nested calls, this has now been fixed. - Jelmer
-* Made Model::from\_array() more efficient. - Jelmer
-* Allowing fetching with partial PK is just weird and shouldn't happen, also added comment to clarify what the first if condition is there for. - Jelmer
-* Added support for hydration via DB::as_object - FrenkyNet
+### Packages
 
-### Docs
-
-* Fixed a lot of example, spelling, grammar and definition mistakes. - FrenkyNet and others
-
-### Main Repo
-
-* Added ob_callback config option, among other things to support gzip encoding of output. - Jelmer
-* Updated error_reporting to -1 which is more future proof than E_ALL | E_STRICT - Jelmer
-
+* __Auth__: Renamed default table name from `simpleusers` to `users`.
+* __Auth__: Added config options for DB connection and table columns used for fetching the user.
+* __Auth__: Removed default config for groups & roles in `simpleauth.php` config file, only commented out examples left.
+* __Orm__: Lots of tweaks to `Observer_Validation` related to changes to `Validation` & `Fieldset_Field` classes. Also changed it to only save properties that are actually changed.
+* __Orm__: The `ValidationFailed` thrown when the `Observer_Validation` fails now includes a reference to the Fieldset instance that failed: `$valfailed->get_fieldset();`
+* __Orm__: Added support for changing the type of join used when fetching relations, example: `Model_Example::query()->related('something', array('join_type' => 'inner'))->get();`
+* __Orm__: Observers are no longer singleton but one instance per model with per model settings, check docs for more info.
+* __Parser__: Added Parser package to the default install.
+* __Parser__: Mustache is now part of the Parser package by default.  Version 0.7.1.
+* __Email__: The Email package is added.
 
 ## v1.0
 

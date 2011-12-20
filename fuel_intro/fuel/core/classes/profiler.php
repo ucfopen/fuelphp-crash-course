@@ -7,17 +7,30 @@ import('phpquickprofiler/phpquickprofiler', 'vendor');
 use \Console;
 use \PhpQuickProfiler;
 
-class Profiler {
+class Profiler
+{
 
 	protected static $profiler = null;
 
 	protected static $query = null;
 
+	protected static $initialized = false;
+
+	public static function _init()
+	{
+		static::init();
+	}
+
 	public static function init()
 	{
+		if (static::$initialized)
+		{
+			return;
+		}
 		static::$profiler = new PhpQuickProfiler(FUEL_START_TIME);
 		static::$profiler->queries = array();
 		static::$profiler->queryCount = 0;
+		static::$initialized = true;
 	}
 
 	public static function mark($label)
@@ -25,9 +38,9 @@ class Profiler {
 		Console::logSpeed($label);
 	}
 
-	public static function mark_memory($label)
+	public static function mark_memory($var = false, $name = 'PHP')
 	{
-		Console::logMemory($label);
+		Console::logMemory($var, $name);
 	}
 
 	public static function console($text)
@@ -54,7 +67,7 @@ class Profiler {
 
 	public static function stop($text)
 	{
-		static::$query['time'] = static::$profiler->getMicroTime() - static::$query['time'];
+		static::$query['time'] = (static::$profiler->getMicroTime() - static::$query['time']) *1000;
 		array_push(static::$profiler->queries, static::$query);
 		static::$profiler->queryCount++;
 	}

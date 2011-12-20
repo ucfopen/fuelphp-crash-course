@@ -18,20 +18,13 @@ namespace Oil;
  * @package		Fuel
  * @subpackage	Oil
  * @category	Core
- * @author		Phil Sturgeon
  */
 class Command
 {
 	public static function init($args)
 	{
 		// Remove flag options from the main argument list
-		for ($i =0; $i < count($args); $i++)
-		{
-			if (strpos($args[$i], '-') === 0)
-			{
-				unset($args[$i]);
-			}
-		}
+		$args = self::_clear_args($args);
 
 		try
 		{
@@ -39,7 +32,7 @@ class Command
 			{
 				if (\Cli::option('v', \Cli::option('version')))
 				{
-					\Cli::write('Fuel: ' . \Fuel::VERSION);
+					\Cli::write('Fuel: '.\Fuel::VERSION);
 					return;
 				}
 
@@ -54,24 +47,31 @@ class Command
 
 					$action = isset($args[2]) ? $args[2]: 'help';
 
-					$subfolder = 'default';
-					if (is_int(strpos($action, 'scaffold/')))
+					$subfolder = 'orm';
+					if (is_int(strpos($action, '/')))
 					{
-						$subfolder = str_replace('scaffold/', '', $action);
-						$action = 'scaffold';
+						list($action, $subfolder)=explode('/', $action);
 					}
 
 					switch ($action)
 					{
+						case 'config':
 						case 'controller':
 						case 'model':
-						case 'views':
 						case 'migration':
 							call_user_func('Oil\Generate::'.$action, array_slice($args, 3));
 						break;
 
+						case 'views':
+							call_user_func('Oil\Generate::views', array_slice($args, 3), $subfolder);
+						break;
+
+						case 'admin':
+							call_user_func('Oil\Generate_Admin::forge', array_slice($args, 3), $subfolder);
+						break;
+
 						case 'scaffold':
-							call_user_func('Oil\Scaffold::generate', array_slice($args, 3), $subfolder);
+							call_user_func('Oil\Generate_Scaffold::forge', array_slice($args, 3), $subfolder);
 						break;
 
 						default:
@@ -88,7 +88,9 @@ class Command
 				case 'refine':
 
 					// Developers of third-party tasks may not be displaying PHP errors. Report any error and quit
-					set_error_handler(function($errno, $errstr, $errfile, $errline){
+					set_error_handler(function($errno, $errstr, $errfile, $errline) {
+						if (!error_reporting()) return; // If the error was supressed with an @ then we ignore it!
+						
 						\Cli::error("Error: {$errstr} in $errfile on $errline");
 						\Cli::beep();
 						exit;
@@ -99,20 +101,31 @@ class Command
 					call_user_func('Oil\Refine::run', $task, array_slice($args, 3));
 				break;
 
-				case 'p':
-				case 'package':
+				case 'cell':
+				case 'cells':
 
 					$action = isset($args[2]) ? $args[2]: 'help';
 
 					switch ($action)
 					{
+						case 'list':
+							call_user_func('Oil\Cell::all');
+						break;
+
+						case 'search':
 						case 'install':
+						case 'upgrade':
 						case 'uninstall':
-							call_user_func_array('Oil\Package::'.$action, array_slice($args, 3));
+							call_user_func_array('Oil\Cell::'.$action, array_slice($args, 3));
+						break;
+
+						case 'info':
+						case 'details':
+							call_user_func_array('Oil\Cell::info', array_slice($args, 3));
 						break;
 
 						default:
-							Package::help();
+							Cell::help();
 					}
 
 				break;
@@ -139,7 +152,12 @@ class Command
 					// Respect the coverage-html option
 					\Cli::option('coverage-html') and $command .= ' --coverage-html '.\Cli::option('coverage-html');
 
-					passthru($command);
+					\Cli::write('Tests Running...This may take a few moments.', 'green');
+
+					foreach(explode(';', $command) as $c)
+					{
+						passthru($c);
+					}
 
 				break;
 
@@ -153,6 +171,8 @@ class Command
 		{
 			\Cli::error('Error: '.$e->getMessage());
 			\Cli::beep();
+
+			\Cli::option('speak') and `say --voice="Trinoids" "{$e->getMessage()}"`;
 		}
 	}
 
@@ -161,23 +181,37 @@ class Command
 		echo <<<HELP
 
 Usage:
-  php oil [console|generate|help|test|package]
+  php oil [cells|console|generate|refine|help|test]
 
 Runtime options:
   -f, [--force]    # Overwrite files that already exist
   -s, [--skip]     # Skip files that already exist
   -q, [--quiet]    # Supress status output
+  -t, [--speak]    # Speak errors in a robot voice
 
 Description:
   The 'oil' command can be used in several ways to facilitate quick development, help with
   testing your application and for running Tasks.
 
 Documentation:
-  http://fuelphp.com/docs/packages/oil/intro.html
+  http://docs.fuelphp.com/packages/oil/intro.html
 
 HELP;
 
 	}
+
+	private static function _clear_args($actions = array())
+	{
+		foreach ($actions as $key => $action)
+		{
+			if (substr($action, 0, 1) === '-')
+			{
+				unset($actions[$key]);
+			}
+		}
+
+		return $actions;
+	}
 }
 
-/* End of file oil/classes/cli.php */
+/* End of file oil/classes/command.php */

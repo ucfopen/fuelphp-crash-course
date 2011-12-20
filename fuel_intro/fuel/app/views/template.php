@@ -3,47 +3,61 @@
 <head>
 	<meta charset="utf-8">
 	<title><?php echo $title; ?></title>
-	<style type="text/css">
-		* { margin: 0; padding: 0; }
-		body { background-color: #EEE; font-family: sans-serif; font-size: 16px; line-height: 20px; margin: 40px; }
-		#wrapper { padding: 30px; background: #fff; color: #333; margin: 0 auto; width: 600px; }
-		a { color: #36428D; }
-		h1 { color: #000; font-size: 55px; padding: 0 0 25px; line-height: 1em; }
-		.intro { font-size: 22px; line-height: 30px; font-family: georgia, serif; color: #555; padding: 29px 0 20px; border-top: 1px solid #CCC; }
-		.notice { border: 1px solid #CCC; padding: 10px; background-color: #EEE; }
-		h2 { margin: 50px 0 15px; padding: 0 0 10px; font-size: 18px; border-bottom: 1px dashed #ccc; }
-		h2.first { margin: 10px 0 15px; }
-		p { margin: 0 0 15px; line-height: 22px;}
-		a { color: #666; }
-		pre { border-left: 1px solid #ddd; line-height:20px; margin:20px; padding-left:1em; font-size: 16px; }
-		pre, code { color:#137F80; font-family: Courier, monospace; }
-		ul { margin: 15px 30px; }
-		li { line-height: 24px;}
-		label { display: block; }
-		.footer { color: #777; font-size: 12px; margin: 40px 0 0 0; }
+	<?php echo Asset::css('bootstrap.css'); ?>
+	<style>
+		body { margin: 40px; }
 	</style>
 </head>
 <body>
-	<div id="wrapper">
-		<h1><?php echo $title; ?></h1>
-		<?php
-			if(isset($user_info))
-			{
-				echo $user_info;
-			}
-			else
-			{
-				$link = array(Html::anchor('users/login', 'Login'), Html::anchor('users/register', 'Register'));
-				echo Html::ul($link);
-			}
-			if (Session::get_flash('notice')): ?>
-				<div class="notice"><p><?php echo implode('</p><p>', (array) Session::get_flash('notice')); ?></div></p>
-			<?php endif;
-			echo $content;
-		?>
-		<p class="footer">
-			<a href="http://fuelphp.com">Fuel PHP</a> is released under the MIT license.<br />Page rendered in {exec_time}s using {mem_usage}mb of memory.
-		</p>
+	<div class="container">
+		<div class="row">
+			<div class="span16">
+				<h1><?php echo $title; ?></h1>
+				<hr>
+				<?php
+					if(isset($user_info))
+					{
+						echo $user_info;
+					}
+					else
+					{
+						if(Auth::instance()->check())
+						{
+							$link = array("Logged in as: ".Auth::instance()->get_screen_name(), Html::anchor('users/logout', 'Logout'));
+						}
+						else
+						{
+							$link = array(Html::anchor('users/login', 'Login'), Html::anchor('users/register', 'Register'));
+						}
+						echo Html::ul($link);
+					}
+				?>
+<?php if (Session::get_flash('success')): ?>
+				<div class="alert-message success">
+					<p>
+					<?php echo implode('</p><p>', (array) Session::get_flash('success')); ?>
+					</p>
+				</div>
+<?php endif; ?>
+<?php if (Session::get_flash('error')): ?>
+				<div class="alert-message error">
+					<p>
+					<?php echo implode('</p><p>', (array) Session::get_flash('error')); ?>
+					</p>
+				</div>
+<?php endif; ?>
+			</div>
+			<div class="span16">
+<?php echo $content; ?>
+			</div>
+		</div>
+		<footer>
+			<p class="pull-right">Page rendered in {exec_time}s using {mem_usage}mb of memory.</p>
+			<p>
+				<a href="http://fuelphp.com">FuelPHP</a> is released under the MIT license.<br>
+				<small>Version: <?php echo e(Fuel::VERSION); ?></small>
+			</p>
+		</footer>
 	</div>
 </body>
 </html>
