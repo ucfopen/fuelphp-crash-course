@@ -1,3 +1,3 @@
-<h2 class="first">New Comment</h2>
+<h2>New Comment</h2>
 <?php echo render('comments/_form'); ?>
-<p><?php echo Html::anchor('comments', 'Back'); ?></p>
+<p><?php echo Html::anchor('messages/view/'.$mid,'Back'); ?></p>

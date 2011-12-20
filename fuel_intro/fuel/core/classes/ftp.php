@@ -1,6 +1,6 @@
 <?php
 /**
- * Fuel is a fast, lightweight, community driven PHP5 framework.
+ * Part of the Fuel framework.
  *
  * @package    Fuel
  * @version    1.0
@@ -13,9 +13,9 @@
 namespace Fuel\Core;
 
 
-class FtpConnectionException extends \Fuel_Exception {}
+class FtpConnectionException extends \FuelException {}
 
-class FtpFileAccessException extends \Fuel_Exception {}
+class FtpFileAccessException extends \FuelException {}
 
 
 /**
@@ -24,7 +24,7 @@ class FtpFileAccessException extends \Fuel_Exception {}
  * @package		Fuel
  * @category	Core
  * @author		Phil Sturgeon
- * @link		http://fuelphp.com/docs/classes/ftp.html
+ * @link		http://docs.fuelphp.com/classes/ftp.html
  */
 class Ftp
 {
@@ -39,15 +39,26 @@ class Ftp
 	protected $_conn_id   = false;
 
 	/**
-	 * Returns a new Ftp object. If you do not define the "file" parameter,
-	 *
-	 *     $ftp = static::factory('group');
-	 *
-	 * @param   string  Ftp filename
-	 * @param   array   array of values
-	 * @return  Ftp
+	 * This method is deprecated...use forge() instead.
+	 * 
+	 * @deprecated until 1.2
 	 */
 	public static function factory($config = 'default', $connect = true)
+	{
+		logger(\Fuel::L_WARNING, 'This method is deprecated.  Please use a forge() instead.', __METHOD__);
+		return static::forge($config, $connect);
+	}
+
+	/**
+	 * Returns a new Ftp object. If you do not define the "file" parameter,
+	 *
+	 *     $ftp = static::forge('group');
+	 *
+	 * @param   string|array  The name of the config group to use, or a configuration array.
+	 * @param   bool          Automatically connect to this server.
+	 * @return  Ftp
+	 */
+	public static function forge($config = 'default', $connect = true)
 	{
 		$ftp = new static($config);
 
@@ -60,8 +71,8 @@ class Ftp
 	/**
 	 * Sets the initial Ftp filename and local data.
 	 *
-	 * @param   string  Ftp filename
-	 * @param   array   array of values
+	 * @param   string|array  The name of the config group to use, or a configuration array.
+	 * @param   bool          Automatically connect to this server.
 	 * @return  void
 	 */
 	public function __construct($config = 'default')

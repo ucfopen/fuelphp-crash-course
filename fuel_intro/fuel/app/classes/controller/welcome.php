@@ -9,34 +9,40 @@
  * @package  app
  * @extends  Controller
  */
-class Controller_Welcome extends Controller {
+class Controller_Welcome extends Controller
+{
 
 	/**
-	 * The index action.
+	 * The basic welcome message
 	 * 
 	 * @access  public
-	 * @return  void
+	 * @return  Response
 	 */
 	public function action_index()
 	{
-		$this->response->body = View::factory('welcome/index');
+		return Response::forge(View::forge('welcome/index'));
+	}
+
+	/**
+	 * A typical "Hello, Bob!" type example.  This uses a ViewModel to
+	 * show how to use them.
+	 * 
+	 * @access  public
+	 * @return  Response
+	 */
+	public function action_hello()
+	{
+		return Response::forge(ViewModel::forge('welcome/hello'));
 	}
 
 	/**
 	 * The 404 action for the application.
 	 * 
 	 * @access  public
-	 * @return  void
+	 * @return  Response
 	 */
 	public function action_404()
 	{
-		$messages = array('Aw, crap!', 'Bloody Hell!', 'Uh Oh!', 'Nope, not here.', 'Huh?');
-		$data['title'] = $messages[array_rand($messages)];
-
-		// Set a HTTP 404 output header
-		$this->response->status = 404;
-		$this->response->body = View::factory('welcome/404', $data);
+		return Response::forge(ViewModel::forge('welcome/404'), 404);
 	}
 }
-
-/* End of file welcome.php */

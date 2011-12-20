@@ -1,6 +1,6 @@
 <?php
 /**
- * Fuel is a fast, lightweight, community driven PHP5 framework.
+ * Part of the Fuel framework.
  *
  * @package    Fuel
  * @version    1.0
@@ -18,13 +18,14 @@ namespace Fuel\Core;
  * @package		Fuel
  * @category	Core
  * @copyright	Flinn Mueller
- * @link		http://fuelphp.com/docs/classes/inlector.html
+ * @link		http://docs.fuelphp.com/classes/inlector.html
  */
-class Inflector {
+class Inflector
+{
 
 	protected static $uncountable_words = array(
 		'equipment', 'information', 'rice', 'money',
-		'species', 'series', 'fish'
+		'species', 'series', 'fish', 'meta'
 	);
 
 	protected static $plural_rules = array(
@@ -83,8 +84,8 @@ class Inflector {
 	/**
 	 * Add order suffix to numbers ex. 1st 2nd 3rd 4th 5th
 	 *
-	 * @param   int     the word to singularize
-	 * @return  string  the singular version of $word
+	 * @param   int     the number to ordinalize
+	 * @return  string  the ordinalized version of $number
 	 * @link    http://snipplr.com/view/4627/a-function-to-add-a-prefix-to-numbers-ex-1st-2nd-3rd-4th-5th/
 	 */
 	public static function ordinalize($number)

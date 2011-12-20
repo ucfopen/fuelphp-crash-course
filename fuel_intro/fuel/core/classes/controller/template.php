@@ -1,6 +1,6 @@
 <?php
 /**
- * Fuel is a fast, lightweight, community driven PHP5 framework.
+ * Part of the Fuel framework.
  *
  * @package    Fuel
  * @version    1.0
@@ -21,7 +21,8 @@ namespace Fuel\Core;
  * @category	Core
  * @author		Fuel Development Team
  */
-abstract class Controller_Template extends \Controller {
+abstract class Controller_Template extends \Controller
+{
 
 	/**
 	* @var string page template
@@ -39,21 +40,23 @@ abstract class Controller_Template extends \Controller {
 		if ($this->auto_render === true)
 		{
 			// Load the template
-			$this->template = \View::factory($this->template);
+			$this->template = \View::forge($this->template);
 		}
 
 		return parent::before();
 	}
 
-	// After contorller method has run output the template
-	public function after()
+	// After controller method has run output the template
+	public function after($response)
 	{
-		if ($this->auto_render === true)
+		// If the response is a Response object, we don't want to create a new one
+		if ($this->auto_render === true and ! $response instanceof \Response)
 		{
-			$this->response->body($this->template);
+			$response = $this->response; 
+			$response->body = $this->template;
 		}
 
-		return parent::after();
+		return parent::after($response);
 	}
 
 }
