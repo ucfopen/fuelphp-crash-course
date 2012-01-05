@@ -361,6 +361,7 @@ class Controller_Comments extends Controller_Template
 &lt;?php echo render('comments/_form'); ?&gt;
 &lt;p&gt;&lt;?php echo Html::anchor('comments', 'Back'); ?&gt;&lt;/p&gt;
 </pre>
+<p>Now, pay attention. There's a small bug with the generate command. When you ran it to create the comments controller, fuel named the class incorrectly (because of the plural form "comments"). You need to go into the comments controller at <code>comments.php</code> and rename <code>Controller_Comment</code> to <code>Controller_Comments</code> on line 3.</p>
 <p>Go to <a href="http://localhost/fuel_intro/public/comments/create/">http://localhost/fuel_intro/public/comments/create/</a> and take a look at the form. You should see this:</p>
 <p><img src="assets/images/controlling_the_power_01.jpg" alt="A Google Chrome window displaying the create page." /></p>
 <h5 id="Modeling">Modeling</h5>
