@@ -360,7 +360,7 @@ class Controller_Comments extends Controller_Template
 <pre class="brush: php; title: ; notranslate" title="">
 &lt;h2 class=&quot;first&quot;&gt;New Comment&lt;/h2&gt;
 &lt;?php echo render('comments/_form'); ?&gt;
-&lt;p&gt;&lt;?php echo Html::anchor('comments', 'Back'); ?&gt;&lt;/p&gt;
+&lt;p&gt;&lt;?php echo Html::anchor('messages/view/'.$message, 'Back'); ?&gt;&lt;/p&gt;
 </pre>
 <p>Go to <a href="http://localhost/fuel_intro/public/comments/create/">http://localhost/fuel_intro/public/comments/create/</a> and take a look at the form. You should see this:</p>
 <p><img src="assets/images/controlling_the_power_01.jpg" alt="A Google Chrome window displaying the create page." /></p>
