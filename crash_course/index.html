@@ -279,13 +279,13 @@ class Controller_Comments extends Controller_Template
 
 	public function action_edit()
 	{
-		$this->template->title = 'Comments &raquo; Edit';
+		$this->template->title = 'Comments &amp;raquo; Edit';
 		$this->template->content = View::forge('comments/edit');
 	}
 
 	public function action_create()
 	{
-		$this->template->title = 'Comments &raquo; Create';
+		$this->template->title = 'Comments &amp;raquo; Create';
 		$this->template->content = View::forge('comments/create');
 	}
 
@@ -293,13 +293,14 @@ class Controller_Comments extends Controller_Template
 </pre>
 <h6 id="Defaults">Defaults</h6>
 <p>The default class name for the controller is Controller_NAME, and the default actions are action_NAME. So if you&#8217;re making your own actions or controllers, you should follow the conventions that are set forth in this file. </p>
+<p>Take careful note that the class ought to read "Controller_Comments", rather than the default "Controller_Comment".</p>
 <p>Let&#8217;s go ahead and make a new action to illustrate this.</p>
 <p>We want to create a controller that&#8217;s not associated with any view in order to handle deleting a comment. So, we would write the deletion function under the current actions:</p>
 <pre class="brush: php; first-line: 11; title: ; notranslate" title="">
 		public function action_create()
 		{
 			$this-&gt;template-&gt;title = &quot;Comments &amp;raquo; Create&quot;;
-			$this-&gt;template-&gt;content = View::factory('comments/create');
+			$this-&gt;template-&gt;content = View::forge('comments/create');
 		}
 		public function action_delete()
 		{
@@ -406,7 +407,7 @@ class Model_Comment extends \Orm\Model
 	public function action_create($id = null)
 	{
 		$this-&gt;template-&gt;title = &quot;Comments&quot;;
-		$this-&gt;template-&gt;content = View::factory('comments/create');
+		$this-&gt;template-&gt;content = View::forge('comments/create');
 	}
 </pre>
 <p>Notice that we are setting the <code>$id</code> to null by default. Now we need to check to make sure that they&#8217;ve completed the form, so we add an if statement:</p>
@@ -417,7 +418,7 @@ class Model_Comment extends \Orm\Model
 		{
 		}
 		$this-&gt;template-&gt;title = &quot;Comments&quot;;
-		$this-&gt;template-&gt;content = View::factory('comments/create');
+		$this-&gt;template-&gt;content = View::forge('comments/create');
 	}
 </pre>
 <p>This is using Fuel&#8217;s Input class, but we could have just as easily used <code>"if($_POST) {</code>&#8221; as well.</p>
@@ -433,7 +434,7 @@ class Model_Comment extends \Orm\Model
 			$this-&gt;template-&gt;set_global('message', $id, false);
 		}
 		$this-&gt;template-&gt;title = &quot;Comments&quot;;
-		$this-&gt;template-&gt;content = View::factory('comments/create');
+		$this-&gt;template-&gt;content = View::forge('comments/create');
 	}
 </pre>
 <p>This means if they didn&#8217;t post anything, take the <code>$id</code> and turn it into a variable called $message that the view can use.</p>
@@ -443,7 +444,7 @@ class Model_Comment extends \Orm\Model
 	{
 		if (Input::method() == 'POST')
 		{
-			$comment = Model_Comment::factory(array(
+			$comment = Model_Comment::forge(array(
 				'name' =&gt; Input::post('name'),
 				'comment' =&gt; Input::post('comment'),
 				'mid' =&gt; Input::post('mid'),
@@ -454,7 +455,7 @@ class Model_Comment extends \Orm\Model
 			$this-&gt;template-&gt;set_global('message', $id, false);
 		}
 		$this-&gt;template-&gt;title = &quot;Comments&quot;;
-		$this-&gt;template-&gt;content = View::factory('comments/create');
+		$this-&gt;template-&gt;content = View::forge('comments/create');
 	}
 </pre>
 <p><code>$comment</code> is now an object that has the comment information in it, so we need to try and save the comment:</p>
@@ -463,7 +464,7 @@ class Model_Comment extends \Orm\Model
 	{
 		if (Input::method() == 'POST')
 		{
-			$comment = Model_Comment::factory(array(
+			$comment = Model_Comment::forge(array(
 				'name' =&gt; Input::post('name'),
 				'comment' =&gt; Input::post('comment'),
 				'mid' =&gt; Input::post('mid'),
@@ -477,7 +478,7 @@ class Model_Comment extends \Orm\Model
 			$this-&gt;template-&gt;set_global('message', $id, false);
 		}
 		$this-&gt;template-&gt;title = &quot;Comments&quot;;
-		$this-&gt;template-&gt;content = View::factory('comments/create');
+		$this-&gt;template-&gt;content = View::forge('comments/create');
 	}
 </pre>
 <p>&#8216;And&#8217; is used here instead of &#8216;&amp;&#8217; because it&#8217;s part of the <a href="http://fuelphp.com/docs/general/coding_standards.html#comparison_logical">Fuel coding standards</a>.</p>
@@ -488,7 +489,7 @@ class Model_Comment extends \Orm\Model
 	{
 		if (Input::method() == 'POST')
 		{
-			$comment = Model_Comment::factory(array(
+			$comment = Model_Comment::forge(array(
 				'name' =&gt; Input::post('name'),
 				'comment' =&gt; Input::post('comment'),
 				'mid' =&gt; Input::post('mid'),
@@ -504,7 +505,7 @@ class Model_Comment extends \Orm\Model
 			$this-&gt;template-&gt;set_global('comment', $id, false);
 		}
 		$this-&gt;template-&gt;title = &quot;Comments&quot;;
-		$this-&gt;template-&gt;content = View::factory('comments/create');
+		$this-&gt;template-&gt;content = View::forge('comments/create');
 	}
 </pre>
 <p>or else we set the flash to say that the comment couldn&#8217;t be saved</p>
@@ -513,7 +514,7 @@ class Model_Comment extends \Orm\Model
 	{
 		if (Input::method() == 'POST')
 		{
-			$comment = Model_Comment::factory(array(
+			$comment = Model_Comment::forge(array(
 				'name' =&gt; Input::post('name'),
 				'comment' =&gt; Input::post('comment'),
 				'mid' =&gt; Input::post('mid'),
@@ -533,7 +534,7 @@ class Model_Comment extends \Orm\Model
 			$this-&gt;template-&gt;set_global('comment', $id, false);
 		}
 		$this-&gt;template-&gt;title = &quot;Comments&quot;;
-		$this-&gt;template-&gt;content = View::factory('comments/create');
+		$this-&gt;template-&gt;content = View::forge('comments/create');
 	}
 </pre>
 <h5 id="Creating_A_Comment_from_A_Message">Creating A Comment from A Message</h5>
@@ -559,7 +560,7 @@ class Model_Comment extends \Orm\Model
 	public function action_edit($id, $mid)
 	{
 		$this-&gt;template-&gt;title = 'Comments &amp;raquo; Edit';
-		$this-&gt;template-&gt;content = View::factory('comments/edit');
+		$this-&gt;template-&gt;content = View::forge('comments/edit');
 	}
 </pre>
 <p>Now we use the comment model to find the comment, based on it&#8217;s id</p>
@@ -568,7 +569,7 @@ class Model_Comment extends \Orm\Model
 	{
 		$comment = Model_Comment::find($id);
 		$this-&gt;template-&gt;title = 'Comments &amp;raquo; Edit';
-		$this-&gt;template-&gt;content = View::factory('comments/edit');
+		$this-&gt;template-&gt;content = View::forge('comments/edit');
 	}
 </pre>
 <p>The rest of the code is pretty much the same as creating a comment with a few minor tweaks, here it is in bulk:</p>
@@ -596,14 +597,14 @@ class Model_Comment extends \Orm\Model
 			$this-&gt;template-&gt;set_global('comment', $comment, false);
 		}
 		$this-&gt;template-&gt;title = &quot;Comments&quot;;
-		$this-&gt;template-&gt;content = View::factory('comments/edit');
+		$this-&gt;template-&gt;content = View::forge('comments/edit');
 	}
 </pre>
 <p>The action <code>$comment-&gt;save()</code> will update the comment if it already exists in the database, or adds it if it doesn&#8217;t.</p>
 <p>All that remains is to fix up the comment edit view. Go ahead and open up <code>fuel/app/views/comments/edit.php</code>. It'll wind up looking like the view for editing messages, with a few differences:
 <pre class="brush: php; title: ' notranslate" title="">
 &lt;h2&gt;Editing Comment&lt;/h2&gt;
-&lt;br&gt;
+&lt;br/&gt;
 
 &lt;?php echo render('comments/_form'); ?&gt;
 &lt;p&gt;&lt;?php echo Html::anchor('messages/view/'.$comment-&gt;mid, 'Back'); ?&gt;&lt;/p&gt;
@@ -633,7 +634,7 @@ class Model_Comment extends \Orm\Model
 	{
 		$data['messages'] = Model_Message::find('all');
 		$this-&gt;template-&gt;title = &quot;Messages&quot;;
-		$this-&gt;template-&gt;content = View::factory('messages/index', $data);
+		$this-&gt;template-&gt;content = View::forge('messages/index', $data);
 	}
 </pre>
 <p>There&#8217;s not too much there except a command to find all the messages, which needs to be changed to $messages instead of <code>$data['messages']</code>. </p>
@@ -641,10 +642,10 @@ class Model_Comment extends \Orm\Model
 <pre class="brush: php; first-line: 5; title: ; notranslate" title="">
 	public function action_index()
 	{
-		$view = View::factory('messages/index');
+		$view = View::forge('messages/index');
 		$messages = Model_Message::find('all');
 		$this-&gt;template-&gt;title = &quot;Messages&quot;;
-		$this-&gt;template-&gt;content = View::factory('messages/index', $data);
+		$this-&gt;template-&gt;content = View::forge('messages/index', $data);
 	}
 </pre>
 <p>That way we have an object for the view that we can set variables for, which will come later.</p>
@@ -652,21 +653,21 @@ class Model_Comment extends \Orm\Model
 <pre class="brush: php; first-line: 5; title: ; notranslate" title="">
 	public function action_index()
 	{
-		$view = View::factory('messages/index');
+		$view = View::forge('messages/index');
 		$messages = Model_Message::find('all');
 		$comments = array();
 		foreach ($messages as $message)
 		{
 		}
 		$this-&gt;template-&gt;title = &quot;Messages&quot;;
-		$this-&gt;template-&gt;content = View::factory('messages/index', $data);
+		$this-&gt;template-&gt;content = View::forge('messages/index', $data);
 	}
 </pre>
 <p>We need to do a database call to get all of the comments associated with a particular message, so we call on the comment model:</p>
 <pre class="brush: php; first-line: 5; title: ; notranslate" title="">
 	public function action_index()
 	{
-		$view = View::factory('messages/index');
+		$view = View::forge('messages/index');
 		$messages = Model_Message::find('all');
 		$comments = array();
 		foreach ($messages as $message)
@@ -674,7 +675,7 @@ class Model_Comment extends \Orm\Model
 			$query = Model_Comment::find()-&gt;where(&quot;mid&quot;, $message['id']);
 		}
 		$this-&gt;template-&gt;title = &quot;Messages&quot;;
-		$this-&gt;template-&gt;content = View::factory('messages/index');
+		$this-&gt;template-&gt;content = View::forge('messages/index');
 	}
 </pre>
 <p>This is analogous to &#8220;<code>SELECT * FROM 'comments' WHERE mid = $message[id]</code>&#8220;, but it&#8217;s an easier way to read it and it uses fuels built in classes.</p>
@@ -682,7 +683,7 @@ class Model_Comment extends \Orm\Model
 <pre class="brush: php; first-line: 5; title: ; notranslate" title="">
 	public function action_index()
 	{
-		$view = View::factory('messages/index');
+		$view = View::forge('messages/index');
 		$messages = Model_Message::find('all');
 		$comments = array();
 		foreach ($messages as $message)
@@ -691,14 +692,14 @@ class Model_Comment extends \Orm\Model
 			$comments[$message['id']] = $query-&gt;count();
 		}
 		$this-&gt;template-&gt;title = &quot;Messages&quot;;
-		$this-&gt;template-&gt;content = View::factory('messages/index');
+		$this-&gt;template-&gt;content = View::forge('messages/index');
 	}
 </pre>
 <p>The next bit is really for syntax purposes. If there is one comment display &#8217;1 Comment&#8217;, no comments displays &#8216;View&#8217;, and more than one comment displays &#8216;# Comments&#8217;:</p>
 <pre class="brush: php; first-line: 5; title: ; notranslate" title="">
 	public function action_index()
 	{
-		$view = View::factory('messages/index');
+		$view = View::forge('messages/index');
 		$messages = Model_Message::find('all');
 		$comments = array();
 		foreach($messages as $message)
@@ -726,7 +727,7 @@ class Model_Comment extends \Orm\Model
 <pre class="brush: php; first-line: 5; title: ; notranslate" title="">
 	public function action_index()
 	{
-		$view = View::factory('messages/index');
+		$view = View::forge('messages/index');
 		$messages = Model_Message::find('all');
 		$comments = array();
 		foreach($messages as $message)
@@ -772,7 +773,7 @@ class Model_Comment extends \Orm\Model
 		$comments = Model_Comment::find()-&gt;where('mid', $id)-&gt;get();
 		$data['comments'] = $comments;
 		$this-&gt;template-&gt;title = &quot;Message&quot;;
-		$this-&gt;template-&gt;content = View::factory('messages/view', $data);
+		$this-&gt;template-&gt;content = View::forge('messages/view', $data);
 	}
 </pre>
 <p>The <code>-&gt;get()</code> command returns the comments associated with the message as an object, which is passed to the view when added to the $data array.</p>
@@ -921,7 +922,7 @@ class Model_User extends \Orm\Model
 public function action_register()
 {
 	$this-&gt;template-&gt;title = 'Users &amp;raquo; Register';
-	$this-&gt;template-&gt;content = View::factory('users/register');
+	$this-&gt;template-&gt;content = View::forge('users/register');
 }
 </pre>
 <p>To this:</p>
@@ -929,8 +930,8 @@ public function action_register()
 public function action_register()
 {
 	$auth = Auth::instance();
-	$view = View::factory('users/register');
-	$form = Fieldset::factory('register');
+	$view = View::forge('users/register');
+	$form = Fieldset::forge('register');
 	Model_User::register($form);
 	$view-&gt;set('reg', $form-&gt;build(), false);
 	$this-&gt;template-&gt;title = 'User &amp;raquo; Register';
@@ -1145,8 +1146,8 @@ if($_POST)
 <pre class="brush: php; first-line: 6; title: ; notranslate" title="">
 	public function action_login()
 	{
-		$view = View::factory('users/login');
-		$form = Form::factory('login');
+		$view = View::forge('users/login');
+		$form = Form::forge('login');
 		$auth = Auth::instance();
 		$form-&gt;add('username', 'Username:');
 		$form-&gt;add('password', 'Password:', array('type' =&gt; 'password'));
