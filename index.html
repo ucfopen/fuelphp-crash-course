@@ -74,7 +74,7 @@
 <h4 id="Requirements">Requirements</h4>
 <p>First and foremost, here&#8217;s what you&#8217;re going to need:</p>
 <ol>
-<li><a href="http://fuelphp.com">Fuel PHP framework</a> (we&#8217;re using v1.01)</li>
+<li><a href="http://fuelphp.com">Fuel PHP framework</a> (we&#8217;re using v1.1)</li>
 <li><a href="http://www.apachefriends.org/en/xampp.html">XAMPP</a> (if you&#8217;re having trouble installing this, <a href="http://keito.me/tutorials/xampp">go here for a tutorial</a>)</li>
 <li><a href="http://wamp.corephp.co.uk/step_06.php">PHP Environment Variables Configured in Windows</a> (for command line executions)</li>
 <li>phpMyAdmin (it comes with XAMPP)</li>
@@ -91,6 +91,17 @@
 		'packages'	=&gt; array(
 			'orm',
 		),
+</pre>
+<p>While you're in this file, there's another Fuel preset you'll want to change. That'd be the default timezone. Fuel has it set to UTC by default, but unless you're reading this from the middle of Europe that probably doesn't apply to you. Fuel uses PHP's built-in time zones, so check out <a href="http://www.php.net/manual/en/timezones.php">PHP's list of supported timezones</a> and find one that corresponds to yours.<br/><br/>For simplicity's sake, this tutorial will use America/New_York.</p>
+<pre class="brush: php; first-line: 78; title: ; notranslate" title="">
+	/**
+	 * DateTime settings
+	 *
+	 * server_gmt_offset	in seconds the server offset from gmt timestamp when time() is used
+	 * default_timezone		optional, if you want to change the server's default timezone
+	 */
+	'server_gmt_offset'  =&gt 0,
+	'default_timezone'   =&gt 'America/New_York',
 </pre>
 <p>After doing that, go to phpmyadmin (<a href="http://localhost/phpmyadmin">http://localhost/phpmyadmin</a>) and create a database called &#8220;fuel_intro&#8221;. Leave this database blank for now, because we&#8217;re going to eventually unleash fuel on its emptiness.</p>
 <p><img src="assets/images/gettin_configged_up_02.jpg" alt="Screenshot showing the creation of a database from phpmyadmin." /></p>
