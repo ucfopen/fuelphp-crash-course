@@ -513,7 +513,7 @@ class Model_Comment extends \Orm\Model
 		}
 		else
 		{
-			$this-&gt;template-&gt;set_global('comment', $id, false);
+			$this-&gt;template-&gt;set_global('message', $id, false);
 		}
 		$this-&gt;template-&gt;title = &quot;Comments&quot;;
 		$this-&gt;template-&gt;content = View::forge('comments/create');
@@ -542,7 +542,7 @@ class Model_Comment extends \Orm\Model
 		}
 		else
 		{
-			$this-&gt;template-&gt;set_global('comment', $id, false);
+			$this-&gt;template-&gt;set_global('message', $id, false);
 		}
 		$this-&gt;template-&gt;title = &quot;Comments&quot;;
 		$this-&gt;template-&gt;content = View::forge('comments/create');
