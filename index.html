@@ -86,7 +86,7 @@
 <p>Put the Fuel files into a folder called &#8220;fuel_intro&#8221; in the htdocs folder of xampp.</p>
 <p>Go to <a href="http://localhost/fuel_intro/public">http://localhost/fuel_intro/public</a> and you should see the &#8220;Successful install&#8221; page from Fuel</p>
 <p><img src="assets/images/gettin_configged_up_01.jpg" alt="Screenshot showing successful Fuel PHP install." /></p>
-<p>For this tutorial we&#8217;re going to be using an <a href="http://en.wikipedia.org/wiki/Object-relational_mapping">orm package</a>, included in your install of fuel. To enable packages, you have to add the package name it to the packages array in the config file. Mosey on over to <code>/fuel/app/config/config.php</code> and uncomment the &#8216;orm&#8217; package to the package array.</p>
+<p>For this tutorial we&#8217;re going to be using an <a href="http://en.wikipedia.org/wiki/Object-relational_mapping">orm package</a>, included in your install of fuel. To enable packages, you have to add the package name to the packages array in the config file. Mosey on over to <code>/fuel/app/config/config.php</code> and uncomment the &#8216;orm&#8217; package to the package array.</p>
 <pre class="brush: php; first-line: 187; title: ; notranslate" title="">
 		'packages'	=&gt; array(
 			'orm',
@@ -492,7 +492,7 @@ class Model_Comment extends \Orm\Model
 		$this-&gt;template-&gt;content = View::forge('comments/create');
 	}
 </pre>
-<p>&#8216;And&#8217; is used here instead of &#8216;&amp;&#8217; because it&#8217;s part of the <a href="http://fuelphp.com/docs/general/coding_standards.html#comparison_logical">Fuel coding standards</a>.</p>
+<p>&#8216;And&#8217; is used here instead of &#8216;&amp;&amp;&#8217; because it&#8217;s part of the <a href="http://fuelphp.com/docs/general/coding_standards.html#comparison_logical">Fuel coding standards</a>.</p>
 <p>If the <code>if</code> statement is successful, it will save the comment to the database, so we should now set a flash to show that to the user. <a href="http://fuelphp.com/docs/classes/session/usage.html#method_set_flash">Session Flashes</a> are for information with a limited lifespan, such as presenting success or failure information.</p>
 <p>So we can set our flash and redirect them back to the message they were viewing:</p>
 <pre class="brush: php; first-line: 11; title: ; notranslate" title="">
@@ -781,8 +781,7 @@ class Model_Comment extends \Orm\Model
 	public function action_view($id = NULL)
 	{
 		$data['message'] = Model_Message::find($id);
-		$comments = Model_Comment::find()-&gt;where('mid', $id)-&gt;get();
-		$data['comments'] = $comments;
+		$data['comments'] = Model_Comment::find()-&gt;where('mid', $id)-&gt;get();
 		$this-&gt;template-&gt;title = &quot;Message&quot;;
 		$this-&gt;template-&gt;content = View::forge('messages/view', $data);
 	}
@@ -919,7 +918,7 @@ class Model_User extends \Orm\Model
 	{
 		$form-&gt;add('username', 'Username:')-&gt;add_rule('required');
 		$form-&gt;add('password', 'Choose Password:', array('type'=&gt;'password'))-&gt;add_rule('required');
-		$form-&gt;add('password2', 'Re-type Password:', array('type' =&gt; 'password'));
+		$form-&gt;add('password2', 'Re-type Password:', array('type' =&gt; 'password'))-&gt;add_rule('required');
 		$form-&gt;add('email', 'E-mail:')-&gt;add_rule('required')-&gt;add_rule('valid_email');
 		$form-&gt;add('submit', ' ', array('type'=&gt;'submit', 'value' =&gt; 'Register'));
 		return $form;
@@ -967,7 +966,12 @@ class Controller_Users extends Controller_Template
 <h5 id="Validating_the_Registration">Validating the Registration</h5>
 <p><!-- This section needs cleanup and more clarity --></p>
 <p>Now what happens when someone actually fills out the form? We need to have their registration validated. So we need to repopulate the form field with the values that the user typed in, and then send the whole form and authentication to a validation controller. So, back in your users controller:</p>
-<pre class="brush: php; first-line: 23; title: ; notranslate" title="">
+<pre class="brush: php; first-line: 18; title: ; notranslate" title="">
+	public function action_register()
+	{
+		$auth = Auth::instance();
+		$view = View::forge('users/register');
+		$form = Fieldset::forge('register');
 		Model_User::register($form);
 		if($_POST)
 		{
