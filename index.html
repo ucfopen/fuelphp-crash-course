@@ -1094,42 +1094,42 @@ public function validate_registration(Fieldset $form, $auth)
 	$val-&gt;set_message('required', 'The field :field is required');
 	$val-&gt;set_message('valid_email', 'The field :field must be an email address');
 	$val-&gt;set_message('match_value', 'The passwords must match');
-    if($val-&gt;run())
-    {
-        $username = $form-&gt;field('username')-&gt;get_attribute('value');
-        $password = $form-&gt;field('password')-&gt;get_attribute('value');
-        $email = $form-&gt;field('email')-&gt;get_attribute('value');
-        try
-        {
-            $user = $auth-&gt;create_user($username, $password, $email);
-        }
-        catch (Exception $e)
-        {
-            $error = $e-&gt;getMessage();
-        }
-        if(isset($user))
-        {
-            $auth-&gt;login($username, $password);
-        }
-        else
-        {
-            if(isset($error))
-            {
-                $li = $error;
-            }
-            else
-            {
-                $li = 'Something went wrong with creating the user!';
-            }
-            $errors = Html::ul(array($li));
-            return array('e_found' =&gt; true, 'errors' =&gt; $errors);
-        }
-    }
-    else
-    {
-        $errors = $val-&gt;show_errors();
-        return array('e_found' =&gt; true, 'errors' =&gt; $errors);
-    }
+	if($val-&gt;run())
+	{
+		$username = $form-&gt;field('username')-&gt;get_attribute('value');
+		$password = $form-&gt;field('password')-&gt;get_attribute('value');
+		$email = $form-&gt;field('email')-&gt;get_attribute('value');
+		try
+		{
+			$user = $auth-&gt;create_user($username, $password, $email);
+		}
+		catch (Exception $e)
+		{
+			$error = $e-&gt;getMessage();
+		}
+		if(isset($user))
+		{
+			$auth-&gt;login($username, $password);
+		}
+		else
+		{
+			if(isset($error))
+			{
+				$li = $error;
+			}
+			else
+			{
+				$li = 'Something went wrong with creating the user!';
+			}
+			$errors = Html::ul(array($li));
+			return array('e_found' =&gt; true, 'errors' =&gt; $errors);
+		}
+	}
+	else
+	{
+		$errors = $val-&gt;show_errors();
+		return array('e_found' =&gt; true, 'errors' =&gt; $errors);
+	}
 }
 </pre>
 <p>Two more things to do. First, go to <code>action_register()</code> on the users controller and and add a check for errors, if there are no errors found, log the user in and redirect to the homepage:</p>
@@ -1356,6 +1356,19 @@ echo Html::ul($link);
 	SyntaxHighlighter.defaults['pad-line-numbers'] = false;
 	SyntaxHighlighter.defaults['toolbar'] = false;
 	SyntaxHighlighter.all();
+</script>
+<script type="text/javascript">
+
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', 'UA-39116019-1']);
+	_gaq.push(['_trackPageview']);
+
+	(function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	})();
+
 </script>
 </body>
 </html>
