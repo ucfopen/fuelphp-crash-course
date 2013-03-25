@@ -75,15 +75,15 @@
 <p>First and foremost, here&#8217;s what you&#8217;re going to need:</p>
 <ol>
 <li><a href="http://fuelphp.com">Fuel PHP framework</a> (we&#8217;re using v1.5.3)</li>
-<li><a href="http://www.apachefriends.org/en/xampp.html">XAMPP</a> (if you&#8217;re having trouble installing this, <a href="http://keito.me/tutorials/xampp">go here for a tutorial</a>)</li>
-<li><a href="http://www.nextofwindows.com/how-to-addedit-environment-variables-in-windows-7/">PHP Environment Variables Configured in Windows</a> (for command line executions)</li>
-<li>phpMyAdmin (it comes with XAMPP)</li>
+<li><a href="http://en.wikipedia.org/wiki/LAMP_(software_bundle)">A LAMP Server</a> (many installation tutorials exist, here are some for popular distros: <a href="http://keito.me/tutorials/xampp">Ubuntu</a>, <a href="http://wiki.debian.org/LaMp">Debian</a>, <a href="http://en.opensuse.org/SDB:Linux_Apache_MySQL_PHP">SUSE</a>, and <a href="http://fedorasolved.org/server-solutions/lamp-stack">Fedora</a>)</li>
+<li>phpMyAdmin (again, installation will vary depending on your distribution)</li>
 <li>A basic understanding of the <a href="http://php-html.net/tutorials/model-view-controller-in-php/">Model-View-Controller (MVC) pattern</a>.</li>
 </ol>
 <h4>Before You Get Started</h4>
+<p>In this tutorial we'll be using Ubunutu Precise Pangolin. If you're using another linux variant, certain steps throughout the tutorial may differ for you and you may run into some problems that we haven't encountered. Proceed at your own discretion.</p>
 <p>Keep in mind that the completed source code for this tutorial is available from the <a href="https://github.com/UCF/fuelphp-crash-course">Fuel Crash Course GitHub repository</a>.</p>
 <h4 id="Checking_Your_Work">Checking Your Work</h4>
-<p>Put the Fuel files into a folder called &#8220;fuel_intro&#8221; in the htdocs folder of xampp.</p>
+<p>After downloading Fuel, place your files inside a folder (that you've created) called "fuel_intro" within the root folder for Apache. Unless you've manually tweaked your root location, it should be <code>/var/www/</code>.</p>
 <p>Go to <a href="http://localhost/fuel_intro/public">http://localhost/fuel_intro/public</a> and you should see the &#8220;successful install&#8221; page from Fuel.</p>
 <p><img src="assets/images/fuelsuccess.png" alt="Screenshot showing successful Fuel PHP install." /></p>
 <p>If your page looks like the following screenshot, this means that Fuel does not have write permissions for the listed files, which it needs. If you do not receive any errors, feel free to skip over this next step, as it does not apply to you.</p>
@@ -200,7 +200,7 @@ return array(
 </pre>
 <p>We renamed the database to &#8220;fuel_intro&#8221;, but left all the rest of the stuff as it was since the defaults will work fine for what we&#8217;re doing. Notice we&#8217;re only editing the Fuel::DEVELOPMENT environment and not touching Fuel::PRODUCTION.</p>
 new hotness-->
-<p> Go into the <code>/fuel/app/config/development/db.php</code> file and fill out the following (this is assuming that you have a fresh install of XAMPP and you have not created or modified the default MySQL configuration):</p>
+<p> Go into the <code>/fuel/app/config/development/db.php</code> file and fill out the following (this is assuming that you have a fresh LAMP install and you have not created or modified the default MySQL configuration):</p>
 <pre class="brush: php; first-line: 6; title: ; highlight:[9,10,11] notranslate" title="" >
 return array(
 	'default' => array(
@@ -215,8 +215,8 @@ return array(
 <p>We renamed the database to "fuel_intro" and changed the password to an empty string. Aside from that, we left everything else alone since the defaults will work fine for what we're doing. Keep in mind that we're only editing Fuel's development environment.</p>
 <h4 id="Oil_Slick">Oil Slick</h4>
 <p>Fuel has a cool command line utility called Oil that lets you set up a lot of your controllers and tables automatically.</p>
-<p>Bring up Command Prompt, type in the file path of your Fuel installation, and then run &#8220;php oil&#8221;. You should see a bit of oil usage documentation.</p>
-<p><img src="assets/images/oil_slick_02.jpg" alt="Running php oil. Command 1: cd c:/xampp/htdocs/fuel_intro, Command 2: php oil" /></p>
+<p>Open up a terminal, type in the file path of your Fuel installation, and then run &#8220;php oil&#8221;. You should see a bit of oil usage documentation.</p>
+<p><img src="assets/images/oil_slick_02.png" alt="Running php oil. Command 1: cd c:/xampp/htdocs/fuel_intro, Command 2: php oil" /></p>
 <p>Seeing this means that Oil is successfully installed and working! Now let&#8217;s get to business.</p>
 <h5 id="Every_Building_Needs_A_Scaffold">Every Building Needs A Scaffold</h5>
 <p>Scaffolding in fuel allows you to quickly create a related controller, model (using ORM), and view for manipulating information.</p>
@@ -224,7 +224,7 @@ return array(
 <p><img src="assets/images/every_building_needs_a_scaffold_01.jpg" alt="Screenshot of field names." /></p>
 <p>The &#8216;id&#8217;, &#8216;created_at&#8217;, and &#8216;updated_at&#8217; columns are made automatically, so all we have to tell oil to do is make the 'name' and 'message' fields. So just feed your command prompt the following:</p>
 <p><code>php oil generate scaffold messages name:string message:text</code></p>
-<p><img src="assets/images/every_building_needs_a_scaffold_02.jpg" alt="Running php scaffold for messages: php oil generate scaffold messages name:string message:text." /></p>
+<p><img src="assets/images/every_building_needs_a_scaffold_02.png" alt="Running php scaffold for messages: php oil generate scaffold messages name:string message:text." /></p>
 <p>The only weird thing about this is that the &#8220;string&#8221; type for the name is a shortcut that is really var_char(255).</p>
 <p>If you look at your document tree, you can see that the controller, model, and view were created and populated with default content.</p>
 <p>If you look at your database, you&#8217;ll notice that no table has been created. That&#8217;s because we need to migrate the database.</p>
@@ -256,7 +256,7 @@ class Create_messages
 </pre>
 <p>Now that we know what the migration is going to create, go ahead and run it. That'll be:</p>
 <p><code>php oil refine migrate</code></p>
-<p><img src="assets/images/Migra_wha_01.jpg" alt="Running php migrate for scaffold: php oil refine migrate." /></p>
+<p><img src="assets/images/Migra_wha_01.png" alt="Running php migrate for scaffold: php oil refine migrate." /></p>
 <p>Now the table has been created, and you can add messages to it! Take a look at your database, you should see something like <a href="#Every_Building_Needs_A_Scaffold">the screenshot from before</a>.</p>
 <h4 id="Prettying_Up_The_Code">Prettying Up The Code</h4>
 <p>Navigate to &#8220;<a href="http://localhost/fuel_intro/public/messages">http://localhost/fuel_intro/public/messages</a>&#8221; and add a message.</p>
@@ -353,7 +353,7 @@ return array(
 <p>Now that we have pretty semantic messages, we need to add a way for users to add comments to those messages.</p>
 <p>The first step is to create our controllers and views for the comments. We will be using oil&#8217;s generate command again to do this. Let&#8217;s watch:</p>
 <p><code>php oil generate controller comments edit create</code></p>
-<p><img src="assets/images/new_comments_01.jpg" alt="Running php generate for comments: php oil generate controller comments edit create." /></p>
+<p><img src="assets/images/new_comments_01.png" alt="Running php generate for comments: php oil generate controller comments edit create." /></p>
 <p>As you can see, a controller was generated called &#8220;comments&#8221; with the actions create and edit. Two views were also created, both associated with the comments controller (edit.php and create.php).</p>
 <p>Open the controller at <code>fuel/app/classes/controller/comments.php</code> and see what was made.</p>
 <h5 id="Controlling_the_Power">Controlling the Power</h5>
@@ -467,7 +467,7 @@ class Controller_Comments extends Controller_Template
 <h5 id="Modeling">Modeling</h5>
 <p>This is the easy part of the tutorial. All you need to do is run the following in the command line for oil to use (make sure the model name is singular!):</p>
 <p><code>php oil generate model comment name:string comment:text mid:int</code></p>
-<p><img src="assets/images/modeling_01.jpg" alt="Running php oil generate model comment name:string comment:text mid:int" /></p>
+<p><img src="assets/images/modeling_01.png" alt="Running php oil generate model comment name:string comment:text mid:int" /></p>
 <p>This command created comment.php in the <code>fuel/app/classes/model</code> folder. If you open up the file you should see this:</p>
 <pre class="brush: php; title: ; notranslate" title="">
 &lt;?php
@@ -498,7 +498,7 @@ class Model_Comment extends \Orm\Model
 <h5 id="Why_Its_So_Small">Why It&#8217;s So Small</h5>
 <p>Notice that there&#8217;s not much code there? That&#8217;s because the comment model extends a class called ORM, or the Object-relational mapper. You can take a look at <a href="http://fuelphp.com/docs/packages/orm/creating_models.html">some of the more complicated things ORM can do</a>, but for now we&#8217;re just going to stick to the defaults.</p>
 <p>Since we made another model, we&#8217;re going to have to migrate to the newest version:</p>
-<p><img src="assets/images/migra_wha_02.jpg" alt="Running php oil refine migrate" /></p>
+<p><img src="assets/images/migra_wha_02.png" alt="Running php oil refine migrate" /></p>
 <p class="note">Quick Note: If an error is encountered when migrating, you can fix any typos in your migration file by going to <code>/fuel/app/migrations/###_create_NAME.php</code> and editing the file.</p>
 <h5 id="Adding_to_the_Database">Adding to the Database</h5>
 <p>We can now edit the controller for comments to actually add our comments to the database. So go ahead and open the <code>/fuel/app/classes/controller/comments.php</code> file.</p>
@@ -984,11 +984,11 @@ foreach ($comments as $comment) {  ?&gt;
 </pre>
 <p>Then we need to create a controller for our login:</p>
 <p><code>php oil g controller users login logout register</code></p>
-<p><img src="assets/images/login_page_and_user_creation_01.jpg" alt="Running php oil controller users login logout register in the command line." /></p>
+<p><img src="assets/images/login_page_and_user_creation_01.png" alt="Running php oil controller users login logout register in the command line." /></p>
 <p>Notice that we used <code>g</code> instead of <code>generate</code>. This is just one example of the many short tags that oil allows you to use.</p>
 <p>Now we need to build the models:</p>
 <p><code>php oil g model user username:string password:string group:int email:string last_login:string login_hash:string profile_fields:string</code></p>
-<p><img src="assets/images/login_page_and_user_creation_021.jpg" alt="Running php oil g model user username:string password:string group:int email:string last_login:string login_hash:string in the command line." /></p>
+<p><img src="assets/images/login_page_and_user_creation_02.png" alt="Running php oil g model user username:string password:string group:int email:string last_login:string login_hash:string in the command line." /></p>
 <p>The only thing that should be explained on this line is groups. Here&#8217;s the default group number definitions:</p>
 <dl>
 <dt>
