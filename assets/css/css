@@ -1,6 +1,0 @@
-@font-face {
-  font-family: 'Oswald';
-  font-style: normal;
-  font-weight: normal;
-  src: local('Oswald '), local('Oswald'), url('http://themes.googleusercontent.com/static/fonts/oswald/v2/qpy-UiLNKP-VfOdbcs6r6-vvDin1pK8aKteLpeZ5c0A.woff') format('woff');
-}
