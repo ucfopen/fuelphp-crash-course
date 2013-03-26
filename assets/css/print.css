@@ -1,0 +1,16 @@
+#cdl-bar{ display: none; }
+body { font-family: Helvetica, Arial, sans-serif }
+a { color: #000; }
+#head { border-bottom: 1px #ccc dotted; padding-bottom: 20px; }
+#head a { text-decoration: none; color: #000; }
+#head sup { font-size: .75em; }
+#nav-links, #UCFHBHeader, #sidebar, #search-form { display: none; }
+#content ul li { line-height: 1.2em;}
+h2 a { text-decoration: none; }
+#last-update { font-size: .8em; font-style: italic; color: #ccc; }
+#foot { border-top: 1px #ccc dotted; padding-top: 20px; font-size: .8em; clear: both; }
+#foot a { text-decoration: none; }
+#foot-info { margin: 0; padding: 0;}
+#foot-info li { margin: 10px 0; padding: 0; list-style-type: none; text-align: center; display: block; }
+.bio-image { float: left; width: 125px; height: 125px; text-align: center; border: 1px #ccc dotted; margin: 10px 10px; }
+.bio-image h4 a { text-decoration: none; }

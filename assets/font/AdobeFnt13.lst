@@ -1,0 +1,50 @@
+%!Adobe-FontList 1.13
+%Locale:0x409
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:Invalid
+OutlineFileName:C:\xampp\htdocs\fuel_php_testing_tutorial\tut\HTML\css\Font\fontsquirrel_kit.css
+FileModTime:1316707928
+%EndFont
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:Invalid
+OutlineFileName:C:\xampp\htdocs\fuel_php_testing_tutorial\tut\HTML\css\Font\League_Gothic-webfont.eot
+FileModTime:1293103478
+%EndFont
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:Invalid
+OutlineFileName:C:\xampp\htdocs\fuel_php_testing_tutorial\tut\HTML\css\Font\League_Gothic-webfont.svg
+FileModTime:1293103478
+%EndFont
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:TrueType
+FontName:LeagueGothic
+FamilyName:League Gothic
+StyleName:Regular
+FullName:League Gothic Regular
+MenuName:League Gothic
+StyleBits:0
+WritingScript:Roman
+OutlineFileName:C:\xampp\htdocs\fuel_php_testing_tutorial\tut\HTML\css\Font\League_Gothic-webfont.ttf
+DataFormat:sfntData
+FileLength:25272
+FileModTime:1293103478
+WeightClass:400
+WidthClass:5
+AngleClass:0
+%EndFont
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:Invalid
+OutlineFileName:C:\xampp\htdocs\fuel_php_testing_tutorial\tut\HTML\css\Font\League_Gothic-webfont.woff
+FileModTime:1293103478
+%EndFont
+
