@@ -89,7 +89,7 @@
 <p>If your page looks like the following screenshot, this means that Fuel does not have write permissions for the listed files, which it needs. If you do not receive any errors, feel free to skip over this next step, as it does not apply to you.</p>
 <p><img src="assets/images/error01.png" alt="Screenshot showing a permissions error for fuel setup." /></p>
 <h5>Troubleshooting</h5>
-<p>To give the directories and files the proper permissions do the following.</p>
+<p>Do the following to give the directories and files the proper permissions.</p>
 <p><img src="assets/images/permissions.jpg" alt="Screenshot of how to handle the error in the command prompt. First Command: cd:/xampp/htdocs/fuel_intro, Second Command: CACLS fuel/app/config /e /p %username%:F, Third Command: CACLS fuel/app/logs /e /p %username%:F" /></p>
 <p><code>%username%</code> is a special kind of variable in Windows which holds the name of the current logged in user and <code>CACLS</code> is a Windows function which allows you to change permissions on files and folders based on the user.</p>
 <p>I would not suggest using these settings in a production environment, but for our purposes they work just fine. To learn more about Windows file permissions, you can read <a href="http://www.cyberciti.biz/tips/windows-change-access-permissions-from-the-command-line.html" target="_blank">Windows File Permissions</a>.</p>
@@ -164,6 +164,7 @@
 	'server_gmt_offset'  =&gt 0,
 	'default_timezone'   =&gt 'America/New_York',
 </pre>
+<!-- obsolete
 <p>Next we need to uncomment our <code>output_filter</code> within the security settings:</p>
 <pre  class="brush: php; first-line: 168; title: ; notranslate" title="">
 	/**
@@ -175,7 +176,7 @@
 	 * Note: MUST BE DEFINED IN THE APP CONFIG FILE!
 	 */
 	'output_filter'  => array(),
-</pre>
+</pre> -->
 <p>After doing that, go to phpmyadmin (<a href="http://localhost/phpmyadmin">http://localhost/phpmyadmin</a>) and create a database called &#8220;fuel_intro&#8221;. Leave this database blank for now, because we&#8217;re going to eventually unleash fuel on its emptiness.</p>
 <p><img src="assets/images/gettin_configged_up_02.jpg" alt="Screenshot showing the creation of a database from phpmyadmin." /></p>
 <!--old and busted
@@ -199,7 +200,7 @@ return array(
 	),
 </pre>
 <p>We renamed the database to &#8220;fuel_intro&#8221;, but left all the rest of the stuff as it was since the defaults will work fine for what we&#8217;re doing. Notice we&#8217;re only editing the Fuel::DEVELOPMENT environment and not touching Fuel::PRODUCTION.</p>
-new hotness-->
+new hotness -->
 <p> Go into the <code>/fuel/app/config/development/db.php</code> file and fill out the following (this is assuming that you have a fresh install of XAMPP and you have not created or modified the default MySQL configuration):</p>
 <pre class="brush: php; first-line: 6; title: ; highlight:[9,10,11] notranslate" title="" >
 return array(
@@ -222,7 +223,7 @@ return array(
 <p>Scaffolding in fuel allows you to quickly create a related controller, model (using ORM), and view for manipulating information.</p>
 <p>What we want to end up with after creating the scaffold is a table with the following fields:</p>
 <p><img src="assets/images/every_building_needs_a_scaffold_01.jpg" alt="Screenshot of field names." /></p>
-<p>The &#8216;id&#8217;, &#8216;created_at&#8217;, and &#8216;updated_at&#8217; columns are made automatically, so all we have to tell oil to do is make the 'name' and 'message' fields. So just feed your command prompt the following:</p>
+<p>The &#8216;id&#8217;, &#8216;created_at&#8217;, and &#8216;updated_at&#8217; columns are made automatically, so we only have to tell oil to make the 'name' and 'message' fields. Just feed your command prompt the following:</p>
 <p><code>php oil generate scaffold messages name:string message:text</code></p>
 <p><img src="assets/images/every_building_needs_a_scaffold_02.jpg" alt="Running php scaffold for messages: php oil generate scaffold messages name:string message:text." /></p>
 <p>The only weird thing about this is that the &#8220;string&#8221; type for the name is a shortcut that is really var_char(255).</p>
