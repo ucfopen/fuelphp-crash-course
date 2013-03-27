@@ -412,7 +412,7 @@ class Controller_Comments extends Controller_Template
 		}
 </pre>
 <p>We&#8217;ll need to make a few changes within the <code>action_create</code> function to prepare for the views we are about to build:</p>
-<pre class="brush: php; first-line: 12; title: ; highlight:[16,17] notranslate" title="">
+<pre class="brush: php; first-line: 12; title: ; highlight:[16,17,19] notranslate" title="">
 	public function action_create()
 	{
 		$this-&gt;template-&gt;title = 'Comments &amp;raquo; Create';
@@ -476,7 +476,7 @@ class Controller_Comments extends Controller_Template
 <pre class="brush: php; title: ; highlight:[1,2,3,4] notranslate" title="">
 &lt;?php $message = isset($message) ? $message : ''; ?&gt;
 &lt;h2 class=&quot;first&quot;&gt;New Comment&lt;/h2&gt;
-&lt;?php echo $form; ?&gt;
+&lt;?php echo render('comments/_form'); ?&gt;
 &lt;p&gt;&lt;?php echo Html::anchor('messages/view/'.$message, 'Back'); ?&gt;&lt;/p&gt;
 </pre>
 <p>Go to <a href="http://localhost/fuel_intro/public/comments/create/">http://localhost/fuel_intro/public/comments/create/</a> and take a look at the form. You should see this:</p>
@@ -568,7 +568,7 @@ class Model_Comment extends \Orm\Model
 		$this-&gt;template->content = View::forge('comments/create', $views);
 	}
 </pre>
-<p>This means if they didn&#8217;t post anything, take the <code>$id</code> and turn it into a variable called $message that the view can use.</p>
+<p>This means if they didn&#8217;t post anything, take the <code>$id</code> and turn it into a variable called <code>$message</code> that the view can use.</p>
 <p>Now we need to build what we need to from the Comment Model.</p>
 <pre class="brush: php; first-line: 12; title: ; highlight:[16,17,18,19,20] notranslate" title="">
 	public function action_create($id = null)
@@ -626,7 +626,7 @@ class Model_Comment extends \Orm\Model
 </pre>
 <p>&#8216;And&#8217; is used here instead of &#8216;&amp;&amp;&#8217; because it&#8217;s part of the <a href="http://fuelphp.com/docs/general/coding_standards.html#comparison_logical">Fuel coding standards</a>.</p>
 <p>If the <code>if</code> statement is successful, it will save the comment to the database, so we should now set a flash to show that to the user. <a href="http://fuelphp.com/docs/classes/session/usage.html#method_set_flash">Session Flashes</a> are for information with a limited lifespan, such as presenting success or failure information.</p>
-<p>So we can set our flash and redirect them back to the message they were viewing:</p>
+<p>So we can set our flash and redirect our user back to the message they were viewing:</p>
 <pre class="brush: php; first-line: 12; title: ; highlight:[24,25] notranslate" title="">
 	public function action_create($id = null)
 	{
@@ -641,7 +641,7 @@ class Model_Comment extends \Orm\Model
 			if($comment and $comment-&gt;save())
 			{
 				Session::set_flash('success', 'Added comment #' . $comment-&gt;id . '.');
-            	Response::redirect('messages/view/'.$comment-&gt;mid);
+            	Response::redirect('messages/view/' . $comment-&gt;mid);
 			}
 		}
 		else
@@ -693,7 +693,7 @@ class Model_Comment extends \Orm\Model
 	}
 </pre>
 <h5 id="Creating_A_Comment_from_A_Message">Creating a Comment from a Message</h5>
-<p>Now we&#8217;re going to add a link to the <code>view.php</code> file in the messages view, so you can add a comment to that message.</p>
+<p>Now we&#8217;re going to add a link to the <code>view.php</code> file in the messages view, so you can add a comment to any message.</p>
 <p>Go to <code>/fuel/app/views/messages/view.php</code> and add:</p>
 
 <pre class="brush: php; first-line: 3; title: ; highlight:[9] notranslate" title="">
@@ -710,9 +710,9 @@ class Model_Comment extends \Orm\Model
 <p>Go on back to <a href="http://localhost/fuel_intro/public/messages">http://localhost/fuel_intro/public/messages</a> and add a comment to one of your messages so we can keep going.</p>
 <h5 id="Now_that_we_have_a_Comment...">Now That We Have a Comment&#8230;</h5>
 <p>Since there is a comment in the database now, we can add functions to the controller to manipulate that comment. First off, we need a way to be able to edit that comment in <code>/fuel/app/classes/controller/comments.php</code>.</p>
-<p>The edit function will take in two parameters: the comment id and message id.</p>
+<p>The edit function will take in two parameters: a comment id and message id.</p>
 <pre class="brush: php; first-line: 6; title: ; highlight:[6] notranslate" title="">
-	public function action_edit($id, $mid)
+	public function action_edit($id = null, $mid = null)
 	{
 		$this-&gt;template-&gt;title = 'Comments &amp;raquo; Edit';
 		$this-&gt;template-&gt;content = View::forge('comments/edit');
@@ -720,7 +720,7 @@ class Model_Comment extends \Orm\Model
 </pre>
 <p>Now we use the comment model to find the comment, based on its id.</p>
 <pre class="brush: php; first-line: 6; title: ; highlight:[8] notranslate" title="">
-	public function action_edit($id, $mid)
+	public function action_edit($id = null, $mid = null)
 	{
 		$comment = Model_Comment::find($id);
 		$this-&gt;template-&gt;title = 'Comments &amp;raquo; Edit';
@@ -740,7 +740,7 @@ class Model_Comment extends \Orm\Model
 			if ($comment-&gt;save())
 			{
 				Session::set_flash('success', 'Updated comment #' . $id);
-				Response::redirect('messages/view/'.$comment-&gt;mid);
+				Response::redirect('messages/view/' . $comment-&gt;mid);
 			}
 			else
 			{
@@ -762,7 +762,7 @@ class Model_Comment extends \Orm\Model
 &lt;br/&gt;
 
 &lt;?php echo render('comments/_form'); ?&gt;
-&lt;p&gt;&lt;?php echo Html::anchor('messages/view/'.$comment-&gt;mid, 'Back'); ?&gt;&lt;/p&gt;
+&lt;p&gt;&lt;?php echo Html::anchor('messages/view/' . $comment-&gt;mid, 'Back'); ?&gt;&lt;/p&gt;
 </pre>
 <h6 id="Deletion">Deletion</h6>
 <p>Deleting the comment is just as easy as saving it, all you need to do is call <code>$comment-&gt;delete()</code> instead of <code>$comment-&gt;save()</code>. Don't forget to pass the comment and message id!</p>
@@ -778,7 +778,7 @@ class Model_Comment extends \Orm\Model
 		{
 			Session::set_flash('error', 'Could not delete comment #' . $id);
 		}
-		Response::redirect('messages/view/'.$mid);
+		Response::redirect('messages/view/' . $mid);
 	}
 </pre>
 <p>In the next section we aim to accomplish two things: showing the number of comments that a message has and showing the comments in a list when we view the message.</p>
@@ -894,10 +894,10 @@ class Model_Comment extends \Orm\Model
 	        }
 	        else
 	        {
-	            $comments[$message-&gt;id].=" Comment";
+	            $comments[$message-&gt;id] .= " Comment";
 	            if($comments[$message-&gt;id] &gt; 1)
 	            {
-	                $comments[$message-&gt;id].="s";
+	                $comments[$message-&gt;id] .= "s";
 	            }
 	        }
 		}
@@ -907,7 +907,7 @@ class Model_Comment extends \Orm\Model
 	}
 </pre>
 <p>Now we just need to set the <code>$comments</code> and <code>$messages</code> variables to the view (which is why we declared <code>$view</code> at the top of the function):</p>
-<pre class="brush: php; first-line: 5; title: ; highlight:[30,31] notranslate" title="">
+<pre class="brush: php; first-line: 5; title: ; highlight:[33,34] notranslate" title="">
 	public function action_index()
 	{
 		$view = View::forge('messages/index');
@@ -916,7 +916,10 @@ class Model_Comment extends \Orm\Model
 		$comments = array();
 		foreach ($messages as $key =&gt; $message) 
 		{
-			$query = DB::select()-&gt;from('comments')-&gt;where('mid', $message['id'])-&gt;execute();
+			$query = DB::select()
+				-&gt;from('comments')
+				-&gt;where('mid', $message['id'])
+				-&gt;execute();
 			$comments[$message-&gt;id] = DB::count_last_query();
 
 			if($comments[$message-&gt;id] == 0)
@@ -925,10 +928,10 @@ class Model_Comment extends \Orm\Model
 	        }
 	        else
 	        {
-	            $comments[$message-&gt;id].=" Comment";
+	            $comments[$message-&gt;id] .= " Comment";
 	            if($comments[$message-&gt;id] &gt; 1)
 	            {
-	                $comments[$message-&gt;id].="s";
+	                $comments[$message-&gt;id] .= "s";
 	            }
 	        }
 		}
@@ -952,19 +955,25 @@ class Model_Comment extends \Orm\Model
 <p>Now if you go to <a href="http://localhost/fuel_intro/public/messages/">http://localhost/fuel_intro/public/messages/</a> you should see the number of comments each message has.</p>
 <h6 id="Showing_the_Comments">Showing the Comments</h6>
 <p>To actually show the comments for each view, you need to get all the comments associated with a message in the messages controller:</p>
-<pre class="brush: php; first-line: 33; title: ; notranslate" title="">
+<pre class="brush: php; first-line: 40; title: ; highlight:[50,51,52] notranslate" title="">
 	public function action_view($id = NULL)
 	{
+		is_null($id) and Response::redirect('Messages');
+
+		if ( ! $data['message'] = Model_Message::find($id))
+		{
+			Session::set_flash('error', 'Could not find message #'.$id);
+			Response::redirect('Messages');
+		}
+
 		$data['message'] = Model_Message::find($id);
-		$data['comments'] = DB::select()
-			-&gt;from('comments')
-			-&gt;where('mid', $id)
-			-&gt;execute();
+		$comments= Model_Comment::query()->where('mid', $id)->get();
+		$data['comments'] = $comments;
+
 	    $this-&gt;template-&gt;title = "Message";
 	    $this-&gt;template-&gt;content = View::forge('messages/view', $data);
 	}
 </pre>
-<p>The <code>-&gt;execute()</code> command returns the comments associated with the message as an object, which is passed to the view when added to the $data array.</p>
 <p>Now all we need to do is show it on the view.php page of the message views:</p>
 <pre class="brush: php; first-line: 7; title: ; notranslate" title="">
 	&lt;strong&gt;Message:&lt;/strong&gt;
@@ -977,8 +986,8 @@ foreach ($comments as $comment) {  ?&gt;
 		&lt;ul&gt;
 			&lt;li&gt;&lt;strong&gt;Name:&lt;/strong&gt; &lt;?php echo $comment["name"]; ?&gt;&lt;/li&gt;
 			&lt;li&gt;&lt;strong&gt;Comment:&lt;/strong&gt;&lt;br /&gt;&lt;?php echo $comment["comment"]; ?&gt;&lt;/li&gt;
-			&lt;li&gt;&lt;p&gt;&lt;?php echo Html::anchor('comments/edit/'.$comment["id"].'/'.$message-&gt;id, 'Edit'); ?&gt;|
-	&lt;?php echo Html::anchor('comments/delete/'.$comment["id"].'/'.$message-&gt;id, 'Delete', array('onclick' =&gt; &quot;return confirm('Are you sure?')&quot;)); ?&gt;&lt;/li&gt;
+			&lt;li&gt;&lt;p&gt;&lt;?php echo Html::anchor('comments/edit/' . $comment["id"] . '/' . $message-&gt;id, 'Edit'); ?&gt;|
+	&lt;?php echo Html::anchor('comments/delete/' . $comment["id"] . '/' . $message-&gt;id, 'Delete', array('onclick' =&gt; &quot;return confirm('Are you sure?')&quot;)); ?&gt;&lt;/li&gt;
 		&lt;/ul&gt;
 	&lt;/li&gt;
 &lt;?php } ?&gt;
@@ -1135,7 +1144,7 @@ public static function action_register()
 <p>Once you do this, you should see the registration form if you go to <a href="http://localhost/fuel_intro/public/users/register">http://localhost/fuel_intro/public/index.php/users/register</a>.</p>
 <h5 id="Validating_the_Registration">Validating the Registration</h5>
 <p><!-- This section needs cleanup and more clarity --></p>
-<p>Now what happens when someone actually fills out the form? We need to have their registration validated. So we need to repopulate the form field with the values that the user typed in, and then send the whole form and authentication to a validation controller. Inser this into your users controller:</p>
+<p>Now what happens when someone actually fills out the form? We need to have their registration validated. So we need to repopulate the form field with the values that the user typed in, and then send the whole form and authentication to a validation controller. Insert this into your users controller:</p>
 <pre class="brush: php; first-line: 18; title: ; highlight:[24,25,26,27,28] notranslate" title="">
 	public static function action_register()
 	{
