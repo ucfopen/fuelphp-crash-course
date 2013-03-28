@@ -89,19 +89,17 @@
 <p>First and foremost, here&#8217;s what you&#8217;re going to need:</p>
 <ol>
 <li><a href="http://fuelphp.com">Fuel PHP framework</a> (we&#8217;re using v1.5.3)</li>
-<li><a href="http://www.apachefriends.org/en/xampp.html">XAMPP</a> (recommended for beginners) or a basic <a href="http://en.wikipedia.org/wiki/LAMP_(software_bundle)">LAMP Stack</a> <br>(many installation tutorials exist, here are some for a few popular linux distros: <a href="https://help.ubuntu.com/community/ApacheMySQLPHP">Ubuntu</a>, <a href="http://wiki.debian.org/LaMp">Debian</a>, <a href="http://en.opensuse.org/SDB:Linux_Apache_MySQL_PHP">SUSE</a>, and <a href="http://fedorasolved.org/server-solutions/lamp-stack">Fedora</a>)</li>
+<li><a href="http://www.apachefriends.org/en/xampp.html">XAMPP</a> (recommended for beginners) or a basic <a href="http://en.wikipedia.org/wiki/LAMP_(software_bundle)">LAMP package</a> <br>(many installation tutorials exist, here are some for a few popular linux distros: <a href="https://help.ubuntu.com/community/ApacheMySQLPHP">Ubuntu</a>, <a href="http://wiki.debian.org/LaMp">Debian</a>, <a href="http://en.opensuse.org/SDB:Linux_Apache_MySQL_PHP">SUSE</a>, and <a href="http://fedorasolved.org/server-solutions/lamp-stack">Fedora</a>)</li>
 <li>phpMyAdmin (again, installation will vary depending on your distribution)</li>
 <li>A basic understanding of the <a href="http://php-html.net/tutorials/model-view-controller-in-php/">Model-View-Controller (MVC) pattern</a>.</li>
 </ol>
 <h4>Before You Get Started</h4>
-<p>In this tutorial we'll be using Ubunutu Precise Pangolin. If you&#8217;re using another linux variant, certain steps throughout the tutorial may differ for you and you may run into some problems that we haven't encountered. Proceed at your own discretion.</p>
+<p>In this tutorial we'll be using Ubunutu Precise Pangolin. If you&#8217;re using another Linux variant, certain steps throughout the tutorial may differ for you and you may run into some problems that we haven't encountered. Proceed at your own discretion.</p>
 <p>Keep in mind that the completed source code for this tutorial is available from the <a href="https://github.com/UCF/fuelphp-crash-course">Fuel Crash Course GitHub repository</a>.</p>
 <h4 id="Checking_Your_Work">Checking Your Work</h4>
-<p>After downloading Fuel, place your files inside a folder (that you've created) called "fuel_intro" within the root folder for Apache. Since we&#8217;re working on a fresh install on Ubuntu, ours is <code>/var/www/</code>.</p>
+<p>If you're using a LAMP package, place the Fuel files that you've downloaded inside a folder (that you've created) called "fuel_intro" within the root folder for Apache. If you're using XAMPP then instead place them in your htdocs folder. Since we&#8217;re working with a fresh LAMP install on Ubuntu, our location is <code>/var/www/</code>.</p>
 <p>In your browser, navigate to <a href="http://localhost/fuel_intro/public">http://localhost/fuel_intro/public</a> and you should see the &#8220;successful install&#8221; page from Fuel.</p>
 <p><img src="assets/images/fuelsuccess.png" alt="Screenshot showing successful Fuel PHP install." /></p>
-<p>If your page looks like the following screenshot, this means that Fuel does not have write permissions for the listed files, which it needs. If you do not receive any errors, feel free to skip over this next step, as it does not apply to you.</p>
-<p><img src="assets/images/error01.png" alt="Screenshot showing a permissions error for fuel setup." /></p>
 <h4>Getting Configged Up</h4>
 <p>For this tutorial we&#8217;re going to be using an <a href="http://en.wikipedia.org/wiki/Object-relational_mapping">orm package</a>, included in your install of fuel. Head over to <code>/fuel/core/config/config.php</code> and uncomment the &#8220;always_load&#8221; array. Then uncomment the &#8220;packages&#8221; array and the &#8220;orm&#8221; package:</p>
 <pre class="brush: php; first-line: 246; title: ; highlight:[249,262,263,264,300] notranslate" title="">
@@ -1068,7 +1066,7 @@ foreach ($comments as $comment) {  ?&gt;
 </pre>
 <p>This checks to see if a user is logged in (we&#8217;ll call the object with the user&#8217;s info in it <code>$user_info</code>), if they&#8217;re not logged in, then it builds an unordered list that links to a registration page.</p>
 <h5 id="Registration_Model">Registration Model</h5>
-<p>We&#8217;re going to create the registration form using the model and passing it with the controller. Create a function at the bottom of the user model. It&#8217;s going to have and empty form passed into it, and this form will be a Fieldset, which is kind of like a form that has validation attached to it:</p>
+<p>We&#8217;re going to create the registration form using the model and passing it with the controller. Create a function at the bottom of the user model. It&#8217;s going to have an empty form called a Fieldset passed into it, which is kind of like a form that has validation attached to it:</p>
 <pre class="brush: php; title: ; highlight:[29,30,31] notranslate" title="">
 &lt;?php
 
@@ -1148,38 +1146,50 @@ public static function action_register()
 <h5 id="Validating_the_Registration">Validating the Registration</h5>
 <p><!-- This section needs cleanup and more clarity --></p>
 <p>Now what happens when someone actually fills out the form? We need to have their registration validated. So we need to repopulate the form field with the values that the user typed in, and then send the whole form and authentication to a validation controller. Insert this into your users controller:</p>
-<pre class="brush: php; first-line: 18; title: ; highlight:[24,25,26,27,28] notranslate" title="">
+<pre class="brush: php; first-line: 18; title: ; highlight:[25,26,27,28,29] notranslate" title="">
 	public static function action_register()
 	{
 		$auth = Auth::instance();
 		$view = View::forge('users/register');
 		$form = Fieldset::forge('register');
 		Model_User::register($form);
+
 		if(Input::post())
 		{
 			$form-&gt;repopulate();
 			$result = Model_User::validate_registration($form, $auth);
 		}
+
 		$view-&gt;set('reg', $form-&gt;build(), false);
 		$this-&gt;template-&gt;title = 'User &amp;raquo; Register';
 		$this-&gt;template-&gt;content = $view;
 	}
 </pre>
 <p>Your user model now needs to take in the form and authentication, so add this function to it:</p>
-<pre class="brush: php; first-line: 37; title: ; highlight:[37,38,39] notranslate" title="">
+<pre class="brush: php; first-line: 29; title: ; highlight:[39,40,41] notranslate" title="">
+	public static function register(Fieldset $form)
+	{
+		$form->add('username', 'Username:')->add_rule('required');
+		$form->add('password', 'Choose Password', array('type'=> 'password'))->add_rule('required');
+		$form->add('password2', 'Re-type Password:', array('type' => 'password'))->add_rule('required');
+		$form->add('email', 'E-mail:')->add_rule('required')->add_rule('valid_email');
+		$form->add('submit', ' ', array('type' => 'submit', 'value' => 'Register'));
+		return $form;
+	}
+
 	public static function validate_registration(Fieldset $form, $auth)
 	{
 	}
 </pre>
 <p>Then we need to add a rule to the password field that will ensure that the user has typed in a matching password in the password2 field:</p>
-<pre class="brush: php; first-line: 37; title: ; highlight:[39] notranslate" title="">
+<pre class="brush: php; first-line: 39; title: ; highlight:[41] notranslate" title="">
 public static function validate_registration(Fieldset $form, $auth)
 {
 	$form-&gt;field('password')-&gt;add_rule('match_value', $form-&gt;field('password2')-&gt;get_attribute('value'));
 }
 </pre>
 <p>Now we need to create a validation object and set messages to display what we want if the user enters in something incorrectly:</p>
-<pre class="brush: php; first-line: 37; title: ; highlight:[40,41,42,43] notranslate" title="">
+<pre class="brush: php; first-line: 39; title: ; highlight:[42,43,44,45] notranslate" title="">
 public static function validate_registration(Fieldset $form, $auth)
 {
 	$form-&gt;field('password')-&gt;add_rule('match_value', $form-&gt;field('password2')-&gt;get_attribute('value'));
@@ -1191,7 +1201,7 @@ public static function validate_registration(Fieldset $form, $auth)
 </pre>
 <p>For a full explanation of the set message feature, look at <a href="http://fuelphp.com/docs/classes/validation/validation.html#errors">Fuel&#8217;s documentation on error messages</a>.</p>
 <p>Next, we try to run the validation to see if it passes or fails:</p>
-<pre class="brush: php; first-line: 37; title: ; highlight:[45,46,47,48,49,50,51,52] notranslate" title="">
+<pre class="brush: php; first-line: 39; title: ; highlight:[47,48,49,50,51,52,53,54] notranslate" title="">
 public static function validate_registration(Fieldset $form, $auth)
 {
 	$form-&gt;field('password')-&gt;add_rule('match_value', $form-&gt;field('password2')-&gt;get_attribute('value'));
@@ -1213,7 +1223,7 @@ public static function validate_registration(Fieldset $form, $auth)
 <p>So, if the validation doesn&#8217;t pass, the <code>show_errors()</code> function turns the errors into an HTML list, and we return that and a boolean saying that errors were found.</p>
 <h6 id="What_if_they_Pass">What if they Pass?</h6>
 <p>If the user passes validation, then we get their username, password, and email from the form:</p>
-<pre class="brush: php; first-line: 45; title: ; highlight:[47,48,49] notranslate" title="">
+<pre class="brush: php; first-line: 47; title: ; highlight:[49,50,51] notranslate" title="">
 if($val-&gt;run())
 {
 	$username = $form-&gt;field('username')-&gt;get_attribute('value');
@@ -1222,7 +1232,7 @@ if($val-&gt;run())
 }
 </pre>
 <p>Try to create the user in the database:</p>
-<pre class="brush: php; first-line: 45; title: ; highlight:[50,51,52,53] notranslate" title="">
+<pre class="brush: php; first-line: 47; title: ; highlight:[52,53,54,55] notranslate" title="">
 if($val-&gt;run())
 {
 	$username = $form-&gt;field('username')-&gt;get_attribute('value');
@@ -1235,7 +1245,7 @@ if($val-&gt;run())
 }
 </pre>
 <p>And catch any errors if we find them:</p>
-<pre class="brush: php; first-line: 45; title: ; highlight:[54,55,56,57] notranslate" title="">
+<pre class="brush: php; first-line: 47; title: ; highlight:[56,57,58,59] notranslate" title="">
 if($val-&gt;run())
 {
 	$username = $form-&gt;field('username')-&gt;get_attribute('value');
@@ -1252,7 +1262,7 @@ if($val-&gt;run())
 }	
 </pre>
 <p>We&#8217;re going to be nice here and log the user in once they register. So if the <code>$user</code> object is present, we can use the <code>$auth</code> object we passed to log the person in:</p>
-<pre class="brush: php; first-line: 45; title: ; highlight:[58,59,60,61] notranslate" title="">
+<pre class="brush: php; first-line: 47; title: ; highlight:[60,61,62,63] notranslate" title="">
 if($val-&gt;run())
 {
 	$username = $form-&gt;field('username')-&gt;get_attribute('value');
@@ -1272,8 +1282,8 @@ if($val-&gt;run())
 	}
 }
 </pre>
-<p>And if the login didn&#8217;t work, then we can create an unordered list and return both that and the error&#8217;s found array:</p>
-<pre class="brush: php; first-line: 37; title: ; highlight:[62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80] notranslate" title="">
+<p>If the login doesn&#8217;t work, then we create an unordered list and return both that and the errors found array:</p>
+<pre class="brush: php; first-line: 39; title: ; highlight:[64,65,66,67,68,69,70,71,72,73,74,75,76,77] notranslate" title="">
 public static function validate_registration(Fieldset $form, $auth)
 {
 	$form-&gt;field('password')-&gt;add_rule('match_value', $form-&gt;field('password2')-&gt;get_attribute('value'));
@@ -1320,7 +1330,7 @@ public static function validate_registration(Fieldset $form, $auth)
     }
 }
 </pre>
-<p>Two more things to do. First, go to <code>action_register()</code> on the users controller and add a check for errors, if there are no errors found, log the user in and redirect to the homepage:</p>
+<p>We have two more things to do. First, go to <code>action_register()</code> on the users controller and add a check for errors, if there are no errors found, log the user in and redirect to the homepage:</p>
 <pre class="brush: php; first-line: 24; title: ; highlight:[28,29,30,31,32,33,34,35,36] notranslate" title="">
 if(Input::post())
 {
@@ -1344,9 +1354,9 @@ if(Input::post())
 </pre>
 <p>There, now you should be able to register and be logged in automatically.</p>
 <h6 id="Regular_Logging_In_and_Out">Regular Logging In and Out</h6>
-<p>Based on what we&#8217;ve done so far, I should be able to just give you the code for this and you should be able to understand it.</p>
-<p>Users Controller:</p>
-<pre class="brush: php; first-line: 6; title: ; highlight:[6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37] notranslate" title="">
+<p>At this point in the crash course we should be able to give you the code for this and expect you to understand it.</p>
+<p>Add the following within the users controller:</p>
+<pre class="brush: php; first-line: 6; title: ; highlight:[8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,28,33,34,35,36] notranslate" title="">
 	public function action_login()
 	{
 		$view = View::forge('users/login');
@@ -1359,7 +1369,7 @@ if(Input::post())
 		{
 			if($auth-&gt;login(Input::post('username'), Input::post('password')))
 			{
-				Session::set_flash('success', 'Successfully logged in! Welcome '.$auth-&gt;get_screen_name());
+				Session::set_flash('success', 'Successfully logged in! Welcome ' . $auth-&gt;get_screen_name());
 				Response::redirect('messages/');
 			}
 			else
@@ -1383,11 +1393,11 @@ if(Input::post())
 <p>Don&#8217;t forget to echo the form in the login view! The code is very similar to <a href="#User_Controller_Registration_Function_Last_Step">the user registration view</a> with the exception of swapping <code>$reg</code> with <code>$form</code>.</p>
 <h5 id="Finishing_Touches">Finishing Touches</h5>
 <p>Let's quickly tidy up some of our code. Head over to the comments form view and remove the hidden field containing the id of the comment&#8217;s message:</p>
-<pre class="brush: php; first-line: 9; title: ; highlight:[9] notranslate" title="">
+<pre class="brush: php; first-line: 10; title: ; highlight:[10] notranslate" title="">
 &lt;?php echo Form::hidden('mid', Input::post('mid', isset($message) ? $message : '')); ?&gt;
 </pre>
 <p>Now in the comments controller, change the assignment of the comment&#8217;s <code>mid</code> property to use the <code>$id</code> variable passed in rather than relying on the old hidden form:</p>
-<pre class="brush: php; first-line: 37; title: ; highlight:[37] notranslate" title="">
+<pre class="brush: php; first-line: 39; title: ; highlight:[39] notranslate" title="">
 'mid' =&gt; $id, //previously: Input::post('mid'),
 </pre>
 <p>Now we just need to add the name of the person making the message (instead of letting them type it in themselves), and give them editing rights to their own posts.</p>
@@ -1400,90 +1410,97 @@ if(Input::post())
 		&lt;?php echo Form::input('name', Input::post('name', isset($message) ? $message-&gt;name : '')); ?&gt;
 </pre>
 <p>To this:</p>
-<pre class="brush: php; first-line: 5; title: ; highlight:[5,6] notranslate" title="">
-&lt;div class="input"&gt;
-	&lt;?php echo 'Name: '.Auth::instance()->get_screen_name(); ?&gt;
+<pre class="brush: php; first-line: 5; title: ; highlight:[8] notranslate" title="">
+&lt;?php echo Form::label('Name', 'name'); ?&gt;
+
+	&lt;div class="input"&gt;
+		&lt;?php echo 'Name: ' . Auth::instance()->get_screen_name(); ?&gt;
 </pre>
-<p>And in comments from this:</p>
+<p>In comments, from this:</p>
 <pre class="brush: php; first-line: 3; title: ; notranslate" title="">
 &lt;?php echo Form::label('Name', 'name'); ?&gt;
 &lt;?php echo Form::input('name', Input::post('name', isset($comment) ? $comment-&gt;name : '')); ?&gt;
 </pre>
 <p>To this:</p>
-<pre class="brush: php; first-line: 3; title: ; highlight:[3] notranslate" title="">
-&lt;?php echo 'Name: '.Auth::instance()->get_screen_name(); ?&gt;
+<pre class="brush: php; first-line: 3; title: ; highlight:[4] notranslate" title="">
+&lt;?php echo Form::label('Name', 'name'); ?&gt;
+&lt;?php echo 'Name: ' . Auth::instance()->get_screen_name(); ?&gt;
 </pre>
-<p>Next, in both the message &amp; comment controllers replace the posted name with the user name in the <code>action_create()</code> function. So, change it from this:</p>
-<pre class="brush: php; first-line: 6; title: ; notranslate" title="">
+<p>Next, in both the message and comment controllers, replace the posted name with the user name in the <code>action_create()</code> function. Change it from this:</p>
+<pre class="brush: php; first-line: 0; title: ; notranslate" title="">
 'name' =&gt; Input::post('name'),
 </pre>
 <p>To this:</p>
-<pre class="brush: php; first-line: 6; title: ; highlight:[6] notranslate" title="">
+<pre class="brush: php; first-line: 0; title: ; highlight:[0] notranslate" title="">
 'name' =&gt; Auth::instance()-&gt;get_screen_name(),
 </pre>
 <p>Since we don't have a name input form any more, and the message model is still expecting one, you'll have to remove that old requirement. Head over to the message model and remove the validation check for the name field:</p>
 <pre class="brush: php; first-line: 28; title: ; highlight:[28] notranslate" title="">
 $val-&gt;add_field('name', 'Name', 'required|max_length[255]');
 </pre>
-<p>Now, head over to the messaging index view. Add a check to see if any of the messages being browsed were created by the current user, and if so enable edit/delete privileges on them. This is actually pretty easy. Just change this:</p>
+<p>Now, head over to the messages index view. Add a check to see if any of the messages being browsed were created by the current user, and if so enable edit/delete privileges on them. This is actually pretty easy. Just change this:</p>
 <pre class="brush: php; first-line: 10; title: ; notranslate" title="">
-&lt;li&gt;&lt;?php echo Html::anchor('messages/edit/'.$message-&gt;id, 'Edit'); ?&gt;&lt;/li&gt;
-&lt;li&gt;&lt;?php echo Html::anchor('messages/delete/'.$message-&gt;id, 'Delete', array('onclick' =&gt; "return confirm('Are you sure?')")); ?&gt;&lt;/li&gt;
+&lt;li&gt;&lt;?php echo Html::anchor('messages/edit/' . $message-&gt;id, 'Edit'); ?&gt;&lt;/li&gt;
+&lt;li&gt;&lt;?php echo Html::anchor('messages/delete/' . $message-&gt;id, 'Delete', array('onclick' =&gt; "return confirm('Are you sure?')")); ?&gt;&lt;/li&gt;
 </pre>
 <p>To this:</p>
 <pre class="brush: php; first-line: 10; title: ; highlight:[10,11,12,13,14,15,16] notranslate" title="">
 &lt;?php
 	if($message-&gt;name == Auth::instance()-&gt;get_screen_name())
 	{ ?&gt;
-		&lt;li&gt;&lt;?php echo Html::anchor('messages/edit/'.$message-&gt;id, 'Edit'); ?&gt;&lt;/li&gt;
-		&lt;li&gt;&lt;?php echo Html::anchor('messages/delete/'.$message-&gt;id, 'Delete', array('onclick' =&gt; "return confirm('Are you sure?')")); ?&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;?php echo Html::anchor('messages/edit/' . $message-&gt;id, 'Edit'); ?&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;?php echo Html::anchor('messages/delete/' . $message-&gt;id, 'Delete', array('onclick' =&gt; "return confirm('Are you sure?')")); ?&gt;&lt;/li&gt;
 	&lt;?php
 } ?&gt;
 </pre>
 <p>Since there&#8217;s also an Edit link inside each message, we need to put a check in the message view as well. This code:</p>
 <pre class="brush: php; first-line: 29; title: ; notranslate" title="">
-&lt;?php echo Html::anchor('messages/edit/'.$message->id, 'Edit'); ?&gt; |
+&lt;?php echo Html::anchor('messages/edit/' . $message->id, 'Edit'); ?&gt; |
+&lt;?php echo Html::anchor('messages/', 'Back'); ?&gt;
 </pre>
 <p>Becomes:</p>
-<pre class="brush: php; first-line: 29; title: ; highlight:[29,30,31,32,33] notranslate" title="">
+<pre class="brush: php; first-line: 29; title: ; highlight:[30,31,32,33,34,35] notranslate" title="">
 &lt;?php
 	if($message-&gt;name == Auth::instance()-&gt;get_screen_name())
-	{ ?&gt;
-&lt;?php echo Html::anchor('messages/edit/'.$message-&gt;id, 'Edit'); ?&gt; |
-&lt;?php } ?&gt;
+	{
+		echo Html::anchor('messages/edit/' . $message-&gt;id, 'Edit'); 
+		echo ' | ';
+	} 
+	echo Html::anchor('messages', 'Back');
+?&gt;
 </pre>
 <p>We should do the same check for comments. In the message view, find:</p>
-<pre class="brush: php; first-line: 17; title: ; notranslate" title="">
-&lt;li&gt;&lt;p&gt;&lt;?php echo Html::anchor('comments/edit/'.$comment-&gt;id.'/'.$message-&gt;id, 'Edit'); ?&gt;|
-&lt;?php echo Html::anchor('comments/delete/'.$comment-&gt;id.'/'.$message-&gt;id, 'Delete', array('onclick'=&gt; "return confirm('Are you sure?')")); ?&gt;&lt;/li&gt;
+<pre class="brush: php; first-line: 18; title: ; notranslate" title="">
+&lt;li&gt;&lt;p&gt;&lt;?php echo Html::anchor('comments/edit/' . $comment-&gt;id . '/' . $message-&gt;id, 'Edit'); ?&gt;|
+&lt;?php echo Html::anchor('comments/delete/' . $comment-&gt;id . '/' . $message-&gt;id, 'Delete', array('onclick'=&gt; "return confirm('Are you sure?')")); ?&gt;&lt;/li&gt;
 </pre>
 <p>And change it to:</p>
-<pre class="brush: php; first-line: 17; title: ; highlight:[17,18,19,20,21,22,23] notranslate" title="">
+<pre class="brush: php; first-line: 18; title: ; highlight:[18,19,20,21,22,23,24] notranslate" title="">
 &lt;?php
 if($comment-&gt;name == Auth::instance()-&gt;get_screen_name())
 { ?&gt;
-	&lt;li&gt;&lt;p&gt;&lt;?php echo Html::anchor('comments/edit/'.$comment-&gt;id.'/'.$message-&gt;id, 'Edit'); ?&gt;|
-	&lt;?php echo Html::anchor('comments/delete/'.$comment-&gt;id.'/'.$message-&gt;id, 'Delete', array('onclick'=&gt; "return confirm('Are you sure?')")); ?&gt;&lt;/li&gt;
+	&lt;li&gt;&lt;p&gt;&lt;?php echo Html::anchor('comments/edit/' . $comment-&gt;id . '/' . $message-&gt;id, 'Edit'); ?&gt;|
+	&lt;?php echo Html::anchor('comments/delete/' . $comment-&gt;id . '/' . $message-&gt;id, 'Delete', array('onclick'=&gt; "return confirm('Are you sure?')")); ?&gt;&lt;/li&gt;
 &lt;?php
 } ?&gt;
 </pre>
 <p>Now you should be able to register users, log in separately, and only have the ability to edit or delete your own messages and comments!</p>
 <h6 id="This_is_the_Last_Thing_I_promise">This Is the Last Thing, <em>We Promise</em></h6>
-<p>The <em>very</em> last thing we&#8217;re going to do is to check if the user is logged in. If they are, allow them to make a message or comment.</p>
+<p>The very last thing we&#8217;re going to do is to check if the user is logged in. If they are, allow them to make a message or comment.</p>
 <p>Near the bottom of the message view, find the creation of the 'Add new Comment' anchor. Wrap it up in an <code>if</code> statement like so:</p>
-<pre class="brush: php; first-line: 28; title: ; highlight:[28,29,30] notranslate" title="">
+<pre class="brush: php; first-line: 29; title: ; highlight:[29,31] notranslate" title="">
 &lt;?php if(Auth::instance()-&gt;check()) { ?&gt;
-&lt;p&gt;&lt;?php echo Html::anchor('comments/create/'.$message-&gt;id, 'Add new Comment'); ?&gt;&lt;/p&gt;
+	&lt;p&gt;&lt;?php echo Html::anchor('comments/create/'.$message-&gt;id, 'Add new Comment'); ?&gt;&lt;/p&gt;
 &lt;?php } ?&gt;
 </pre>
 <p>Likewise at the bottom of the message&#8217;s index view:</p>
-<pre class="brush: php; first-line: 25; title: ; highlight:[25,26,27] notranslate" title="">
+<pre class="brush: php; first-line: 37; title: ; highlight:[37,39] notranslate" title="">
 &lt;?php if(Auth::instance()-&gt;check()) {
- echo Html::anchor('messages/create', 'Add new Message');
+	echo Html::anchor('messages/create', 'Add new Message');
 }?&gt;
 </pre>
 <p>Finally, we need to replace the login and registration links at the top of the page with a logout link. Head back over to the template file and make these few changes:</p>
-<pre class="brush: php; first-line: 18; title: ; highlight:[24,25,26,27,28,29,30,31] notranslate" title="">
+<pre class="brush: php; first-line: 18; title: ; highlight:[24,25,26,27,28,29,31] notranslate" title="">
 if(isset($user_info))
 {
 	echo $user_info;
@@ -1492,7 +1509,7 @@ else
 {
 	if(Auth::instance()->check())
 	{
-		$link = array("Logged in as: ".Auth::instance()->get_screen_name(), Html::anchor('users/logout', 'Logout'));
+		$link = array("Logged in as: " . Auth::instance()->get_screen_name(), Html::anchor('users/logout', 'Logout'));
 	}
 	else
 	{
