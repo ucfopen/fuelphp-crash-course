@@ -36,6 +36,7 @@
 		// hide boxes on load
 		$("#ts_box").hide();
 		$("#before_box").hide();
+		$("#database_box").hide();
 
 		// show and hide troubleshooting box
 		$("#ts").click(function(){
@@ -45,6 +46,11 @@
 		// show and hide before/after box
 		$("#before_button").click(function(){
 			$("#before_box").slideToggle(600);
+		});
+
+		// show and hide database box
+		$("#database_button").click(function() {
+			$("#database_box").slideToggle(600);
 		});
 	});
 	</script>
@@ -100,7 +106,7 @@
 <p>Put the Fuel files into a folder called &#8220;fuel_intro&#8221; in the htdocs folder of xampp.</p>
 <p>In your browser, navigate to <a href="http://localhost/fuel_intro/public">http://localhost/fuel_intro/public</a> and you should see the &#8220;successful install&#8221; page from Fuel.</p>
 <p><img src="assets/images/fuelsuccess.png" alt="Screenshot showing successful Fuel PHP install." /></p>
-<button><h5 id ="ts">Troubleshooting Windows File Permissions</h5></button>
+<div class="troubleshooting" id="ts"><h5><span class="title">Troubleshooting</span>: when windows file permissions cause fuelphp errors <span id="click_to_expand">(click to expand)</span></h5></div>
 <div id="ts_box">
 <p>If your page looks like the following screenshot, this means that Fuel does not have write permissions for the listed files, which it needs. If you do not receive any errors, feel free to skip over this next step, as it does not apply to you.</p>
 <p><img src="assets/images/error01.png" alt="Screenshot showing a permissions error for fuel setup." /></p>
@@ -111,7 +117,7 @@
 <p>You could also type the following command into the command line for more help. <code>cacls /?</code></p>
 </div>
 <h4>Getting Configged Up</h4>
-<p>For this tutorial we&#8217;re going to be using an <a href="http://en.wikipedia.org/wiki/Object-relational_mapping">orm package</a>, included in your install of fuel. Head over to <code>/fuel/core/config/config.php</code> and uncomment the &#8220;always_load&#8221; array. Then uncomment the &#8220;packages&#8221; array and the &#8220;orm&#8221; package:</p>
+<p>For this tutorial we&#8217;re going to be using an <a href="http://en.wikipedia.org/wiki/Object-relational_mapping">orm package</a>, included in your install of Fuel. Head over to <code>/fuel/core/config/config.php</code> and uncomment the &#8220;always_load&#8221; array. Then uncomment the &#8220;packages&#8221; array and the &#8220;orm&#8221; package:</p>
 <pre class="brush: php; first-line: 246; title: ; highlight:[249,262,263,264,300] notranslate" title="">
 	/**************************************************************************/
 	/* Always Load                                                            */
@@ -274,7 +280,10 @@ class Create_messages
 <p>Now that we know what the migration is going to create, go ahead and run it. That'll be:</p>
 <p><code>php oil refine migrate</code></p>
 <p><img src="assets/images/Migra_wha_01.jpg" alt="Running php migrate for scaffold: php oil refine migrate." /></p>
-<p>Now the table has been created, and you can add messages to it! Take a look at your database, you should see something like <a href="#Every_Building_Needs_A_Scaffold">the screenshot from before</a>.</p>
+<p>Now the table has been created, and you can add messages to it! Take a look at your database, you should see something like <span id="database_button">the screenshot from before</span>.</p>
+<div id="database_box">
+<p><img src="assets/images/every_building_needs_a_scaffold_01.jpg" alt="Screenshot of field names." /></p>
+</div>
 <h4 id="Prettying_Up_The_Code">Prettying Up The Code</h4>
 <p>Navigate to &#8220;<a href="http://localhost/fuel_intro/public/messages">http://localhost/fuel_intro/public/messages</a>&#8221; and add a message.</p>
 <p>If you see the following error, copy and paste the code into a new php file called
@@ -282,7 +291,7 @@ class Create_messages
 <p><img src="assets/images/cryptoerror.png" alt="Image displaying an error message for lack of read write access to a non existant crypt.php file"/>
 <p>If you look at the message, you&#8217;ll notice that all the layout is done using a table, so take a minute and make the code <a href="http://en.wikipedia.org/wiki/Semantic_HTML">semantic</a>.</p>
 <p>Go into <code>/fuel/app/views/messages/index.php</code> and change the following table into an unordered list:</p>
-<button id="before_button"><p><strong>Before:</strong></p></button>
+<div class="troubleshooting" id="before_button"><p><span class="title">Before:</span> <span id="click_to_expand">(click to expand)</span></p></div>
 <div id="before_box"><pre class="brush: php; title: ; highlight:[4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25] notranslate" title="">
 &lt;h2&gt;Listing Messages&lt;/h2&gt;
 &lt;br&gt;

@@ -185,7 +185,6 @@ img {
 }
 
 .dp-highlighter .tools {
-
 	border-left-color:#8c5de3;
 }
 
@@ -193,22 +192,59 @@ img {
 	background: #f1efff;
 }
 
+.troubleshooting {
+	opacity: 0.6;
+	border-radius: 10px;
+	background-color: #fad0fc;
+	cursor: pointer;
+	transition: 0.5s;
+	-webkit-transition: 0.5s; /* safari & chrome */
+	-moz-transition: 0.5s; /* firefox */
+	-o-transition: 0.5s; /* opera */
+}
 
+.troubleshooting:hover {
+	opacity: 1;
+}
+
+.troubleshooting p {
+	text-align: left;
+	padding: 25px;
+}
+
+.troubleshooting h5 {
+	font-weight: normal;
+	font-size: 18px;
+	text-align: center;
+	padding: 25px;
+}
+.troubleshooting .title {
+	font-weight: bold;
+	color: #CF4C81;
+}
+
+.troubleshooting #click_to_expand {
+	font-size: 14px;
+	color:#808080;
+}
+
+#database_button {
+	cursor: pointer;
+	text-decoration: underline;
+	color: #8d50ff;
+}
+
+#database_button:hover {
+	text-decoration: none;
+}
 
 .footer ul {
     clear:both;
     text-align:center;
-    
     height:38px;
-
-
     width:100%;
-
     margin:0 auto;
-
-	
 	padding: 25px 0;
-	
 }
 
 .footer ul li {
@@ -222,7 +258,7 @@ img {
 	visibility:hidden;
 	height:0;
 	position: absolute;
-top: 0;
+	top: 0;
 }
 
 
@@ -375,4 +411,4 @@ pre {
 		margin-bottom:0;
 		padding-top:5px;
 		color: #4e4e4e;
-	}
+	}	
