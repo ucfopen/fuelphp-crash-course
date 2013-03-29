@@ -36,6 +36,7 @@
 		// hide boxes on load
 		$("#ts_box").hide();
 		$("#before_box").hide();
+		$("#ts_permissions_box").hide();
 
 		// show and hide troubleshooting box
 		$("#ts").click(function(){
@@ -46,6 +47,11 @@
 		$("#before_button").click(function(){
 			$("#before_box").slideToggle(600);
 		});
+
+		// show and hide troubleshooting permissions box
+		$("#ts_permissions_button").click(function(){
+			$("#ts_permissions_box").slideToggle(600);
+		})
 	});
 	</script>
 
@@ -99,7 +105,14 @@
 <h4 id="Checking_Your_Work">Checking Your Work</h4>
 <p>If you're using a LAMP package, place the Fuel files that you've downloaded inside a folder (that you've created) called "fuel_intro" within the root folder for Apache. If you're using XAMPP then instead place them in your htdocs folder. Since we&#8217;re working with a fresh LAMP install on Ubuntu, our location is <code>/var/www/</code>.</p>
 <p>In your browser, navigate to <a href="http://localhost/fuel_intro/public">http://localhost/fuel_intro/public</a> and you should see the &#8220;successful install&#8221; page from Fuel.</p>
-<p><img src="assets/images/fuelsuccess.png" alt="Screenshot showing successful Fuel PHP install." /></p>
+<p><img width="200px" src="assets/images/fuelsuccess.png" alt="Screenshot showing successful Fuel PHP install." /></p>
+<button id="ts_permissions_button"><h5>Troubleshooting File Permissions</h5></button>
+<div id="ts_permissions_box">
+<p>If, at any point in the tutorial, you run something that resembles the following page, you may need to tweak your file and directory permissions using the <code>chmod</code> terminal command in order to have Fuel properly display a (meaningful) error message. 
+<p><img src="assets/images/linux_permissions_01.png" alt="Screenshot showing incorrect permission setting." /></p>
+<p>We've found that the quickest fix for allowing Fuel to access or create a log is to simply create the file ourselves (if it doesn't exist) and manually change the file permissions.</p>
+<p><img src="assets/images/linux_permissions_02.png" alt="Screenshot showing incorrect permission setting." /></p>
+</div>
 <h4>Getting Configged Up</h4>
 <p>For this tutorial we&#8217;re going to be using an <a href="http://en.wikipedia.org/wiki/Object-relational_mapping">orm package</a>, included in your install of fuel. Head over to <code>/fuel/core/config/config.php</code> and uncomment the &#8220;always_load&#8221; array. Then uncomment the &#8220;packages&#8221; array and the &#8220;orm&#8221; package:</p>
 <pre class="brush: php; first-line: 246; title: ; highlight:[249,262,263,264,300] notranslate" title="">
