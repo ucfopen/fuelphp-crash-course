@@ -114,7 +114,7 @@
 <p><img src="assets/images/fuelsuccess.png" alt="Screenshot showing successful Fuel PHP install." /></p>
 <div class="troubleshooting" id="ts_permissions_button"><h5><span class="title">Troubleshooting</span>: When file permissions cause fuelphp errors <span id="click_to_expand">(click to expand)</span></h5></div>
 <div id="ts_permissions_box">
-<p>If, at any point in this tutorial, you run something that resembles the following page, you may need to tweak your file and directory permissions using the <code>chmod</code> terminal command in order to have Fuel properly display a (meaningful) error message. 
+<p>If, at any point in this tutorial, you run into something that resembles the following page, you may need to tweak your file and directory permissions using the <code>chmod</code> terminal command in order to have Fuel properly display a (meaningful) error message. 
 <p><img src="assets/images/linux_permissions_01.png" alt="Screenshot showing incorrect permission setting." /></p>
 <p>You'll need to recursively change the access to Fuel's <code>logs</code> directory as well as its subdirectories and files to read, write, and execute for all users. To do this, change directory in the terminal to <code>fuel/app</code> and enter the following command:</p> 
 <p><code>sudo chmod -R 777 logs</code>.</p>
