@@ -11,6 +11,37 @@
 	background: transparent;
 }
 
+.os-switch .windows{
+	display:none;
+}
+
+.os-switch .linux{
+	display:none;
+}
+
+.os-button.selected {
+	background: #b400ff;
+	color: white;
+}
+
+.os-button{
+	background: #fbd3ff;
+	color: #999;
+	display: inline-block;
+	padding: 15px;
+	font-size: 1.4em;
+	cursor: pointer;
+	margin:5px;
+}
+
+
+.os-show-windows .os-switch .windows{
+	display:block;
+}
+
+.os-show-linux .os-switch .linux{
+	display:block;
+}
 
 .post {
 	width: 900px;
@@ -57,7 +88,7 @@ h2 {
 	text-transform: none;
 	padding-top:0;
 	text-shadow:none;
-	margin-top: -85px;
+	margin-top: -75px;
 	margin-bottom: 70px;
 	margin-left:-50px;
 }
@@ -192,7 +223,7 @@ img {
 	background: #f1efff;
 }
 
-.troubleshooting {
+.expando-button {
 	opacity: 0.6;
 	border-radius: 10px;
 	background-color: #fad0fc;
@@ -203,29 +234,33 @@ img {
 	-o-transition: 0.5s; /* opera */
 }
 
-.troubleshooting:hover {
+.expando-button:hover {
 	opacity: 1;
 }
 
-.troubleshooting p {
+.expando-button p {
 	text-align: left;
 	padding: 25px;
 }
 
-.troubleshooting h5 {
+.expando-button h5 {
 	font-weight: normal;
 	font-size: 18px;
 	text-align: center;
 	padding: 25px;
 }
-.troubleshooting .title {
+.expando-button .title {
 	font-weight: bold;
 	color: #CF4C81;
 }
 
-.troubleshooting #click_to_expand {
+.expando-button .click_to_expand {
 	font-size: 14px;
 	color:#808080;
+}
+
+.expando-content{
+	display:none;
 }
 
 #database_button {
