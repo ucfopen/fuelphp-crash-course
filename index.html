@@ -748,7 +748,7 @@ class Model_Comment extends \Orm\Model
 		$this-&gt;template-&gt;content = View::forge('messages/index', $data);
 	}
 </pre>
-<p>We need to do a database call to get all of the comments associated with a particular message, so we query the database for comments that match the mid:</p>
+<p>We need to do a database call to get all of the comments associated with a particular message, so we query the database for comments that match the mid. So far we have been using models to retrieve information from the database, but Fuel also has a DB class that allows us to make queries. One of the benefits of using the DB class is the ability to use method chaining.</p>
 <pre class="brush: php; first-line: 5; title: ; notranslate" title="">
 	public function action_index()
 	{
