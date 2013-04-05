@@ -11,6 +11,11 @@
 	background: transparent;
 }
 
+.os-switch{
+	background: #eee;
+	padding:15px;
+}
+
 .os-switch .windows{
 	display:none;
 }
@@ -19,7 +24,7 @@
 	display:none;
 }
 
-.os-button.selected {
+.os-button.selected{
 	background: #b400ff;
 	color: white;
 }
@@ -32,6 +37,19 @@
 	font-size: 1.4em;
 	cursor: pointer;
 	margin:5px;
+}
+
+.mini-os-switch{
+	width: 100%;
+	text-align: center;
+	padding-bottom: 20px;
+	font-size: .8em;
+}
+
+.mini-os-switch .os-button {
+	display: inline;
+	padding: 4px;
+	font-size: 1em;
 }
 
 
@@ -65,7 +83,7 @@
 
 }
 
-h2 {
+h1 {
 	width: 1000px;
 	margin:0 auto;
 	color: #fff;
@@ -273,30 +291,6 @@ img {
 	text-decoration: none;
 }
 
-.footer ul {
-    clear:both;
-    text-align:center;
-    height:38px;
-    width:100%;
-    margin:0 auto;
-	padding: 25px 0;
-}
-
-.footer ul li {
-    display:inline;
-    margin-left:0 !important;
-    padding:0;
-    background:none !important;
-}
-
-.footer h2 {
-	visibility:hidden;
-	height:0;
-	position: absolute;
-	top: 0;
-}
-
-
 dl.sameline { 
 clear:both; 
 overflow:auto; 
@@ -381,69 +375,101 @@ pre {
 	margin-bottom: 5px !important;
 }
 
-	/* Footer theme overrides */
+/* Footer theme overrides */
 
-	#foot, #foot-info {
-		width: 100%;
-		margin-bottom: 15px;
-	}
-	#foot {
-		background: transparent;
-		margin:0 auto;
-		padding-bottom:15px;
-		padding-top:0;
-	}
-	#foot-info {
-		background: transparent; #c5c5c5;
-		padding-top: 5px;
-		padding-bottom: 11px;
-	}
-	
-	#foot-info a {
-		color: #333;
-	}
-	
-	.theme_switch {
-		display:none !important;
-	}
-	
-	.post .tutorial-head {
-		display: none !important;
-		position:absolute;top:0;
-	}
-	
-	dl {
-		overflow:auto;
-	}
-	
-	dl dt, dl dd {
-		float:left;
-		margin:0;
-		line-height:150%;
-	}
-	dl dt {
-		clear:left;
-	}	
-	dl dd {
-		margin-left:3px;
-	}	
-	
-	.post ul.page_navlinks {
-		margin-left:0;
-		font-size: 16px;
-	}
-	
-	.page_navlinks li {
-		list-style-type:none;
-		display:inline;
-		margin-right:5px;
-	}
-	
-	
-	
-	.footnote {
-		font-size: 12px !important;
-		margin-bottom:0;
-		padding-top:5px;
-		color: #4e4e4e;
-	}	
+#foot
+{
+	clear: both;
+	margin: 0 0 0 -10px;
+	position: relative;
+	padding-top: 11px;
+	text-align: center;
+	height: 40px;
+}
+
+#foot-info
+{
+	display: block;
+	color: #333;
+	height: 24px;
+}
+
+
+#foot, #foot-info {
+	width: 100%;
+	margin-bottom: 15px;
+}
+#foot {
+	background: transparent;
+	margin:0 auto;
+	padding-bottom:15px;
+	padding-top:0;
+}
+#foot-info {
+	background: transparent; #c5c5c5;
+	padding-top: 5px;
+	padding-bottom: 11px;
+}
+
+#foot-info a {
+	color: #333;
+}
+
+.theme_switch {
+	display:none !important;
+}
+
+.post .tutorial-head {
+	display: none !important;
+	position:absolute;top:0;
+}
+
+dl {
+	overflow:auto;
+}
+
+dl dt, dl dd {
+	float:left;
+	margin:0;
+	line-height:150%;
+}
+dl dt {
+	clear:left;
+}	
+dl dd {
+	margin-left:3px;
+}	
+
+.post ul.page_navlinks {
+	margin-left:0;
+	font-size: 16px;
+}
+
+.page_navlinks li {
+	list-style-type:none;
+	display:inline;
+	margin-right:5px;
+}
+
+
+
+.footnote {
+	font-size: 12px !important;
+	margin-bottom:0;
+	padding-top:5px;
+	color: #4e4e4e;
+}
+
+
+
+#foot #foot-info li
+{
+	display: inline;
+	font-size: .8em;
+	line-height: 24px;
+	margin-left: 10px;
+}
+
+#foot #foot-info #first { margin-left: 0; }
+
+#foot #foot-info #first sup { font-size:.8em; }

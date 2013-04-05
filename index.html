@@ -18,17 +18,20 @@
 	<script type="text/javascript">
 	$(document).ready(function()
 	{
+
+		var OSName="linux";
+		if (navigator.appVersion.indexOf("Win")!=-1) OSName = "windows";
+		showHide(OSName)
+
+		console.log('Your OS: '+OSName);
+
 	
-		$("#show-windows").click(function() {
-			$('body').addClass('os-show-linux').removeClass('os-show-windows');
-			$(this).addClass('selected');
-			$("#show-linux").removeClass('selected');
+		$(".show-windows").click(function() {
+			scrollTo($(this), 'windows');
 		});
 
-		$("#show-linux").click(function() {
-			$('body').addClass('os-show-windows').removeClass('os-show-linux');
-			$(this).addClass('selected');
-			$("#show-windows").removeClass('selected');
+		$(".show-linux").click(function() {
+			scrollTo($(this), 'linux');
 		});
 
 		$('.expando-button').click(function(){
@@ -38,6 +41,29 @@
 		});
 
 	});
+
+	function scrollTo($element, showWhat)
+	{
+		// get the screen position
+		var scrollTop     = $(window).scrollTop();
+		var elementOffset = $element.offset().top;
+
+		showHide(showWhat);
+
+		// remeasure location
+		var elementOffset2 = $element.offset().top;
+
+		// move to new location to keep the button in the same place thanks @zberry
+		$('html, body').scrollTop(scrollTop + (elementOffset2 - elementOffset))
+	}
+
+	function showHide(showWhat){
+		// switch the windows/linux visibility
+		$('body').removeClass('os-show-windows').removeClass('os-show-linux').addClass('os-show-'+showWhat);
+		$(".show-linux").removeClass('selected')
+		$(".show-windows").removeClass('selected');
+		$(".show-"+showWhat).addClass('selected');
+	}
 
 	(function(){
 		var syntax_highlighter_theme_css = document.createElement('link');
@@ -58,7 +84,7 @@
 
 	<div id="page">
 		<div class="head">
-			<h2 id="fuel-crash-course-part-1-creating-a-messaging-system" class="single_post" >Fuel Crash Course </h2>
+			<h1 id="fuel-crash-course-part-1-creating-a-messaging-system" class="single_post" >Fuel Crash Course </h1>
 			<div class="icon-fuel-guy"><img src="assets/images/hangmanguy_fuel.png" alt="Man holding gas can and lit match" /></div>
 		</div>
 
@@ -73,21 +99,23 @@
 				</ol>
 			</div>
 
-			<p>This tutorial is here to introduce you to the FuelPHP framework by walking you through the creation of a simple messaging app.</p>
-
 			<h3>Before You Get Started</h3>
+
+			<p>This tutorial is here to introduce you to the FuelPHP framework by walking you through the creation of a simple messaging app.</p>
 			
 			<h4>Choose &#8211; Windows or Linux/OSX</h4>
 
 			<p>
-				<div class="os-button selected" id="show-linux">Linux/OSX Instructions</div> or <div class="os-button" id="show-windows">Windows Instructions</div>
+				<div class="os-switch">
+					<div class="os-button show-linux">Linux/OSX Instructions</div> or <div class="os-button show-windows">Windows Instructions</div>
+				</div>
 			</p>
 
 			<h4>Requirements</h4>
 
-			<p>First and foremost, here&#8217;s what you&#8217;re going to need:</p>
 			<div class="os-switch">
 				<div class="windows">
+					<p>First and foremost, here&#8217;s what you&#8217;re going to need on Windows:</p>
 					<ol>
 						<li><a href="http://fuelphp.com">Fuel PHP framework</a> (we&#8217;re using v1.5.3)</li>
 						<li><a href="http://www.apachefriends.org/en/xampp.html">XAMPP</a> (if you&#8217;re having trouble installing this, <a href="http://keito.me/tutorials/xampp">go here for a tutorial</a>)</li>
@@ -97,12 +125,16 @@
 					</ol>
 				</div>
 				<div class="linux">
+					<p>First and foremost, here&#8217;s what you&#8217;re going to need on Linux:</p>
 					<ol>
 						<li><a href="http://fuelphp.com">Fuel PHP framework</a> (we&#8217;re using v1.5.3)</li>
 						<li><a href="http://www.apachefriends.org/en/xampp.html">XAMPP</a> (for beginners) or any basic <a href="http://en.wikipedia.org/wiki/LAMP_(software_bundle)">LAMP package</a> <br>(many tutorials exist, here are some for a few popular linux distros: <a href="https://help.ubuntu.com/community/ApacheMySQLPHP">Ubuntu</a>, <a href="http://wiki.debian.org/LaMp">Debian</a>, <a href="http://en.opensuse.org/SDB:Linux_Apache_MySQL_PHP">SUSE</a>, and <a href="http://fedorasolved.org/server-solutions/lamp-stack">Fedora</a>)</li>
 						<li>phpMyAdmin (installation will vary depending on your os, XAMPP users have it already!)</li>
 						<li>A basic understanding of the <a href="http://php-html.net/tutorials/model-view-controller-in-php/">Model-View-Controller (MVC) pattern</a>.</li>
 					</ol>
+				</div>
+				<div class="mini-os-switch">
+					Showing Instructions for: <div class="os-button show-linux">Linux/OSX</div> or <div class="os-button show-windows">Windows</div>
 				</div>
 			</div>
 			
@@ -136,6 +168,9 @@
 						<p><code>sudo chmod -R 777 logs</code>.</p>
 						<p><img src="assets/images/linux_permissions_02.png" alt="Screenshot showing incorrect permission setting." /></p>
 						<p>If you examine the directory using the <code>ls -la</code> command, you'll notice that all users have now been given <code>rwx</code> permissions. </p>
+					</div>
+					<div class="mini-os-switch">
+						Showing Instructions for: <div class="os-button show-linux">Linux/OSX</div> or <div class="os-button show-windows">Windows</div>
 					</div>
 				</div>
 			</div>
@@ -235,6 +270,9 @@
 					<div class="linux">
 						<p><img src="assets/images/oil_slick_02.png" alt="Running php oil. Command 1: cd c:/xampp/htdocs/fuel_intro, Command 2: php oil" /></p>
 					</div>
+					<div class="mini-os-switch">
+						Showing Instructions for: <div class="os-button show-linux">Linux/OSX</div> or <div class="os-button show-windows">Windows</div>
+					</div>
 				</div>
 
 				<p>Seeing this means that Oil is successfully installed and working! Now let&#8217;s get to business.</p>
@@ -251,6 +289,9 @@
 					</div>
 					<div class="linux">
 						<p><img src="assets/images/every_building_needs_a_scaffold_02.png" alt="Running php scaffold for messages: php oil generate scaffold messages name:string message:text." /></p>
+					</div>
+					<div class="mini-os-switch">
+						Showing Instructions for: <div class="os-button show-linux">Linux/OSX</div> or <div class="os-button show-windows">Windows</div>
 					</div>
 				</div>
 
@@ -292,6 +333,9 @@
 		</div>
 		<div class="linux">
 			<p><img src="assets/images/Migra_wha_01.png" alt="Running php migrate for scaffold: php oil refine migrate." /></p>
+		</div>
+		<div class="mini-os-switch">
+			Showing Instructions for: <div class="os-button show-linux">Linux/OSX</div> or <div class="os-button show-windows">Windows</div>
 		</div>
 	</div>
 
@@ -424,6 +468,9 @@
 				<div class="linux">
 					<p><img src="assets/images/new_comments_01.png" alt="Running php generate for comments: php oil generate controller comments edit create." /></p>
 				</div>
+				<div class="mini-os-switch">
+					Showing Instructions for: <div class="os-button show-linux">Linux/OSX</div> or <div class="os-button show-windows">Windows</div>
+				</div>
 			</div>
 
 			<p>As you can see, a controller was generated called &#8220;comments&#8221; with the actions create and edit. Two views were also created, both associated with the comments controller (edit.php and create.php).</p>
@@ -548,6 +595,9 @@ public function action_delete()
 	<div class="linux">
 		<p><img src="assets/images/modeling_01.png" alt="Running php oil generate model comment name:string comment:text mid:int" /></p>
 	</div>
+	<div class="mini-os-switch">
+		Showing Instructions for: <div class="os-button show-linux">Linux/OSX</div> or <div class="os-button show-windows">Windows</div>
+	</div>
 </div>
 
 
@@ -588,6 +638,9 @@ public function action_delete()
 	</div>
 	<div class="linux">
 		<p><img src="assets/images/migra_wha_02.png" alt="Running php oil refine migrate" /></p>
+	</div>
+	<div class="mini-os-switch">
+		Showing Instructions for: <div class="os-button show-linux">Linux/OSX</div> or <div class="os-button show-windows">Windows</div>
 	</div>
 </div>
 
@@ -1097,6 +1150,9 @@ $this-&gt;template-&gt;content = View::forge('messages/view', $data);
 	<div class="linux">
 		<p><img src="assets/images/login_page_and_user_creation_01.png" alt="Running php oil controller users login logout register in the command line." /></p>
 	</div>
+	<div class="mini-os-switch">
+		Showing Instructions for: <div class="os-button show-linux">Linux/OSX</div> or <div class="os-button show-windows">Windows</div>
+	</div>
 </div>
 
 <p>Notice that we used <code>g</code> instead of <code>generate</code>. This is just one example of the many short tags that Oil allows you to use.</p>
@@ -1109,6 +1165,9 @@ $this-&gt;template-&gt;content = View::forge('messages/view', $data);
 	</div>
 	<div class="linux">
 		<p><img src="assets/images/login_page_and_user_creation_02.png" alt="Running php oil g model user username:string password:string group:int email:string last_login:string login_hash:string in the command line." /></p>
+	</div>
+	<div class="mini-os-switch">
+		Showing Instructions for: <div class="os-button show-linux">Linux/OSX</div> or <div class="os-button show-windows">Windows</div>
 	</div>
 </div>
 
@@ -1137,6 +1196,9 @@ $this-&gt;template-&gt;content = View::forge('messages/view', $data);
 	</div>
 	<div class="linux">
 		<p><img src="assets/images/login_page_and_user_creation_03.png" alt="php oil r migrate" /></p>
+	</div>
+	<div class="mini-os-switch">
+		Showing Instructions for: <div class="os-button show-linux">Linux/OSX</div> or <div class="os-button show-windows">Windows</div>
 	</div>
 </div>
 
