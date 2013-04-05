@@ -246,7 +246,7 @@
 				'server_gmt_offset'  =&gt 0,
 				'default_timezone'   =&gt 'America/New_York',
 			</pre>
-			<p>After doing that, go to phpmyadmin (<a href="http://localhost/phpmyadmin">http://localhost/phpmyadmin</a>) and create a database called &#8220;fuel_intro&#8221;. Leave this database blank for now, because we&#8217;re going to eventually unleash fuel on its emptiness.</p>
+			<p>After doing that, go to phpmyadmin (<a href="http://localhost/phpmyadmin">http://localhost/phpmyadmin</a>) and create a database called &#8220;fuel_intro&#8221;. No need to create any tables now, we'll use Fuel to setup our tables.</p>
 			<p><img src="assets/images/gettin_configged_up_02.jpg" alt="Screenshot showing the creation of a database from phpmyadmin." /></p>
 			<pre class="brush: php; first-line: 6; highlight:[9,10,11] notranslate" title="" >
 				return array(
@@ -259,7 +259,7 @@
 					),
 				);
 			</pre>
-			<p>We renamed the database to "fuel_intro" and changed the password to an empty string. Aside from that, we left everything else alone since the defaults will work fine for what we&#8217;re doing. Keep in mind that we&#8217;re only editing Fuel&#8217;s development environment.</p>
+			<p>We renamed the database to "fuel_intro" and changed the password to the default password for our mysql install. Aside from that, we left everything else alone since the defaults will work fine. Keep in mind that we&#8217;re editing the db configuration in Fuel&#8217;s development environment.</p>
 
 
 			<h4 id="Oil_Slick">Oil Slick</h4>
@@ -318,7 +318,8 @@
 							'message' => array('type' => 'text'),
 							'created_at' => array('constraint' => 11, 'type' => 'int'),
 							'updated_at' => array('constraint' => 11, 'type' => 'int'),
-							), array('id'));
+
+						), array('id'));
 					}
 					public function down()
 					{
@@ -530,7 +531,7 @@
 					$this-&gt;template-&gt;title = 'Comments &amp;raquo; Create';
 
 					$views = array();
-					$views["form"] = View::forge("comments/_form");
+					$views['form'] = View::forge('comments/_form');
 
 					$this-&gt;template-&gt;content = View::forge('comments/create', $views);
 				}
@@ -581,7 +582,7 @@
 					&lt;?php echo Form::label('Comment', 'comment'); ?&gt;
 					&lt;?php echo Form::textarea('comment', Input::post('comment', isset($comment) ? $comment-&gt;comment : ''), array('cols' =&gt; 60, 'rows' =&gt; 8)); ?&gt;
 				&lt;/p&gt;
-				&lt;?php echo Form::hidden('mid', Input::post('mid', isset($message) ? $message : '')); ?&gt;
+				&lt;?php echo Form::hidden('message_id', Input::post('message_id', isset($message) ? $message : '')); ?&gt;
 				&lt;div class=&quot;actions&quot;&gt;
 					&lt;?php echo Form::submit(); ?&gt;
 				&lt;/div&gt;
@@ -599,14 +600,14 @@
 
 			<h5 id="Modeling">Modeling</h5>
 			<p>This is the easy part of the tutorial. All you need to do is run the following in the command line for oil to use (make sure the model name is singular!):</p>
-			<p><code>php oil generate model comment name:string comment:text mid:int</code></p>
+			<p><code>php oil generate model comment name:string comment:text message_id:int</code></p>
 
 			<div class="os-switch">
 				<div class="windows">
-					<p><img src="assets/images/modeling_01.jpg" alt="Running php oil generate model comment name:string comment:text mid:int" /></p>
+					<p><img src="assets/images/modeling_01.jpg" alt="Running php oil generate model comment name:string comment:text message_id:int" /></p>
 				</div>
 				<div class="linux">
-					<p><img src="assets/images/modeling_01.png" alt="Running php oil generate model comment name:string comment:text mid:int" /></p>
+					<p><img src="assets/images/modeling_01.png" alt="Running php oil generate model comment name:string comment:text message_id:int" /></p>
 				</div>
 				<div class="mini-os-switch">
 					Showing Instructions for: <div class="os-button show-linux">Linux/OSX</div> or <div class="os-button show-windows">Windows</div>
@@ -623,7 +624,7 @@
 						'id',
 						'name',
 						'comment',
-						'mid',
+						'message_id',
 						'created_at',
 						'updated_at'
 					);
@@ -667,7 +668,7 @@
 					$this-&gt;template-&gt;title = 'Comments &amp;raquo; Create';
 
 					$views = array();
-					$views["form"] = View::forge("comments/_form")-&gt;render();
+					$views['form'] = View::forge('comments/_form');
 
 					$this-&gt;template->content = View::forge('comments/create', $views);
 				}
@@ -683,7 +684,7 @@
 					$this-&gt;template-&gt;title = 'Comments &amp;raquo; Create';
 
 					$views = array();
-					$views["form"] = View::forge("comments/_form")-&gt;render();
+					$views['form'] = View::forge('comments/_form');
 
 					$this-&gt;template->content = View::forge('comments/create', $views);
 				}
@@ -704,7 +705,7 @@
 					$this-&gt;template-&gt;title = 'Comments &amp;raquo; Create';
 
 					$views = array();
-					$views["form"] = View::forge("comments/_form")-&gt;render();
+					$views['form'] = View::forge('comments/_form');
 
 					$this-&gt;template->content = View::forge('comments/create', $views);
 				}
@@ -719,7 +720,7 @@
 						$comment = Model_Comment::forge(array(
 							'name' =&gt; Input::post('name'),
 							'comment' =&gt; Input::post('comment'),
-							'mid' =&gt; Input::post('mid'),
+							'message_id' =&gt; Input::post('message_id'),
 						));
 					}
 					else
@@ -730,7 +731,7 @@
 					$this-&gt;template-&gt;title = 'Comments &amp;raquo; Create';
 
 					$views = array();
-					$views["form"] = View::forge("comments/_form")-&gt;render();
+					$views['form'] = View::forge('comments/_form');
 
 					$this-&gt;template->content = View::forge('comments/create', $views);
 				}
@@ -744,7 +745,7 @@
 						$comment = Model_Comment::forge(array(
 							'name' =&gt; Input::post('name'),
 							'comment' =&gt; Input::post('comment'),
-							'mid' =&gt; Input::post('mid'),
+							'message_id' =&gt; Input::post('message_id'),
 						));
 
 						if($comment and $comment-&gt;save())
@@ -759,7 +760,7 @@
 					$this-&gt;template-&gt;title = 'Comments &amp;raquo; Create';
 
 					$views = array();
-					$views["form"] = View::forge("comments/_form")-&gt;render();
+					$views['form'] = View::forge('comments/_form');
 
 					$this-&gt;template->content = View::forge('comments/create', $views);
 				}
@@ -775,13 +776,13 @@
 						$comment = Model_Comment::forge(array(
 							'name' =&gt; Input::post('name'),
 							'comment' =&gt; Input::post('comment'),
-							'mid' =&gt; Input::post('mid'),
+							'message_id' =&gt; Input::post('message_id'),
 						));
 
 						if($comment and $comment-&gt;save())
 						{
 							Session::set_flash('success', 'Added comment #' . $comment-&gt;id . '.');
-							Response::redirect('messages/view/'.$comment-&gt;mid);
+							Response::redirect('messages/view/'.$comment-&gt;message_id);
 						}
 					}
 					else
@@ -792,7 +793,7 @@
 					$this-&gt;template-&gt;title = 'Comments &amp;raquo; Create';
 
 					$views = array();
-					$views["form"] = View::forge("comments/_form")-&gt;render();
+					$views['form'] = View::forge('comments/_form');
 
 					$this-&gt;template->content = View::forge('comments/create', $views);
 				}
@@ -806,13 +807,13 @@
 						$comment = Model_Comment::forge(array(
 							'name' =&gt; Input::post('name'),
 							'comment' =&gt; Input::post('comment'),
-							'mid' =&gt; Input::post('mid'),
+							'message_id' =&gt; Input::post('message_id'),
 						));
 
 						if($comment and $comment-&gt;save())
 						{
 							Session::set_flash('success', 'Added comment #' . $comment->id . '.');
-							Response::redirect('messages/view/'.$comment-&gt;mid);
+							Response::redirect('messages/view/'.$comment-&gt;message_id);
 						}
 						else
 						{
@@ -827,7 +828,7 @@
 					$this-&gt;template-&gt;title = 'Comments &amp;raquo; Create';
 
 					$views = array();
-					$views["form"] = View::forge("comments/_form")-&gt;render();
+					$views['form'] = View::forge('comments/_form');
 
 					$this-&gt;template->content = View::forge('comments/create', $views);
 				}
@@ -854,7 +855,7 @@
 			<p>Since there is a comment in the database now, we can add functions to the controller to manipulate that comment. First off, we need a way to be able to edit that comment in <code>/fuel/app/classes/controller/comments.php</code>.</p>
 			<p>The edit function will take in two parameters: a comment id and message id.</p>
 			<pre class="brush: php; first-line: 6; highlight:[6] notranslate" title="">
-				public function action_edit($id = null, $mid = null)
+				public function action_edit($id = null, $message_id = null)
 				{
 					$this-&gt;template-&gt;title = 'Comments &amp;raquo; Edit';
 					$this-&gt;template-&gt;content = View::forge('comments/edit');
@@ -862,7 +863,7 @@
 			</pre>
 			<p>Now we use the comment model to find the comment, based on its id.</p>
 			<pre class="brush: php; first-line: 6; highlight:[8] notranslate" title="">
-				public function action_edit($id = null, $mid = null)
+				public function action_edit($id = null, $message_id = null)
 				{
 					$comment = Model_Comment::find($id);
 					$this-&gt;template-&gt;title = 'Comments &amp;raquo; Edit';
@@ -871,18 +872,18 @@
 			</pre>
 			<p>The rest of the code is pretty much the same as creating a comment with a few minor tweaks, here it is in bulk:</p>
 			<pre class="brush: php; first-line: 6; highlight:[9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] notranslate" title="">
-				public function action_edit($id = null, $mid = null)
+				public function action_edit($id = null, $message_id = null)
 				{
 					$comment = Model_Comment::find($id);
 					if (Input::post())
 					{
 						$comment-&gt;name = Input::post('name');
 						$comment-&gt;comment = Input::post('comment');
-						$comment-&gt;mid = $mid;
+						$comment-&gt;message_id = $message_id;
 						if ($comment-&gt;save())
 						{
 							Session::set_flash('success', 'Updated comment #' . $id);
-							Response::redirect('messages/view/'.$comment-&gt;mid);
+							Response::redirect('messages/view/'.$comment-&gt;message_id);
 						}
 						else
 						{
@@ -904,12 +905,12 @@
 					&lt;br/&gt;
 
 					&lt;?php echo render('comments/_form'); ?&gt;
-					&lt;p&gt;&lt;?php echo Html::anchor('messages/view/'.$comment-&gt;mid, 'Back'); ?&gt;&lt;/p&gt;
+					&lt;p&gt;&lt;?php echo Html::anchor('messages/view/'.$comment-&gt;message_id, 'Back'); ?&gt;&lt;/p&gt;
 				</pre>
 				<h6 id="Deletion">Deletion</h6>
 				<p>Deleting the comment is just as easy as saving it, all you need to do is call <code>$comment-&gt;delete()</code> instead of <code>$comment-&gt;save()</code>. Don't forget to pass the comment and message id!</p>
 				<pre class="brush: php; first-line: 45; highlight:[45,46,47,48,49,50,51,52,53,54,55,56,57] notranslate" title="">
-					public function action_delete($id, $mid)
+					public function action_delete($id, $message_id)
 					{
 						if ($comment = Model_Comment::find($id))
 						{
@@ -920,7 +921,7 @@
 						{
 							Session::set_flash('error', 'Could not delete comment #' . $id);
 						}
-						Response::redirect('messages/view/'.$mid);
+						Response::redirect('messages/view/'.$message_id);
 					}
 			</pre>
 			<p>In the next section we aim to accomplish two things: showing the number of comments that a message has and showing the comments in a list when we view the message.</p>
@@ -947,13 +948,13 @@
 					$this-&gt;template-&gt;content = $view;
 				}
 			</pre>
-			<p>Just under the messages array we&#8217;re going to declare an array called $comments, and then loop through the messages:</p>
+			<p>Just under the messages array we&#8217;re going to declare an array called $comment_links, and then loop through the messages:</p>
 			<pre class="brush: php; first-line: 5; highlight:[9,10,11,12] notranslate" title="">
 				public function action_index()
 				{
 					$messages = Model_Message::find('all');
 
-					$comments = array();
+					$comment_links = array();
 					foreach ($messages as $message)
 					{
 					}
@@ -969,12 +970,12 @@
 				{
 					$messages = Model_Message::find('all');
 
-					$comments = array();
+					$comment_links = array();
 					foreach ($messages as $message)
 					{
 						$query = DB::select()
 							-&gt;from('comments')
-							-&gt;where('mid', $message-&gt;id)
+							-&gt;where('message_id', $message-&gt;id)
 							-&gt;execute();
 					}
 
@@ -983,23 +984,23 @@
 					$this-template-&gt;content = $view;
 				}
 			</pre>
-			<p>The <code>DB::select()</code> method builds a SQL query to retrieve all the comments. This is analogous to &#8220;<code>SELECT * FROM 'comments' WHERE mid = $message-&gt;id</code>&#8220;</p>
-			<p>Now we just need to count the number of results and add that number to the $comments array. To make the message's comments easy to access, we&#8217;re going to make the comment array key match the message id:</p>
+			<p>The <code>DB::select()</code> method builds a SQL query to retrieve all the comments. This is analogous to &#8220;<code>SELECT * FROM 'comments' WHERE message_id = $message-&gt;id</code>&#8220;</p>
+			<p>Now we just need to count the number of results and add that number to the $comment_links array. To make the message's comments easy to access, we&#8217;re going to make the comment array key match the message id:</p>
 			<pre class="brush: php; first-line: 5; highlight:[17,18] notranslate" title="">
 				public function action_index()
 				{
 					$messages = Model_Message::find('all');
 
-					$comments = array();
+					$comment_links = array();
 					foreach ($messages as $message)
 					{
 						$query = DB::select()
 							-&gt;from('comments')
-							-&gt;where('mid', $message-&gt;id)
+							-&gt;where('message_id', $message-&gt;id)
 							-&gt;execute();
 						
 						$count = count($results);
-						$comments[$message-&gt;id] = "$count Comment(s)";
+						$comment_links[$message-&gt;id] = "View |$count Comment(s)";
 					}
 
 					$view = View::forge('messages/index', array('messages' =&gt; $messages));
@@ -1007,30 +1008,22 @@
 					$this-&gt;template-&gt;content = $view;
 				}
 			</pre>
-			<p>Let's pretty up the comment count. If no comments have been made, we want &#8216;View&#8217; to be displayed. If one comment or more have been made, we want to display the appropriate number of comments.  We'll use Fuel's Inflector class to automatically pluralize &#8216;Comment&#8216; if the count is above 1.</p>
+			<p>Let's pretty up the comment count. We'll use Fuel's Inflector class to automatically pluralize &#8216;Comment&#8216; if the count is 0 or above 1.</p>
 			<pre class="brush: php; first-line: 5; highlight:[19,20,21,22,23,24,25,26] notranslate" title="">
 				public function action_index()
 				{
 					$messages = Model_Message::find('all');
 
-					$comments = array();
+					$comment_links = array();
 					foreach ($messages as $message)
 					{
 						$results = DB::select()
 							-&gt;from('comments')
-							-&gt;where('mid', $message-&gt;id)
+							-&gt;where('message_id', $message-&gt;id)
 							-&gt;execute();
 
 						$count = count($results);
-
-						if($count == 0)
-						{
-							$comments[$message-&gt;id] = 'View';
-						}
-						else
-						{
-							$comments[$message-&gt;id] = $count.' '.Inflector::pluralize('Comment', $count);
-						}
+						$comment_links[$message-&gt;id] = "View | $count ".Inflector::pluralize('Comment', $count);
 					}
 
 					$view = View::forge('messages/index', array('messages' =&gt; $messages));
@@ -1038,34 +1031,34 @@
 					$this-&gt;template-&gt;content = $view;
 				}
 			</pre>
-			<p>Now we just need to set the <code>$comments</code> and <code>$messages</code> variables to the view (which is why we declared <code>$view</code> at the top of the function):</p>
+			<p>Now we just need to set the <code>$comment_links</code> and <code>$messages</code> variables to the view (which is why we declared <code>$view</code> at the top of the function):</p>
 			<pre class="brush: php; first-line: 5; highlight:[29,30,31] notranslate" title="">
 				public function action_index()
 				{
 					$messages = Model_Message::find('all');
 
-					$comments = array();
+					$comment_links = array();
 					foreach ($messages as $message)
 					{
 						$query = DB::select()
 							-&gt;from('comments')
-							-&gt;where('mid', $message-&gt;id])
+							-&gt;where('message_id', $message-&gt;id)
 							-&gt;execute();
 
 						$count = count($results);
 
-						if($count == 0)
+						if ($count == 0)
 						{
-							$comments[$message-&gt;id] = 'View';
+							$comment_links[$message-&gt;id] = 'View';
 						}
 						else
 						{
-							$comments[$message-&gt;id] = $count.' '.Inflector::pluralize('Comment', $count);
+							$comment_links[$message-&gt;id] = $count.' '.Inflector::pluralize('Comment', $count);
 						}
 					}
 
 					$view = View::forge('messages/index');
-					$view-&gt;set('comments', $comments);
+					$view-&gt;set('comment_links', $comment_links);
 					$view-&gt;set('messages', $messages);
 					$this-&gt;template-&gt;title = 'Messages';
 					$this-&gt;template-&gt;content = $view;
@@ -1077,7 +1070,7 @@
 			</pre>
 			<p>To this:</p>
 			<pre class="brush: php; first-line: 9; highlight:[9] nostranslate" title="">
-				&lt;li&gt;&lt;?php echo Html::anchor('messages/view/'.$message-&gt;id, $comments[$message-&gt;id]); ?&gt;&lt;/li&gt;
+				&lt;li&gt;&lt;?php echo Html::anchor('messages/view/'.$message-&gt;id, $comment_links[$message-&gt;id]); ?&gt;&lt;/li&gt;
 			</pre>
 			<p>What we did was modify the &#8220;View&#8221; message link to include the number of comments, if any are present. At the moment, there shouldn&#8217;t be any.
 			</p>
@@ -1089,20 +1082,17 @@
 				{
 					is_null($id) and Response::redirect('Messages');
 
-					if ( ! $messages = Model_Message::find($id))
+					if ( ! $message = Model_Message::find($id))
 					{
 						Session::set_flash('error', 'Could not find message #'.$id);
 						Response::redirect('Messages');
 						return;
 					}
 
-					$comments = DB::select()
-						-&gt;from('comments')
-						-&gt;where('mid', $id)
-						-&gt;execute();
+					$comments = Model_Comment::query()-&gt;where('message_id', $id)-&gt;get();
 
 					$data = array(
-						'messages' =&gt; $messages,
+						'message' =&gt; $message,
 						'comments' =&gt; $comments
 					);
 
@@ -1110,7 +1100,7 @@
 					$this-&gt;template-&gt;content = View::forge('messages/view', $data);
 				}
 			</pre>
-			<p>The <code>-&gt;execute()</code> command returns the comments associated with the message as an object, which is passed to the view when added to the $data array.</p>
+			<p>The <code>-&gt;execute()</code> command returns the comments associated with the message as an associative array, which is passed to the view using our $data array.</p>
 			<p>Now all we need to do is show it on the view.php page of the message views:</p>
 			<pre class="brush: php; first-line: 7; notranslate" title="">
 				&lt;strong&gt;Message:&lt;/strong&gt;
@@ -1615,11 +1605,11 @@
 			<h5 id="Finishing_Touches">Finishing Touches</h5>
 			<p>Let&#8217;s quickly tidy up some of our code. Head over to the comments form view and remove the hidden field containing the id of the comment&#8217;s message:</p>
 			<pre class="brush: php; first-line: 10; highlight:[10] notranslate" title="">
-				&lt;?php echo Form::hidden('mid', Input::post('mid', isset($message) ? $message : '')); ?&gt;
+				&lt;?php echo Form::hidden('message_id', Input::post('message_id', isset($message) ? $message : '')); ?&gt;
 			</pre>
-			<p>Now in the comments controller, change the assignment of the comment&#8217;s <code>mid</code> property to use the <code>$id</code> variable passed in rather than relying on the old hidden form:</p>
+			<p>Now in the comments controller, change the assignment of the comment&#8217;s <code>message_id</code> property to use the <code>$id</code> variable passed in rather than relying on the old hidden form:</p>
 			<pre class="brush: php; first-line: 39; highlight:[39] notranslate" title="">
-				'mid' =&gt; $id, //previously: Input::post('mid'),
+				'message_id' =&gt; $id, //previously: Input::post('message_id'),
 			</pre>
 			<p>Now we just need to add the name of the person making the message (instead of letting them type it in themselves), and give them editing rights to their own posts.</p>
 			<p>Go to the _form.php files in both the comments and the messages views and replace the name input field with the user&#8217;s name.</p>
