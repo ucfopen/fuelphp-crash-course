@@ -122,6 +122,7 @@
 						<li><a href="http://www.nextofwindows.com/how-to-addedit-environment-variables-in-windows-7/">PHP Environment Variables Configured in Windows</a> (for command line executions)</li>
 						<li>phpMyAdmin (it comes with XAMPP)</li>
 						<li>A basic understanding of the <a href="http://php-html.net/tutorials/model-view-controller-in-php/">Model-View-Controller (MVC) pattern</a>.</li>
+						<li>At least a basic understanding of <a href="http://try.github.io/levels/1/challenges/1">Git</a> and version control systems.</li>
 					</ol>
 				</div>
 				<div class="linux">
@@ -131,6 +132,7 @@
 						<li><a href="http://www.apachefriends.org/en/xampp.html">XAMPP</a> (for beginners) or any basic <a href="http://en.wikipedia.org/wiki/LAMP_(software_bundle)">LAMP package</a> <br>(many tutorials exist, here are some for a few popular linux distros: <a href="https://help.ubuntu.com/community/ApacheMySQLPHP">Ubuntu</a>, <a href="http://wiki.debian.org/LaMp">Debian</a>, <a href="http://en.opensuse.org/SDB:Linux_Apache_MySQL_PHP">SUSE</a>, and <a href="http://fedorasolved.org/server-solutions/lamp-stack">Fedora</a>)</li>
 						<li>phpMyAdmin (installation will vary depending on your os, XAMPP users have it already!)</li>
 						<li>A basic understanding of the <a href="http://php-html.net/tutorials/model-view-controller-in-php/">Model-View-Controller (MVC) pattern</a>.</li>
+						<li>At least a basic understanding of <a href="http://try.github.io/levels/1/challenges/1">Git</a> and version control systems.</li>
 					</ol>
 				</div>
 				<div class="mini-os-switch">
@@ -142,9 +144,21 @@
 
 			<h3 id="part1">Part 1 &#8211; Creating a Messaging System</h3>
 
-			<h4 id="Checking_Your_Work">Basic FuelPhp Setup</h4>
+			<h4 id="Basic_FuelPhp_Setup">Basic FuelPhp Setup</h4>
 
-			<p>Put the Fuel files into a folder called &#8220;fuel_intro&#8221; in the htdocs folder of xampp.</p>
+			<p>Create a folder called &#8220;fuel_intro&#8221; in the htdocs folder of xampp.</p>
+
+			<p>Next, open up command line, navigate to that folder, and type in the following: <code>git clone https://github.com/fuel/fuel.git .</code> Don't forget the period at the end, that will clone the files into the directory you are currently in.</p>
+
+			<p>Now that the files have been clones, you have to update all the registered <a href="http://git-scm.com/book/en/Git-Tools-Submodules">submodules</a> by typing in the following two commands:</p>
+
+			<p><code>git submodule init</code></p>
+			<p>and</p>
+			<p><code>git submodule update</code></p>
+
+			<h4 id="Checking_Your_Work">Checking Your Work</h4>
+
+
 			<p>In your browser, navigate to <a href="http://localhost/fuel_intro/public">http://localhost/fuel_intro/public</a> and you should see the &#8220;successful install&#8221; page from Fuel.</p>
 			<p><img src="assets/images/fuelsuccess.png" alt="Screenshot showing successful Fuel PHP install." /></p>
 			<div class="expando-button"><h5><span class="title">Troubleshooting</span>: When file permissions cause fuelphp errors <span class="click_to_expand">(click to show)</span></h5></div>
@@ -298,7 +312,7 @@
 				</div>
 			</div>
 
-			<p>The only weird thing about this is that the &#8220;string&#8221; type for the name is a shortcut that is really var_char(255).</p>
+			<p>The only weird thing about this is that the &#8220;string&#8221; type for the name is a shortcut that is really varchar[255].</p>
 			<p>If you look at your document tree, you can see that the controller, model, and view were created and populated with default content.</p>
 			<p>If you look at your database, you&#8217;ll notice that no table has been created. That&#8217;s because we need to migrate the database.</p>
 			<h6 id="Migra-wha">Migra-wha?</h6>
@@ -327,7 +341,7 @@
 					}
 				}
 			</pre>
-			<p>Now that we know what the migration is going to create, go ahead and run it. That'll be:</p>
+			<p>Since we know what the migration is going to create, go ahead and run it. That'll be:</p>
 			<p><code>php oil refine migrate</code></p>
 
 			<div class="os-switch">
@@ -364,7 +378,7 @@
 
 			<p>If you see the following error, copy and paste the code into a new php file called crypt.php at <code>/fuel/app/config</code>.</p>
 			<p><img src="assets/images/cryptoerror.png" alt="Image displaying an error message for lack of read write access to a non existant crypt.php file"/></p>
-			<p>If you look at the message, you&#8217;ll notice that all the layout is done using a table, so take a minute and make the code <a href="http://en.wikipedia.org/wiki/Semantic_HTML">semantic</a>.</p>
+			<p>If you look at the message, you&#8217;ll notice that all the layout is done using a table, so take a minute to make the code <a href="http://en.wikipedia.org/wiki/Semantic_HTML">semantic</a>.</p>
 			<p>Go into <code>/fuel/app/views/messages/index.php</code> and change the following table into an unordered list:</p>
 
 			<div class="expando-button"><h5><span class="title">Check it out</span>: See the messages view before changes <span class="click_to_expand">(click to show)</span></h5></div>
@@ -456,8 +470,6 @@
 					'hello(/:name)?' => array('welcome/hello', 'name' => 'hello'),
 				);
 			</pre>
-			<p>In the next section we will deal with creating comments for the messages.</p>
-
 
 			<!--  PART 2  -->
 			<hr>
@@ -466,7 +478,10 @@
 
 			<h4 id="New_Comments">New Comments</h4>
 
-			<p>Now that we have pretty semantic messages, we need to add a way for users to add comments to those messages.</p>
+			<p>Now that we have semantic messages, we need to add a way for users to add comments to those messages.</p>
+
+			<p>We <em>could</em> use a scaffold again to create everything necessary for comments, but let's do everything that the scaffolding command does by hand. This will give you an idea as to just how powerful oil commands are.</p>
+
 			<p>The first step is to create our controllers and views for the comments. We will be using oil&#8217;s generate command again to do this. Let&#8217;s watch:</p>
 			<p><code>php oil generate controller comments edit create</code></p>
 
@@ -509,21 +524,9 @@
 			</pre>
 
 			<h6 id="Defaults">Defaults</h6>
-			<p>The default class name for the controller is Controller_NAME, and the default actions are action_NAME. So if you&#8217;re making your own actions or controllers, you should follow the conventions that are set forth in this file. </p>
+			<p>The default class name for the controller is Controller_NAME, and methods accessible through the url are action_NAME. So if you&#8217;re making your own methods or controllers, you should follow the conventions that are set forth in this file. </p>
 			<p>Take careful note that the class ought to read "Controller_Comments", rather than the default "Controller_Comment". Older versions of fuel will autocorrect the name and make it singular.</p>
-			<p>Let&#8217;s go ahead and make a new action to illustrate this.</p>
-			<p>We want to create a controller that&#8217;s not associated with any view in order to handle deleting a comment. So, we would write the deletion function under the current actions:</p>
-			<pre class="brush: php; first-line: 12; highlight:[18,19,20] notranslate" title="">
-				public function action_create()
-				{
-					$this-&gt;template-&gt;title = &quot;Comments &amp;raquo; Create&quot;;
-					$this-&gt;template-&gt;content = View::forge('comments/create');
-				}
 
-				public function action_delete()
-				{
-				}
-			</pre>
 			<p>Now, back in your action_create function, we need to make a few changes to prepare for the views we are about to build:</p>
 			<pre class="brush: php; first-line: 12; highlight:[16,17,19] notranslate" title="">
 				public function action_create()
@@ -537,11 +540,13 @@
 				}
 			</pre>
 
+			<p>We loaded the form we're about to build into a <code>$views</code> array with the key 'form'. This will be accessible in our view as <code>$form</code>.</p>
+
 			<h6 id="Form_Templates">Form Templates</h6>
 
-			<p>If you look at the Messages views, you will see a file called &#8220;_form.php&#8221;. This is a form template that all of the views in messages can share by calling <code></code> and is something that should be recreated for the comments views as well.</p>
-			<p>Go ahead and create <code>/fuel/app/views/comments/_form.php</code>.</p>
-			<p>First and foremost, you&#8217;re going to need to open a new form, and rather than using straight HTML, Fuel has classes for HTML elements. To open a new form you write:</p>
+			<p>If you look at the Messages views (/fuel/app/views/messages/), you will see a file called &#8220;_form.php&#8221;. This is a form template for messages that gets called in the messages views and  should be recreated for the comments views as well.</p>
+			<p>Go ahead and create a new file called<code>/fuel/app/views/comments/_form.php</code>.</p>
+			<p>Since this is a form template, you&#8217;re going to start the file with new form tags. Rather than using straight HTML, Fuel has classes for HTML elements that we will use. To open a new form write the following:</p>
 			<pre class="brush: php; highlight:[1] notranslate" title="">
 				&lt;?php echo Form::open(); ?&gt;
 			</pre>
@@ -557,6 +562,8 @@
 			<ul>
 				<li><code>Form::label()</code> takes (in order) the text that will be displayed to the user and the id that should match the name attribute of the input field.</li>
 				<li><code>Form::input()</code> takes (in order) the name attribute of the form and the default value of that form element.</li>
+
+
 			</ul>
 			<p>You can repeat this code for the comment text as well. The only difference is that instead of <code>Form::input</code>, you&#8217;ll need to use <code>Form::textarea()</code>, which takes in the same parameters.</p>
 			<pre class="brush: php; highlight:[6,7,8,9] notranslate" title="">
@@ -571,7 +578,7 @@
 				&lt;/p&gt;
 			</pre>
 			<p>Did you notice the extra bit of code at the end? The final parameter you can pass for the label, input, or textarea tags is an array of attributes. So when we write &#8220;<code>array('cols' =&gt; 60, 'rows' =&gt; 8));</code>&#8221; at the end of the textarea function,  it&#8217;s the same as saying &#8220;<code>&lt;textarea cols="60" rows="8"&gt;&lt;/textarea&gt;</code>&#8220;</p>
-			<p>Next we just need to add the submit button and close the form:</p>
+			<p>Next we just need to add the submit button, a hidden input to keep track of the message this comment is attached to, and close the form:</p>
 			<pre class="brush: php; highlight:[10,11,12,13,14] notranslate" title="">
 				&lt;?php echo Form::open(); ?&gt;
 				&lt;p&gt;
@@ -595,6 +602,13 @@
 				&lt;?php echo $form; ?&gt;
 				&lt;p&gt;&lt;?php echo Html::anchor('messages/view/'.$message, 'Back'); ?&gt;&lt;/p&gt;
 			</pre>
+			<p>This bit of code does the following:</p>
+			<ul>
+				<li>If the message variable doesn't exist, set it to an empty string.</li>
+				<li>Print out the form to the screen.</li>
+				<li>Create an anchor tag to take us back to the message.</li>
+			</ul>
+
 			<p>Go to <a href="http://localhost/fuel_intro/public/comments/create/">http://localhost/fuel_intro/public/comments/create/</a> and take a look at the form. You should see this:</p>
 			<p><img src="assets/images/controlling_the_power_01.jpg" alt="A Google Chrome window displaying the create page." /></p>
 
@@ -660,7 +674,7 @@
 			<p class="note">Quick Note: If an error is encountered when migrating, you can fix any typos in your migration file by going to <code>/fuel/app/migrations/###_create_NAME.php</code> and editing the file.</p>
 
 			<h5 id="Adding_to_the_Database">Adding to the Database</h5>
-			<p>We can now edit the controller for comments to actually add our comments to the database. So go ahead and open the <code>/fuel/app/classes/controller/comments.php</code> file.</p>
+			<p>We can now edit the comments controller to actually add our comments to the database. So go ahead and open the <code>/fuel/app/classes/controller/comments.php</code> file.</p>
 			<p>First and foremost, an <code>$id</code> variable is going to be taken in, so we need to add that as an attribute to the action_create function:</p>
 			<pre class="brush: php; first-line: 12; highlight:[12] notranslate" title="">
 				public function action_create($id = null)
@@ -711,7 +725,7 @@
 				}
 			</pre>
 			<p>This means if they didn&#8217;t post anything, take the <code>$id</code> and turn it into a variable called <code>$message</code> that the view can use.</p>
-			<p>Now we need to build what we need to from the Comment Model.</p>
+			<p>Now we need to build a new comment model in order to save the comment into the database.</p>
 			<pre class="brush: php; first-line: 12; highlight:[16,17,18,19,20] notranslate" title="">
 				public function action_create($id = null)
 				{
@@ -908,7 +922,7 @@
 					&lt;p&gt;&lt;?php echo Html::anchor('messages/view/'.$comment-&gt;message_id, 'Back'); ?&gt;&lt;/p&gt;
 				</pre>
 				<h6 id="Deletion">Deletion</h6>
-				<p>Deleting the comment is just as easy as saving it, all you need to do is call <code>$comment-&gt;delete()</code> instead of <code>$comment-&gt;save()</code>. Don't forget to pass the comment and message id!</p>
+				<p>Deleting the comment is just as easy as saving it. Create another action function called delete, and then call <code>$comment-&gt;delete()</code> instead of <code>$comment-&gt;save()</code>. Don't forget to pass the comment and message id!</p>
 				<pre class="brush: php; first-line: 45; highlight:[45,46,47,48,49,50,51,52,53,54,55,56,57] notranslate" title="">
 					public function action_delete($id, $message_id)
 					{
