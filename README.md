@@ -10,7 +10,9 @@ Contributors
 *	Kevin Baugh
 *	Keegan Berry
 *	Ian Turgeon
-*   Brandon Stull
+* Brandon Stull
+* Mike Parks
+* Chris McLean
 
 Links
 =====
