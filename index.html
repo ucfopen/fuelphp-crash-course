@@ -540,7 +540,7 @@
 				}
 			</pre>
 
-			<p>We loaded the form we're about to build into a <code>$views</code> array with the key 'form'. This will be accessible in our view as <code>$form</code>.</p>
+			<p>We loaded the form we're about to build into the <code>$data</code> array with the key 'form'. This will be accessible in our view as <code>$form</code>.</p>
 
 			<h6 id="Form_Templates">Form Templates</h6>
 
@@ -686,7 +686,6 @@
 					$data[&quot;subnav&quot;] = array('edit'=&gt; 'active');
 					$this-&gt;template-&gt;title = 'Comments &amp;raquo; Create';
 					$data['form'] = View::forge('comments/_form');
-
 					$this-&gt;template->content = View::forge('comments/create', $data);
 				}
 			</pre>
@@ -701,7 +700,6 @@
 					$data["subnav"] = array('edit'=> 'active');
 					$this->template->title = 'Comments &raquo; Create';
 					$data['form'] = View::forge('comments/_form');
-
 					$this->template->content = View::forge('comments/create', $data);
 				}
 			</pre>
@@ -721,7 +719,6 @@
 					$data["subnav"] = array('edit'=> 'active');
 					$this->template->title = 'Comments &raquo; Create';
 					$data['form'] = View::forge('comments/_form');
-
 					$this->template->content = View::forge('comments/create', $data);
 				}
 			</pre>
@@ -746,7 +743,6 @@
 					$data["subnav"] = array('edit'=> 'active');
 					$this->template->title = 'Comments &raquo; Create';
 					$data['form'] = View::forge('comments/_form');
-
 					$this->template->content = View::forge('comments/create', $data);
 				}
 			</pre>
@@ -774,7 +770,6 @@
 					$data["subnav"] = array('edit'=> 'active');
 					$this->template->title = 'Comments &raquo; Create';
 					$data['form'] = View::forge('comments/_form');
-
 					$this->template->content = View::forge('comments/create', $data);
 				}
 			</pre>
@@ -806,7 +801,6 @@
 					$data["subnav"] = array('edit'=> 'active');
 					$this->template->title = 'Comments &raquo; Create';
 					$data['form'] = View::forge('comments/_form');
-
 					$this->template->content = View::forge('comments/create', $data);
 				}
 			</pre>
@@ -840,7 +834,6 @@
 					$data["subnav"] = array('edit'=> 'active');
 					$this->template->title = 'Comments &raquo; Create';
 					$data['form'] = View::forge('comments/_form');
-
 					$this->template->content = View::forge('comments/create', $data);
 				}
 			</pre>
@@ -864,7 +857,7 @@
 			<p>Go on back to <a href="http://localhost/fuel_intro/public/messages">http://localhost/fuel_intro/public/messages</a> and add a comment to one of your messages so we can keep going.</p>
 			<h5 id="Now_that_we_have_a_Comment...">Now that we have a Comment&#8230;</h5>
 			<p>Since there is a comment in the database now, we can add functions to the controller to manipulate that comment. First off, we need a way to be able to edit that comment in <code>/fuel/app/classes/controller/comments.php</code>.</p>
-			<p>The edit function will take in two parameters: a comment id and message id.</p>
+			<p>The edit function will take in one parameter which is the id of the comment</p>
 			<pre class="brush: php; first-line: 6; highlight:[6] notranslate" title="">
 				public function action_edit($id = null)
 				{
@@ -884,15 +877,14 @@
 				}
 			</pre>
 			<p>The rest of the code is pretty much the same as creating a comment with a few minor tweaks, here it is in bulk:</p>
-			<pre class="brush: php; first-line: 6; highlight:[9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28] notranslate" title="">
-				public function action_edit($id = null, $message_id = null)
+			<pre class="brush: php; first-line: 6; highlight:[9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,30] notranslate" title="">
+				public function action_edit($id = null)
 				{
 					$comment = Model_Comment::find($id);
 					if (Input::post())
 					{
 						$comment-&gt;name = Input::post('name');
 						$comment-&gt;comment = Input::post('comment');
-						$comment-&gt;message_id = $message_id;
 						if ($comment-&gt;save())
 						{
 							Session::set_flash('success', 'Updated comment #'.$id);
@@ -910,11 +902,13 @@
 					}
 					$data["subnav"] = array('edit'=> 'active');
 					$this-&gt;template-&gt;title = 'Comments &amp;raquo; Edit';
+					$data['form'] = View::forge('comments/_form');
 					$this-&gt;template-&gt;content = View::forge('comments/edit', $data);
 				}
 			</pre>
 			<p>The action <code>$comment-&gt;save()</code> updates the comment if it already exists in the database, or adds it if it doesn&#8217;t.</p>
 			<p>Note the global variable <code>$message</code>, which will keep track of the message id.
+			<p>Also note the <code>$form</code> variable, which will contain our form.</p>
 			<p>All that remains is to fix up the comment edit view. Go ahead and open up <code>fuel/app/views/comments/edit.php</code>. It'll wind up looking like the view for editing messages, with a few differences:
 				<pre class="brush: php; highlight:[5,6,7,8,9] notranslate" title="">
 					&lt;ul class="nav nav-pills"&gt;
@@ -924,16 +918,15 @@
 					&lt;h2&gt;Editing Comment&lt;/h2&gt;
 					&lt;br/&gt;
 					&lt;?php $message = isset($message) ? $message : ''; ?&gt;
-					&lt;?php echo render('comments/_form'); ?&gt;
+					&lt;?php echo $form; ?&gt;
 					&lt;p&gt;&lt;?php echo Html::anchor('messages/view/'.$comment-&gt;message_id, 'Back'); ?&gt;&lt;/p&gt;
 				</pre>
 				<h6 id="Deletion">Deletion</h6>
-				<p>Deleting the comment is just as easy as saving it. Create another action function called delete, and then call <code>$comment-&gt;delete()</code> instead of <code>$comment-&gt;save()</code>. Don't forget to pass the comment and message id!</p>
-				<pre class="brush: php; first-line: 45; highlight:[45,46,47,48,49,50,51,52,53,54,55,56,57,58,59] notranslate" title="">
+				<p>Deleting the comment is just as easy as saving it. Create another action function called delete, and then call <code>$comment-&gt;delete()</code> instead of <code>$comment-&gt;save()</code>. Don't forget to pass the comment id!</p>
+				<pre class="brush: php; first-line: 45; highlight:[45,46,47,48,49,50,51,52,53,54,55,56,57,58] notranslate" title="">
 					public function action_delete($id)
 					{
 						$comment = Model_Comment::find($id);
-						$message_id = $comment->message_id;
 						if ($comment)
 						{
 							$comment-&gt;delete();
@@ -943,7 +936,7 @@
 						{
 							Session::set_flash('error', 'Could not delete comment #'.$id);
 						}
-						Response::redirect('messages/view/'.$message_id);
+						Response::redirect('messages/view/'.$comment->message_id);
 					}
 			</pre>
 			<p>In the next section we aim to accomplish two things: showing the number of comments that a message has and showing the comments in a list when we view the message.</p>
@@ -952,9 +945,7 @@
 			<pre class="brush: php; first-line: 5; notranslate" title="">
 				public function action_index()
 				{
-					$data = array(
-						'messages' =&gt; Model_Message::find('all');
-					);
+					$data['messages'] = Model_Message::find('all');
 					$this-&gt;template-&gt;title = &quot;Messages&quot;;
 					$this-&gt;template-&gt;content = View::forge('messages/index', $data);
 				}
@@ -1016,7 +1007,7 @@
 					$comment_links = array();
 					foreach ($messages as $message)
 					{
-						$query = DB::select()
+						$results = DB::select()
 							-&gt;from('comments')
 							-&gt;where('message_id', $message-&gt;id)
 							-&gt;execute();
@@ -1045,7 +1036,15 @@
 							-&gt;execute();
 
 						$count = count($results);
-						$comment_links[$message-&gt;id] = "View | $count ".Inflector::pluralize('Comment', $count);
+						
+						if ($count == 0)
+						{
+							$comment_links[$message-&gt;id] = 'View';
+						}
+						else
+						{
+							$comment_links[$message-&gt;id] = $count.' '.Inflector::pluralize('Comment', $count);
+						}
 					}
 
 					$view = View::forge('messages/index', array('messages' =&gt; $messages));
@@ -1062,7 +1061,7 @@
 					$comment_links = array();
 					foreach ($messages as $message)
 					{
-						$query = DB::select()
+						$results = DB::select()
 							-&gt;from('comments')
 							-&gt;where('message_id', $message-&gt;id)
 							-&gt;execute();
@@ -1099,19 +1098,18 @@
 			<p>Now if you go to <a href="http://localhost/fuel_intro/public/messages/">http://localhost/fuel_intro/public/messages/</a> you should see the number of comments each message has.</p>
 			<h6 id="Showing_the_Comments">Showing the Comments</h6>
 			<p>To actually show the comments for each view, you need to get all the comments associated with a message in the messages controller:</p>
-			<pre class="brush: php; first-line: 40; highlight:[51,52,53,54,56,57,58,59] notranslate" title="">
+			<pre class="brush: php; first-line: 40; highlight:[44,50,51,52,53,54,55] notranslate" title="">
 				public function action_view($id = null)
 				{
-					is_null($id) and Response::redirect('Messages');
+					is_null($id) and Response::redirect('messages');
 
 					if ( ! $message = Model_Message::find($id))
 					{
 						Session::set_flash('error', 'Could not find message #'.$id);
-						Response::redirect('Messages');
-						return;
+						Response::redirect('messages');
 					}
 
-					$comments = Model_Comment::query()-&gt;where('message_id', $id)-&gt;get();
+					$comments = Model_Comment::find('all', array('where' =&gt; array('message_id' =&gt; $id)));
 
 					$data = array(
 						'message' =&gt; $message,
@@ -1122,7 +1120,7 @@
 					$this-&gt;template-&gt;content = View::forge('messages/view', $data);
 				}
 			</pre>
-			<p>The <code>-&gt;execute()</code> command returns the comments associated with the message as an associative array, which is passed to the view using our $data array.</p>
+			<p>The second parameter of the <code>find()</code> method defines the options in the query. Here we use it to define the <code>WHERE</code> statement in our query.</p>
 			<p>Now all we need to do is show it on the view.php page of the message views:</p>
 			<pre class="brush: php; first-line: 7; notranslate" title="">
 				&lt;strong&gt;Message:&lt;/strong&gt;
