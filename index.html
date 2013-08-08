@@ -945,7 +945,7 @@
 			<pre class="brush: php; first-line: 5; notranslate" title="">
 				public function action_index()
 				{
-					$data['messages'] = Model_Message::find('all');
+					$data = array('messages' =&gt; Model_Message::find('all'));
 					$this-&gt;template-&gt;title = &quot;Messages&quot;;
 					$this-&gt;template-&gt;content = View::forge('messages/index', $data);
 				}
