@@ -192,7 +192,7 @@
 
 			<h4>Config It Up</h4>
 			<p>For this tutorial we&#8217;re going to be using an <a href="http://en.wikipedia.org/wiki/Object-relational_mapping">orm package</a>, included in your install of Fuel. Head over to <code>/fuel/app/config/config.php</code> and uncomment the &#8220;always_load&#8221; array. Then uncomment the &#8220;packages&#8221; array and the &#8220;orm&#8221; package:</p>
-			<pre class="brush: php; first-line: 246; highlight:[249,262,263,264,300] notranslate" title="">
+			<pre class="brush: php; first-line: 257; highlight:[260,273,274,275,311] notranslate" title="">
 				/**************************************************************************/
 				/* Always Load                                                            */
 				/**************************************************************************/
@@ -250,7 +250,7 @@
 				),
 			</pre>
 			<p>While you're in this file, there's another Fuel preset you'll want to set. That'd be the default timezone. Fuel requires that you set a default timezone for it to work. Fuel uses PHP's built-in time zones, so check out <a href="http://www.php.net/manual/en/timezones.php">PHP's list of supported timezones</a> and find one that corresponds to yours.<br/><br/>For simplicity's sake, this tutorial will use America/New_York.</p>
-			<pre class="brush: php; first-line: 92; highlight:[98,99] notranslate" title="">
+			<pre class="brush: php; first-line: 90; highlight:[96,97] notranslate" title="">
 				/**
 				* DateTime settings
 				*
