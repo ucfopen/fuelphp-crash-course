@@ -150,6 +150,12 @@
 
 			<p>Next, open up command line, navigate to that folder, and type in the following: <code>git clone https://github.com/fuel/fuel.git .</code> Don't forget the period at the end, that will clone the files into the directory you are currently in.</p>
 
+			<!-- Once Fuel 1.7 or 1.6.2 is released, this and query troubleshooting should be removed. -->
+			<div class="expando-button"><h5><span class="title">Note</span>: Issue with Fuel 1.6.1 <span class="click_to_expand">(click to show)</span></h5></div>
+			<div class='expando-content'>
+			<b>Note:</b> Version 1.6.1 of Fuel contains a known bug with the auth package. To avoid this, run <code>git checkout 1.7/develop</code> to checkout the latest development branch. If the current version of Fuel is 1.6.2 or greater, you can safely ignore this step.
+			</div>
+
 			<p>Now that the files have been clones, you have to update all the registered <a href="http://git-scm.com/book/en/Git-Tools-Submodules">submodules</a> by typing in the following two commands:</p>
 
 			<p><code>git submodule init</code></p>
@@ -1626,6 +1632,18 @@
 				}
 			</pre>
 			<p>Don&#8217;t forget to echo the form in the login view! The code is very similar to <a href="#User_Controller_Registration_Function_Last_Step">the user registration view</a> with the exception of swapping <code>$reg</code> with <code>$form</code>.</p>
+
+			<!-- Once Fuel 1.7 or 1.6.2 is released, this should be removed. -->
+			<div class="expando-button"><h5><span class="title">Troubleshooting</span>: Query error upon registering <span class="click_to_expand">(click to show)</span></h5></div>
+			<div class="expando-content">
+				A known bug in Fuel 1.6.1's auth package may cause the following error to appear upon registration:<br>
+				<code>
+					SQLSTATE[42S22]: Column not found: 1054 Unknown column 'group_id' in 'field list'
+				</code>
+				<br>
+				If this occurs, see the instructions at the beginning of the tutorial for checking out the 1.7 branch of Fuel.
+			</div>
+			
 			<h5 id="Finishing_Touches">Finishing Touches</h5>
 			<p>Let&#8217;s quickly tidy up some of our code. Head over to the comments form view and remove the hidden field containing the id of the comment&#8217;s message:</p>
 			<pre class="brush: php; first-line: 10; highlight:[10] notranslate" title="">
