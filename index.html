@@ -1307,7 +1307,7 @@
 			<p>Now we&#8217;re going to go to the action_register function within the users controller.</p>
 			<p>We are going to change it from this:</p>
 			<pre class="brush: php; first-line: 18; notranslate" title="">
-				public static function action_register()
+				public function action_register()
 				{
 					$this-&gt;template-&gt;title = 'Users &amp;raquo; Register';
 					$this-&gt;template-&gt;content = View::forge('users/register');
@@ -1315,7 +1315,7 @@
 			</pre>
 			<p>To this:</p>
 			<pre class="brush: php; first-line: 18; highlight:[20,21,22,23,24,26] notranslate" title="">
-				public static function action_register()
+				public function action_register()
 				{
 					$auth = Auth::instance();
 					$view = View::forge('users/register');
@@ -1337,7 +1337,7 @@
 			<p><!-- This section needs cleanup and more clarity --></p>
 			<p>Now what happens when someone actually fills out the form? We need to have their registration validated. So we need to repopulate the form field with the values that the user typed in, and then send the whole form and authentication to a validation controller. Insert this into your users controller:</p>
 			<pre class="brush: php; first-line: 18; highlight:[25,26,27,28,29] notranslate" title="">
-				public static function action_register()
+				public function action_register()
 				{
 					$auth = Auth::instance();
 					$view = View::forge('users/register');
@@ -1553,7 +1553,7 @@
 			</pre>
 			<p>We have two more things to do. First, go to <code>action_register()</code> on the users controller and add a check for errors, if there are no errors found, log the user in and redirect to the homepage:</p>
 			<pre class="brush: php; first-line: 18; highlight:[20,21,22,23,23,24,25,26,27,28,29,30,31,32,33] notranslate" title="">
-				public static function action_register()
+				public function action_register()
 				{
 					$auth = Auth::instance();
 					$view = View::forge('users/register');
