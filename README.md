@@ -17,7 +17,7 @@ Contributors
 Links
 =====
 *	[Techrangers on Twitter](http://www.twitter.com/techrangers "Twitter Techrangers")
-*	[This Tutorial Online](http://techrangers.cdl.ucf.edu/fuel-crash-course/ "Fuel Crash Course")
+*	[This Tutorial Online](http://ucf.github.io/fuelphp-crash-course/ "Fuel Crash Course")
 *	[Techrangers](http://techrangers.cdl.ucf.edu "Techrangers")
 *	[Online@UCF](http://online.ucf.edu "Online at UCF")
 *	[Center for Distributed Learning](http://cdl.ucf.edu "Center for Distributed Learning")
