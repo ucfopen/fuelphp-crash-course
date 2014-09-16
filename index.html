@@ -150,12 +150,8 @@
 
 			<p>Next, open up command line, navigate to that folder, and type in the following: <code>git clone https://github.com/fuel/fuel.git .</code> Don't forget the period at the end, that will clone the files into the directory you are currently in.</p>
 
-			<p>Now that the files have been clones, you have to update all the registered <a href="http://git-scm.com/book/en/Git-Tools-Submodules">submodules</a> by typing in the following two commands:</p>
+			<p>Now that the files have been clones, you have to update all of the <a href="https://getcomposer.org/doc/00-intro.md#introduction">PHP dependencies</a> by typing in the following command:</p>
 
-			<p><code>git submodule init</code></p>
-			<p>then</p>
-			<p><code>git submodule update</code></p>
-			<p>then</p>
 			<p><code>php composer.phar update</code></p>
 
 			<h4 id="Checking_Your_Work">Checking Your Work</h4>
@@ -194,7 +190,7 @@
 
 			<h4>Config It Up</h4>
 			<p>For this tutorial we&#8217;re going to be using an <a href="http://en.wikipedia.org/wiki/Object-relational_mapping">orm package</a>, included in your install of Fuel. Head over to <code>/fuel/app/config/config.php</code> and uncomment the &#8220;always_load&#8221; array. Then uncomment the &#8220;packages&#8221; array and the &#8220;orm&#8221; package:</p>
-			<pre class="brush: php; first-line: 257; highlight:[260,273,274,275,311] notranslate" title="">
+			<pre class="brush: php; first-line: 258; highlight:[261,274,275,276,312] notranslate" title="">
 				/**************************************************************************/
 				/* Always Load                                                            */
 				/**************************************************************************/
@@ -212,7 +208,7 @@
 				* );
 				*/
 				'packages'  =&gt; array(
-				'orm',
+					'orm',
 				),
 
 				/**
@@ -658,7 +654,7 @@
 							'mysql_timestamp' => false,
 						),
 						'Orm\Observer_UpdatedAt' => array(
-							'events' => array('before_save'),
+							'events' => array('before_update'),
 							'mysql_timestamp' => false,
 						),
 					);
@@ -946,11 +942,11 @@
 			</pre>
 			<p>In the next section we aim to accomplish two things: showing the number of comments that a message has and showing the comments in a list when we view the message.</p>
 			<h5 id="Number_of_Comments">Number of Comments</h5>
-			<p>Open up the messages controller. At this point you should be pretty good at navigating the file tree, so we&#8217;ll stop giving you paths to things you&#8217;ve everything) and take a look at action_index:</p>
+			<p>Open up the messages controller. At this point you should be pretty good at navigating the file tree, so we&#8217;ll stop giving you paths to things you&#8217;ve seen) and take a look at action_index:</p>
 			<pre class="brush: php; first-line: 5; notranslate" title="">
 				public function action_index()
 				{
-					$data = array('messages' =&gt; Model_Message::find('all'));
+					$data[$messages] = Model_Message::find('all');
 					$this-&gt;template-&gt;title = &quot;Messages&quot;;
 					$this-&gt;template-&gt;content = View::forge('messages/index', $data);
 				}
@@ -1103,7 +1099,7 @@
 			<p>Now if you go to <a href="http://localhost/fuel_intro/public/messages/">http://localhost/fuel_intro/public/messages/</a> you should see the number of comments each message has.</p>
 			<h6 id="Showing_the_Comments">Showing the Comments</h6>
 			<p>To actually show the comments for each view, you need to get all the comments associated with a message in the messages controller:</p>
-			<pre class="brush: php; first-line: 40; highlight:[44,50,51,52,53,54,55] notranslate" title="">
+			<pre class="brush: php; first-line: 36; highlight:[40,46,47,48,49,50,51] notranslate" title="">
 				public function action_view($id = null)
 				{
 					is_null($id) and Response::redirect('messages');
@@ -1127,7 +1123,7 @@
 			</pre>
 			<p>The second parameter of the <code>find()</code> method defines the options in the query. Here we use it to define the <code>WHERE</code> statement in our query.</p>
 			<p>Now all we need to do is show it on the view.php page of the message views:</p>
-			<pre class="brush: php; first-line: 7; notranslate" title="">
+			<pre class="brush: php; first-line: 7; highlight:[9,10,11,12,13,14,15,16,17,18,19,20,21] notranslate" title="">
 				&lt;strong&gt;Message:&lt;/strong&gt;
 				&lt;?php echo $message-&gt;message; ?&gt;&lt;/p&gt;
 				&lt;h3&gt;Comments&lt;/h3&gt;
@@ -1153,7 +1149,7 @@
 			<h4 id="Login_Page_and_User_Creation">Creating Users and Login</h4>
 			<p>At this point we&#8217;ve made our messages and comments system. However, we don&#8217;t want just anyone to be able to edit/delete messages, and it would be nice if messages were associated with some kind of username, so we&#8217;re going to make a simple and generic user system for our messages.</p>
 			<p>First add the &#8216;auth&#8217; package to the package list in the config file. That&#8217;s <code>fuel/app/config/config.php</code>, in case you forgot.</p>
-			<pre class="brush: php; first-line: 262; highlight:[264] notranslate" title="">
+			<pre class="brush: php; first-line: 274; highlight:[276] notranslate" title="">
 				'packages'	=&gt; array(
 					'orm',
 					'auth',
@@ -1224,7 +1220,7 @@
 				<h5 id="The_Default_Table">The Default Table</h5>
 				<p>The auth package defaults to a user table called &#8220;users&#8221; by default, so we don't need to do change any configuration options here. But it&#8217;s good to know where to find the default table name, and how to change it. The auth package has it's own configurations located within the package directory, the following file defines what the user table is called.</p>
 				<p><code>/fuel/packages/auth/config/simpleauth.php</code>:</p>
-				<pre class="brush: php; first-line: 29; notranslate" title="">
+				<pre class="brush: php; first-line: 36; notranslate" title="">
 					/**
 					* DB table name for the user table
 					*/
@@ -1234,7 +1230,7 @@
 
 				<h5 id="Registration">Registration</h5>
 				<p>Now that we have a model, controller, and views, we need to add a link to the registration so people can actually sign up! Since this should be on the top of all the pages, we need to edit the template page for the entire site. So go to <code>/fuel/app/views/template.php</code> and add the following:</p>
-				<pre class="brush: php; first-line: 11; highlight:[17,18,19,20,21,22,23,24,25,26,27] notranslate" title="">
+				<pre class="brush: php; first-line: 11; highlight:[16,17,18,19,20,21,22,23,24,25,26] notranslate" title="">
 					&lt;body&gt;
 						&lt;div class="container"&gt;
 							&lt;div class="col-md-12"&gt;
@@ -1552,7 +1548,7 @@
 				}
 			</pre>
 			<p>We have two more things to do. First, go to <code>action_register()</code> on the users controller and add a check for errors, if there are no errors found, log the user in and redirect to the homepage:</p>
-			<pre class="brush: php; first-line: 18; highlight:[20,21,22,23,23,24,25,26,27,28,29,30,31,32,33] notranslate" title="">
+			<pre class="brush: php; first-line: 18; highlight:[29,30,31,32,33,34,35,36,37] notranslate" title="">
 				public function action_register()
 				{
 					$auth = Auth::instance();
@@ -1573,12 +1569,6 @@
 							Session::set_flash('success', 'User created.');
 							Response::redirect('./');
 						}
-					}
-
-					if (Input::post())
-					{
-						$form-&gt;repopulate();
-						$result = Model_User::validate_registration($form, $auth);
 					}
 
 					$view-&gt;set('reg', $form-&gt;build(), false);
