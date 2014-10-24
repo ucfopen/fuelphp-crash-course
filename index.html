@@ -117,7 +117,7 @@
 				<div class="windows">
 					<p>First and foremost, here&#8217;s what you&#8217;re going to need on Windows:</p>
 					<ol>
-						<li><a href="http://fuelphp.com">Fuel PHP framework</a> (we&#8217;re using v1.7)</li>
+						<li><a href="http://fuelphp.com">Fuel PHP framework</a> (we&#8217;re using v1.7.2)</li>
 						<li><a href="http://www.apachefriends.org/en/xampp.html">XAMPP</a> (if you&#8217;re having trouble installing this, <a href="http://keito.me/tutorials/xampp">go here for a tutorial</a>)</li>
 						<li><a href="http://www.nextofwindows.com/how-to-addedit-environment-variables-in-windows-7/">PHP Environment Variables Configured in Windows</a> (for command line executions)</li>
 						<li>phpMyAdmin (it comes with XAMPP)</li>
@@ -1324,8 +1324,14 @@
 			</pre>
 			<p>We will use <code>$auth</code> to authenticate users, <code>$view</code> will be the view that will be displayed to the user, and <code>$form</code> will be the fieldset that we&#8217;re sending to the model. <code>Model_User::register($form)</code> just populates the form with the fields.</p>
 			<p>If we build the form in the view, we can see how this will work. Go to the user register view and add:</p>
-			<pre class="brush: php; first-line: 2; highlight:[2] notranslate" title="" id="User_Controller_Registration_Function_Last_Step">
+			<pre class="brush: php; first-line: 1; highlight:[2] notranslate" title="" id="User_Controller_Registration_Function_Last_Step">
+				&lt;ul class=&quot;nav nav-pills&quot;&gt;
+					&lt;li class='&lt;?php echo Arr::get($subnav, &quot;login&quot; ); ?&gt;'&gt;&lt;?php echo Html::anchor('users/login','Login');?&gt;&lt;/li&gt;
+					&lt;li class='&lt;?php echo Arr::get($subnav, &quot;logout&quot; ); ?&gt;'&gt;&lt;?php echo Html::anchor('users/logout','Logout');?&gt;&lt;/li&gt;
+					&lt;li class='&lt;?php echo Arr::get($subnav, &quot;register&quot; ); ?&gt;'&gt;&lt;?php echo Html::anchor('users/register','Register');?&gt;&lt;/li&gt;
+				&lt;/ul&gt;
 				&lt;p&gt;Register&lt;/p&gt;
+				&lt;?php if (isset($errors)) { echo $errors; } ?&gt;
 				&lt;?php echo $reg; ?&gt;
 			</pre>
 			<p>Once you do this, you should see the registration form if you go to <a href="http://localhost/fuel_intro/public/users/register">http://localhost/fuel_intro/public/index.php/users/register</a>.</p>
