@@ -128,7 +128,7 @@
 				<div class="linux">
 					<p>First and foremost, here&#8217;s what you&#8217;re going to need on Linux/OSX:</p>
 					<ol>
-						<li><a href="http://fuelphp.com">Fuel PHP framework</a> (we&#8217;re using v1.7)</li>
+						<li><a href="http://fuelphp.com">Fuel PHP framework</a> (we&#8217;re using v1.7.2)</li>
 						<li><a href="http://www.apachefriends.org/en/xampp.html">XAMPP</a> (for beginners) or any basic <a href="http://en.wikipedia.org/wiki/LAMP_(software_bundle)">LAMP package</a> <br>(many tutorials exist, here are some for a few popular linux distros: <a href="https://help.ubuntu.com/community/ApacheMySQLPHP">Ubuntu</a>, <a href="http://wiki.debian.org/LaMp">Debian</a>, <a href="http://en.opensuse.org/SDB:Linux_Apache_MySQL_PHP">SUSE</a>, and <a href="http://fedorasolved.org/server-solutions/lamp-stack">Fedora</a>)</li>
 						<li>phpMyAdmin (installation will vary depending on your os, XAMPP users have it already!)</li>
 						<li>A basic understanding of the <a href="http://php-html.net/tutorials/model-view-controller-in-php/">Model-View-Controller (MVC) pattern</a>.</li>
@@ -387,38 +387,39 @@
 			<div class="expando-content">
 				<div id="before_box">
 					<pre class="brush: php; highlight:[4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26] notranslate" title="">
-						&lt;h2&gt;Listing Messages&lt;/h2&gt;
+						&lt;h2&gt;Listing &lt;span class='muted'&gt;Messages&lt;/span&gt;&lt;/h2&gt;
 						&lt;br&gt;
 						&lt;?php if ($messages): ?&gt;
-							&lt;table class="table table-striped"&gt;
-								&lt;thead&gt;
-									&lt;tr&gt;
-										&lt;th&gt;Name&lt;/th&gt;
-										&lt;th&gt;Message&lt;/th&gt;
-									&lt;th&gt;&lt;/th&gt;
-									&lt;/tr&gt;
-								&lt;/thead&gt;
-								&lt;tbody&gt;
-								&lt;?php foreach ($messages as $message): ?&gt;		&lt;tr&gt;
+						&lt;table class=&quot;table table-striped&quot;&gt;
+							&lt;thead&gt;
+								&lt;tr&gt;
+									&lt;th&gt;Name&lt;/th&gt;
+									&lt;th&gt;Message&lt;/th&gt;
+									&lt;th&gt;&amp;nbsp;&lt;/th&gt;
+								&lt;/tr&gt;
+							&lt;/thead&gt;
+							&lt;tbody&gt;
+						&lt;?php foreach ($messages as $item): ?&gt;		&lt;tr&gt;
 
-									&lt;td&gt;&lt;?php echo $message-&gt;name; ?&gt;&lt;/td&gt;
-									&lt;td&gt;&lt;?php echo $message-&gt;message; ?&gt;&lt;/td&gt;
+									&lt;td&gt;&lt;?php echo $item-&gt;name; ?&gt;&lt;/td&gt;
+									&lt;td&gt;&lt;?php echo $item-&gt;message; ?&gt;&lt;/td&gt;
 									&lt;td&gt;
-									&lt;?php echo Html::anchor('messages/view/'.$message-&gt;id, 'View'); ?&gt; |
-									&lt;?php echo Html::anchor('messages/edit/'.$message-&gt;id, 'Edit'); ?&gt; |
-									&lt;?php echo Html::anchor('messages/delete/'.$message-&gt;id, 'Delete', array('onclick' =&gt; "return confirm('Are you sure?')")); ?&gt;
+										&lt;div class=&quot;btn-toolbar&quot;&gt;
+											&lt;div class=&quot;btn-group&quot;&gt;
+												&lt;?php echo Html::anchor('messages/view/'.$item-&gt;id, '&lt;i class=&quot;icon-eye-open&quot;&gt;&lt;/i&gt; View', array('class' =&gt; 'btn btn-small')); ?&gt;						&lt;?php echo Html::anchor('messages/edit/'.$item-&gt;id, '&lt;i class=&quot;icon-wrench&quot;&gt;&lt;/i&gt; Edit', array('class' =&gt; 'btn btn-small')); ?&gt;						&lt;?php echo Html::anchor('messages/delete/'.$item-&gt;id, '&lt;i class=&quot;icon-trash icon-white&quot;&gt;&lt;/i&gt; Delete', array('class' =&gt; 'btn btn-small btn-danger', 'onclick' =&gt; &quot;return confirm('Are you sure?')&quot;)); ?&gt;					&lt;/div&gt;
+										&lt;/div&gt;
 
 									&lt;/td&gt;
-									&lt;/tr&gt;
-								&lt;?php endforeach; ?&gt;
-								&lt;/tbody&gt;
-							&lt;/table&gt;
+								&lt;/tr&gt;
+						&lt;?php endforeach; ?&gt;	&lt;/tbody&gt;
+						&lt;/table&gt;
 
 						&lt;?php else: ?&gt;
-							&lt;p&gt;No Messages.&lt;/p&gt;
-						&lt;?php endif; ?&gt;
-						&lt;p&gt;
-							&lt;?php echo Html::anchor('messages/create', 'Add new Message', array('class' =&gt; 'btn success')); ?&gt;
+						&lt;p&gt;No Messages.&lt;/p&gt;
+
+						&lt;?php endif; ?&gt;&lt;p&gt;
+							&lt;?php echo Html::anchor('messages/create', 'Add new Message', array('class' =&gt; 'btn btn-success')); ?&gt;
+
 						&lt;/p&gt;
 					</pre>
 				</div>
@@ -426,8 +427,8 @@
 
 			<p><strong>After:</strong></p>
 			<pre class="brush: php; highlight:[4,5,6,7,8,9,10,11,12,13,14,15] notranslate" title="">
-				&lt;h2&gt;Listing Messages&lt;/h2&gt;
-				&lt;br/&gt;
+				&lt;h2&gt;Listing &lt;span class='muted'&gt;Messages&lt;/span&gt;&lt;/h2&gt;
+				&lt;br&gt;
 				&lt;?php if ($messages): ?&gt;
 					&lt;ul&gt;
 						&lt;?php foreach ($messages as $message): ?&gt;
@@ -436,7 +437,7 @@
 									&lt;li&gt;&lt;?php echo $message-&gt;message; ?&gt;&lt;/li&gt;
 									&lt;li&gt;&lt;?php echo Html::anchor('messages/view/'.$message-&gt;id, 'View'); ?&gt;&lt;/li&gt;
 									&lt;li&gt;&lt;?php echo Html::anchor('messages/edit/'.$message-&gt;id, 'Edit'); ?&gt;&lt;/li&gt;
-									&lt;li&gt;&lt;?php echo Html::anchor('messages/delete/'.$message-&gt;id, 'Delete', array('onclick' =&gt; "return confirm('Are you sure?')")); ?&gt;&lt;/li&gt;
+									&lt;li&gt;&lt;?php echo Html::anchor('messages/delete/'.$message-&gt;id, 'Delete', array('onclick' =&gt; &quot;return confirm('Are you sure?')&quot;)); ?&gt;&lt;/li&gt;
 								&lt;/ul&gt;
 							&lt;/li&gt;
 						&lt;?php endforeach; ?&gt;
@@ -446,7 +447,7 @@
 					&lt;p&gt;No Messages.&lt;/p&gt;
 				&lt;?php endif; ?&gt;
 				&lt;p&gt;
-					&lt;?php echo Html::anchor('messages/create', 'Add new Message', array('class' =&gt; 'btn success')); ?&gt;
+					&lt;?php echo Html::anchor('messages/create', 'Add new Message', array('class' =&gt; 'btn btn-success')); ?&gt;
 				&lt;/p&gt;
 			</pre>
 			<p>Now your code is more semantic, if not more understandable (If you don&#8217;t like the bullets or the list view, <a href="http://css.maxdesign.com.au/listutorial/horizontal_introduction.htm">you can take them away using CSS</a>).</p>
@@ -645,19 +646,22 @@
 						'comment',
 						'message_id',
 						'created_at',
-						'updated_at'
+						'updated_at',
 					);
 
 					protected static $_observers = array(
-						'Orm\Observer_CreatedAt' => array(
-							'events' => array('before_insert'),
-							'mysql_timestamp' => false,
+						'Orm\Observer_CreatedAt' =&gt; array(
+							'events' =&gt; array('before_insert'),
+							'mysql_timestamp' =&gt; false,
 						),
-						'Orm\Observer_UpdatedAt' => array(
-							'events' => array('before_update'),
-							'mysql_timestamp' => false,
+						'Orm\Observer_UpdatedAt' =&gt; array(
+							'events' =&gt; array('before_update'),
+							'mysql_timestamp' =&gt; false,
 						),
 					);
+
+					protected static $_table_name = 'comments';
+
 				}
 			</pre>
 			<h5 id="Why_Its_So_Small">Why It&#8217;s So Small</h5>
@@ -681,7 +685,7 @@
 			<h5 id="Adding_to_the_Database">Adding to the Database</h5>
 			<p>We can now edit the comments controller to actually add our comments to the database. So go ahead and open the <code>/fuel/app/classes/controller/comments.php</code> file.</p>
 			<p>First and foremost, an <code>$id</code> variable is going to be taken in, so we need to add that as an attribute to the action_create function:</p>
-			<pre class="brush: php; first-line: 12; highlight:[12] notranslate" title="">
+			<pre class="brush: php; first-line: 13; highlight:[13] notranslate" title="">
 				public function action_create($id = null)
 				{
 					$data[&quot;subnav&quot;] = array('edit'=&gt; 'active');
@@ -691,7 +695,7 @@
 				}
 			</pre>
 			<p>Notice that we are setting the <code>$id</code> to null by default. Now we need to check to make sure that they&#8217;ve completed the form, so we add an if statement:</p>
-			<pre class="brush: php; first-line: 12; highlight:[14,15,16] notranslate" title="">
+			<pre class="brush: php; first-line: 13; highlight:[15,16,17] notranslate" title="">
 				public function action_create($id = null)
 				{
 					if (Input::post())
@@ -706,7 +710,7 @@
 			</pre>
 			<p>This is using Fuel&#8217;s Input class, but we could have just as easily used <code>"if ($_POST)</code>&#8221; as well.</p>
 			<p>But what about going to the form before submitting?</p>
-			<pre class="brush: php; first-line: 12; highlight:[17,18,19,20] notranslate" title="">
+			<pre class="brush: php; first-line: 13; highlight:[18,19,20,21] notranslate" title="">
 				public function action_create($id = null)
 				{
 					if (Input::post())
@@ -725,7 +729,7 @@
 			</pre>
 			<p>This means if they didn&#8217;t post anything, take the <code>$id</code> and turn it into a variable called <code>$message</code> that the view can use.</p>
 			<p>Now we need to build a new comment model in order to save the comment into the database.</p>
-			<pre class="brush: php; first-line: 12; highlight:[16,17,18,19,20] notranslate" title="">
+			<pre class="brush: php; first-line: 13; highlight:[17,18,19,20,21] notranslate" title="">
 				public function action_create($id = null)
 				{
 					if (Input::post())
@@ -748,7 +752,7 @@
 				}
 			</pre>
 			<p><code>$comment</code> is now an object that has the comment information in it, so we need to try and save the comment:</p>
-			<pre class="brush: php; first-line: 12; highlight:[22,23,24] notranslate" title="">
+			<pre class="brush: php; first-line: 13; highlight:[23,24,25] notranslate" title="">
 				public function action_create($id = null)
 				{
 					if (Input::post())
@@ -777,7 +781,7 @@
 			<p>&#8216;And&#8217; is used here instead of &#8216;&amp;&amp;&#8217; because it&#8217;s part of the <a href="http://fuelphp.com/docs/general/coding_standards.html#comparison_logical">Fuel coding standards</a>.</p>
 			<p>If the <code>if</code> statement is successful, it will save the comment to the database, so we should now set a flash to show that to the user. <a href="http://fuelphp.com/docs/classes/session/usage.html#method_set_flash">Session Flashes</a> are for information with a limited lifespan, such as presenting success or failure information.</p>
 			<p>So we can set our flash and redirect our user back to the message they were viewing:</p>
-			<pre class="brush: php; first-line: 12; highlight:[24,25] notranslate" title="">
+			<pre class="brush: php; first-line: 13; highlight:[25,26] notranslate" title="">
 				public function action_create($id = null)
 				{
 					if (Input::post())
@@ -806,7 +810,7 @@
 				}
 			</pre>
 			<p>or else we set the flash to say that the comment couldn&#8217;t be saved:</p>
-			<pre class="brush: php; first-line: 12; highlight:[27,28,29,30] notranslate" title="">
+			<pre class="brush: php; first-line: 13; highlight:[28,29,30,31] notranslate" title="">
 				public function action_create($id = null)
 				{
 					if (Input::post())
