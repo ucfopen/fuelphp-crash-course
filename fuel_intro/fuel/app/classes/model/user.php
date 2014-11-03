@@ -21,21 +21,23 @@ class Model_User extends \Orm\Model
 			'mysql_timestamp' => false,
 		),
 		'Orm\Observer_UpdatedAt' => array(
-			'events' => array('before_save'),
+			'events' => array('before_update'),
 			'mysql_timestamp' => false,
 		),
 	);
 
-	public static function register(Fieldset $form)
+	protected static $_table_name = 'users';
+
+	public static function populate_register_fieldset(Fieldset $form)
 	{
 		$form->add('username', 'Username:')->add_rule('required');
-		$form->add('password', 'Choose Password:', array('type' => 'password'))->add_rule('required');
+		$form->add('password', 'Choose Password', array('type'=> 'password'))->add_rule('required');
 		$form->add('password2', 'Re-type Password:', array('type' => 'password'))->add_rule('required');
 		$form->add('email', 'E-mail:')->add_rule('required')->add_rule('valid_email');
 		$form->add('submit', ' ', array('type' => 'submit', 'value' => 'Register'));
 		return $form;
 	}
-
+	 
 	public static function validate_registration(Fieldset $form, $auth)
 	{
 		$form->field('password')->add_rule('match_value', $form->field('password2')->get_attribute('value'));
@@ -82,4 +84,5 @@ class Model_User extends \Orm\Model
 			return array('e_found' => true, 'errors' => $errors);
 		}
 	}
+
 }

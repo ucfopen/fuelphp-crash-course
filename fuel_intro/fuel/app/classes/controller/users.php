@@ -1,72 +1,80 @@
 <?php
 
-class Controller_Users extends Controller_Template
+class Controller_Comments extends Controller_Template
 {
 
-	public function action_login()
+	public function action_edit($id = null)
 	{
-		$view = View::forge('users/login');
-		$form = Form::forge('login');
-		$auth = Auth::instance();
-		$form->add('username', 'Username:');
-		$form->add('password', 'Password:', array('type' => 'password'));
-		$form->add('submit', ' ', array('type' => 'submit', 'value' => 'Login'));
+		$comment = Model_Comment::find($id);
 		if (Input::post())
 		{
-			if ($auth->login(Input::post('username'), Input::post('password')))
+			$comment->name = Input::post('name');
+			$comment->comment = Input::post('comment');
+			if ($comment->save())
 			{
-				Session::set_flash('success', 'Successfully logged in! Welcome '.$auth->get_screen_name());
-				Response::redirect('messages/');
+				Session::set_flash('success', 'Updated comment #'.$id);
+				Response::redirect('messages/view/'.$comment->message_id);
 			}
 			else
 			{
-				Session::set_flash('error', 'Username or password incorrect.');
+				Session::set_flash('error', 'Could not update comment #'.$id);
 			}
 		}
-		$view->set('form', $form, false);
-		$this->template->title = 'User &raquo; Login';
-		$this->template->content = $view;
+		else
+		{
+			$this->template->set_global('comment', $comment, false);
+			$this->template->set_global('message', $comment->message_id, false);
+		}
+		$data["subnav"] = array('edit'=> 'active' );
+		$this->template->title = 'Comments &raquo; Edit';
+		$data['form'] = View::forge('comments/_form');
+		$this->template->content = View::forge('comments/edit', $data);
 	}
 
-	public function action_logout()
+	public function action_create($id = null)
 	{
-		$auth = Auth::instance();
-		$auth->logout();
-		Session::set_flash('success', 'Logged out.');
-		Response::redirect('messages/');
-	}
-
-	public function action_register()
-	{
-		$auth = Auth::instance();
-		$form = Fieldset::forge('register');
-		$view = View::forge('users/register');
-		Model_User::register($form);
-
 		if (Input::post())
 		{
-			$form->repopulate();
-			$result = Model_User::validate_registration($form, $auth);
-			if ($result['e_found'])
+			$comment = Model_Comment::forge(array(
+				'name' => Auth::instance()->get_screen_name(),
+				'comment' => Input::post('comment'),
+				'message_id' => Input::post('message_id'),
+			));
+
+			if ($comment and $comment->save())
 			{
-				$view->set('errors', $result['errors'], false);
+				Session::set_flash('success', 'Added comment #'.$comment->id.'.');
+				Response::redirect('messages/view/'.$comment->message_id);
 			}
 			else
 			{
-				Session::set_flash('success', 'User created.');
-				Response::redirect('./');
+				Session::set_flash('error', 'Could not save comment.');
 			}
 		}
-
-		if (Input::post())
+		else
 		{
-			$form->repopulate();
-			$result = Model_User::validate_registration($form, $auth);
+			$this->template->set_global('message', $id, false);
 		}
 
-		$view->set('reg', $form->build(), false);
-		$this->template->title = 'User &raquo; Register';
-		$this->template->content = $view;
+		$data["subnav"] = array('create'=> 'active' );
+		$this->template->title = 'Comments &raquo; Create';
+		$data['form'] = View::forge('comments/_form');
+		$this->template->content = View::forge('comments/create', $data);
+	}
+
+	public function action_delete($id)
+	{
+		$comment = Model_Comment::find($id);
+		if ($comment)
+		{
+			$comment->delete();
+			Session::set_flash('success', 'Deleted comment #'.$id);
+		}
+		else
+		{
+			Session::set_flash('error', 'Could not delete comment #'.$id);
+		}
+		Response::redirect('messages/view/'.$comment->message_id);
 	}
 
 }
