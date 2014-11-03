@@ -514,7 +514,7 @@
 
 					public function action_edit()
 					{
- 						$data["subnav"] = array('edit'=> 'active');
+						$data["subnav"] = array('edit'=> 'active');
 						$this->template->title = 'Comments &amp;raquo; Edit';
 						$this->template->content = View::forge('comments/edit', $data);
 					}
@@ -552,61 +552,65 @@
 			<p>Go ahead and create a new file called<code>/fuel/app/views/comments/_form.php</code>.</p>
 			<p>Since this is a form template, you&#8217;re going to start the file with new form tags. Rather than using straight HTML, Fuel has classes for HTML elements that we will use. To open a new form write the following:</p>
 			<pre class="brush: php; highlight:[1] notranslate" title="">
-				&lt;?php echo Form::open(); ?&gt;
+				&lt;?php echo Form::open(array(&quot;class&quot;=&gt;&quot;form-horizontal&quot;)); ?&gt;
 			</pre>
-			<p>This is analogous to writing &#8220;<code>&lt;form action="http://localhost/fuel_intro/public/index.php/comments/create" accept-charset="utf-8" method="post"&gt;</code>&#8221; so it&#8217;s a good idea to use these HTML elements when possible.</p>
+			<p>This is analogous to writing &#8220;<code>&lt;form class="form-horizontal" action="http://localhost/fuel_intro/public/index.php/comments/create" accept-charset="utf-8" method="post"&gt;</code>&#8221; so it&#8217;s a good idea to use these HTML elements when possible.</p>
 			<p>Next, create a name field for the comment:</p>
-			<pre class="brush: php; highlight:[2,3,4,5] notranslate" title="">
-				&lt;?php echo Form::open(); ?&gt;
-				&lt;p&gt;
-					&lt;?php echo Form::label('Name', 'name'); ?&gt;
-					&lt;?php echo Form::input('name', Input::post('name', isset($comment) ? $comment-&gt;name : '')); ?&gt;
-				&lt;/p&gt;
+			<pre class="brush: php; highlight:[2,3,4,5,6] notranslate" title="">
+				&lt;?php echo Form::open(array(&quot;class&quot;=&gt;&quot;form-horizontal&quot;)); ?&gt;
+					&lt;fieldset&gt;
+						&lt;div class=&quot;form-group&quot;&gt;
+							&lt;?php echo Form::label('Name', 'name', array('class'=&gt;'control-label')); ?&gt;
+							&lt;?php echo Auth::instance()-&gt;get_screen_name(); ?&gt;
+						&lt;/div&gt;
 			</pre>
 			<ul>
 				<li><code>Form::label()</code> takes (in order) the text that will be displayed to the user and the id that should match the name attribute of the input field.</li>
 				<li><code>Form::input()</code> takes (in order) the name attribute of the form and the default value of that form element.</li>
 			</ul>
 			<p>You can repeat this code for the comment text as well. The only difference is that instead of <code>Form::input</code>, you&#8217;ll need to use <code>Form::textarea()</code>, which takes in the same parameters.</p>
-			<pre class="brush: php; highlight:[6,7,8,9] notranslate" title="">
-				&lt;?php echo Form::open(); ?&gt;
-				&lt;p&gt;
-					&lt;?php echo Form::label('Name', 'name'); ?&gt;
-					&lt;?php echo Form::input('name', Input::post('name', isset($comment) ? $comment-&gt;name : '')); ?&gt;
-				&lt;/p&gt;
-				&lt;p&gt;
-					&lt;?php echo Form::label('Comment', 'comment'); ?&gt;
-					&lt;?php echo Form::textarea('comment', Input::post('comment', isset($comment) ? $comment-&gt;comment : ''), array('cols' =&gt; 60, 'rows' =&gt; 8)); ?&gt;
-				&lt;/p&gt;
+			<pre class="brush: php; highlight:[7,8,9,10] notranslate" title="">
+				&lt;?php echo Form::open(array(&quot;class&quot;=&gt;&quot;form-horizontal&quot;)); ?&gt;
+					&lt;fieldset&gt;
+						&lt;div class=&quot;form-group&quot;&gt;
+							&lt;?php echo Form::label('Name', 'name', array('class'=&gt;'control-label')); ?&gt;
+							&lt;?php echo Auth::instance()-&gt;get_screen_name(); ?&gt;
+						&lt;/div&gt;
+						&lt;div class=&quot;form-group&quot;&gt;
+							&lt;?php echo Form::label('Comment', 'comment', array('class'=&gt;'control-label')); ?&gt;
+							&lt;?php echo Form::textarea('comment', Input::post('comment', isset($comment) ? $comment-&gt;comment : ''), array('cols' =&gt; 60, 'rows' =&gt; 8)); ?&gt;
+						&lt;/div&gt;
 			</pre>
 			<p>Did you notice the extra bit of code at the end? The final parameter you can pass for the label, input, or textarea tags is an array of attributes. So when we write &#8220;<code>array('cols' =&gt; 60, 'rows' =&gt; 8));</code>&#8221; at the end of the textarea function,  it&#8217;s the same as saying &#8220;<code>&lt;textarea cols="60" rows="8"&gt;&lt;/textarea&gt;</code>&#8220;</p>
 			<p>Next we just need to add the submit button, a hidden input to keep track of the message this comment is attached to, and close the form:</p>
-			<pre class="brush: php; highlight:[10,11,12,13,14] notranslate" title="">
-				&lt;?php echo Form::open(); ?&gt;
-				&lt;p&gt;
-					&lt;?php echo Form::label('Name', 'name'); ?&gt;
-					&lt;?php echo Form::input('name', Input::post('name', isset($comment) ? $comment-&gt;name : '')); ?&gt;
-				&lt;/p&gt;
-				&lt;p&gt;
-					&lt;?php echo Form::label('Comment', 'comment'); ?&gt;
-					&lt;?php echo Form::textarea('comment', Input::post('comment', isset($comment) ? $comment-&gt;comment : ''), array('cols' =&gt; 60, 'rows' =&gt; 8)); ?&gt;
-				&lt;/p&gt;
-				&lt;?php echo Form::hidden('message_id', Input::post('message_id', isset($message) ? $message : '')); ?&gt;
-				&lt;div class=&quot;actions&quot;&gt;
-					&lt;?php echo Form::submit(); ?&gt;
-				&lt;/div&gt;
+			<pre class="brush: php; highlight:[11,12,13,14,15,16] notranslate" title="">
+				&lt;?php echo Form::open(array(&quot;class&quot;=&gt;&quot;form-horizontal&quot;)); ?&gt;
+					&lt;fieldset&gt;
+						&lt;div class=&quot;form-group&quot;&gt;
+							&lt;?php echo Form::label('Name', 'name', array('class'=&gt;'control-label')); ?&gt;
+							&lt;?php echo Auth::instance()-&gt;get_screen_name(); ?&gt;
+						&lt;/div&gt;
+						&lt;div class=&quot;form-group&quot;&gt;
+							&lt;?php echo Form::label('Comment', 'comment', array('class'=&gt;'control-label')); ?&gt;
+							&lt;?php echo Form::textarea('comment', Input::post('comment', isset($comment) ? $comment-&gt;comment : ''), array('cols' =&gt; 60, 'rows' =&gt; 8)); ?&gt;
+						&lt;/div&gt;
+						&lt;div class=&quot;actions&quot;&gt;
+							&lt;?php echo Form::hidden('message_id', Input::post('message_id', isset($message) ? $message : '')); ?&gt;
+							&lt;?php echo Form::submit('submit', 'Submit', array('class' =&gt; 'btn btn-primary')); ?&gt;
+						&lt;/div&gt;
+					&lt;/fieldset&gt;
 				&lt;?php echo Form::close(); ?&gt;
 			</pre>
 			<p>Now open up <code>fuel/app/views/comments/create.php</code> and write the following code:</p>
 			<pre class="brush: php; highlight:[5,6,7,8] notranslate" title="">
-            <ul class="nav nav-pills">
-        		<li class='<?php echo Arr::get($subnav, "edit" ); ?>'>&lt;?php echo Html::anchor('comments/edit','Edit');?&gt;</li>
-        		<li class='<?php echo Arr::get($subnav, "create" ); ?>'>&lt;?php echo Html::anchor('comments/create','Create');?&gt;</li>
+			<ul class="nav nav-pills">
+				<li class='<?php echo Arr::get($subnav, "edit" ); ?>'>&lt;?php echo Html::anchor('comments/edit','Edit');?&gt;</li>
+				<li class='<?php echo Arr::get($subnav, "create" ); ?>'>&lt;?php echo Html::anchor('comments/create','Create');?&gt;</li>
 			</ul>
-            &lt;?php $message = isset($message) ? $message : ''; ?&gt;
-            &lt;h2 class=&quot;first&quot;&gt;New Comment&lt;/h2&gt;
-            &lt;?php echo $form; ?&gt;
-            &lt;p&gt;&lt;?php echo Html::anchor('messages/view/'.$message, 'Back'); ?&gt;&lt;/p&gt;
+			&lt;?php $message = isset($message) ? $message : ''; ?&gt;
+			&lt;h2 class=&quot;first&quot;&gt;New Comment&lt;/h2&gt;
+			&lt;?php echo $form; ?&gt;
+			&lt;p&gt;&lt;?php echo Html::anchor('messages/view/'.$message, 'Back'); ?&gt;&lt;/p&gt;
 			</pre>
 			<p>This bit of code does the following:</p>
 			<ul>
@@ -846,7 +850,7 @@
 			<p>Now we&#8217;re going to add a link to the <code>view.php</code> file in the messages view, so you can add a comment to any message.</p>
 			<p>Go to <code>/fuel/app/views/messages/view.php</code> and add:</p>
 
-			<pre class="brush: php; first-line: 3; highlight:[11] notranslate" title="">
+			<pre class="brush: php; first-line: 1; highlight:[10] notranslate" title="">
 				&lt;p&gt;
 					&lt;strong&gt;Name:&lt;/strong&gt;
 					&lt;?php echo $message-&gt;name; ?&gt;
@@ -917,8 +921,8 @@
 			<p>All that remains is to fix up the comment edit view. Go ahead and open up <code>fuel/app/views/comments/edit.php</code>. It'll wind up looking like the view for editing messages, with a few differences:
 				<pre class="brush: php; highlight:[5,6,7,8,9] notranslate" title="">
 					&lt;ul class="nav nav-pills"&gt;
-        				&lt;li class='&lt;?php echo Arr::get($subnav, "edit" ); ?&gt;'&gt;&lt;?php echo Html::anchor('comments/edit','Edit');?&gt;&lt;/li&gt;
-        				&lt;li class='&lt;?php echo Arr::get($subnav, "create" ); ?&gt;'&gt;&lt;?php echo Html::anchor('comments/create','Create');?&gt;&lt;/li&gt;
+						&lt;li class='&lt;?php echo Arr::get($subnav, "edit" ); ?&gt;'&gt;&lt;?php echo Html::anchor('comments/edit','Edit');?&gt;&lt;/li&gt;
+						&lt;li class='&lt;?php echo Arr::get($subnav, "create" ); ?&gt;'&gt;&lt;?php echo Html::anchor('comments/create','Create');?&gt;&lt;/li&gt;
 					&lt;/ul&gt;
 					&lt;h2&gt;Editing Comment&lt;/h2&gt;
 					&lt;br/&gt;
@@ -1127,19 +1131,21 @@
 			</pre>
 			<p>The second parameter of the <code>find()</code> method defines the options in the query. Here we use it to define the <code>WHERE</code> statement in our query.</p>
 			<p>Now all we need to do is show it on the view.php page of the message views:</p>
-			<pre class="brush: php; first-line: 7; highlight:[9,10,11,12,13,14,15,16,17,18,19,20,21] notranslate" title="">
-				&lt;strong&gt;Message:&lt;/strong&gt;
-				&lt;?php echo $message-&gt;message; ?&gt;&lt;/p&gt;
+			<pre class="brush: php; first-line: 5; highlight:[9,10,11,12,13,14,15,16,17,18,19,20,21] notranslate" title="">
+				&lt;p&gt;
+					&lt;strong&gt;Message:&lt;/strong&gt;
+					&lt;?php echo $message-&gt;message; ?&gt;
+				&lt;/p&gt;
 				&lt;h3&gt;Comments&lt;/h3&gt;
 				&lt;ul&gt;
 				&lt;?php foreach ($comments as $comment) : ?&gt;
 					&lt;li&gt;
-					&lt;ul&gt;
-						&lt;li&gt;&lt;strong&gt;Name:&lt;/strong&gt; &lt;?php echo $comment->name; ?&gt;&lt;/li&gt;
-						&lt;li&gt;&lt;strong&gt;Comment:&lt;/strong&gt;&lt;br /&gt;&lt;?php echo $comment->comment; ?&gt;&lt;/li&gt;
-						&lt;li&gt;&lt;p&gt;&lt;?php echo Html::anchor('comments/edit/'.$comment->id, 'Edit'); ?&gt;|
-						&lt;?php echo Html::anchor('comments/delete/'.$comment->id, 'Delete', array('onclick' =&gt; &quot;return confirm('Are you sure?')&quot;)); ?&gt;&lt;/li&gt;
-					&lt;/ul&gt;
+						&lt;ul&gt;
+							&lt;li&gt;&lt;strong&gt;Name:&lt;/strong&gt; &lt;?php echo $comment-&gt;name; ?&gt;&lt;/li&gt;
+							&lt;li&gt;&lt;strong&gt;Comment:&lt;/strong&gt;&lt;br /&gt;&lt;?php echo $comment-&gt;comment; ?&gt;&lt;/li&gt;
+							&lt;li&gt;&lt;p&gt;&lt;?php echo Html::anchor('comments/edit/'.$comment-&gt;id, 'Edit'); ?&gt;|
+							&lt;?php echo Html::anchor('comments/delete/'.$comment-&gt;id, 'Delete', array('onclick' =&gt; &quot;return confirm('Are you sure?')&quot;)); ?&gt;&lt;/li&gt;
+						&lt;/ul&gt;
 					&lt;/li&gt;
 				&lt;?php endforeach; ?&gt;
 				&lt;/ul&gt;
@@ -1256,43 +1262,49 @@
 			<p>This checks to see if a user is logged in (we&#8217;ll call the object with the user&#8217;s info in it <code>$user_info</code>), if they&#8217;re not logged in, then it builds an unordered list that links to a registration page.</p>
 			<h5 id="Registration_Model">Registration Model</h5>
 			<p>We&#8217;re going to create the registration form using the model and passing it with the controller. Create a function at the bottom of the user model. It&#8217;s going to have an empty form called a Fieldset passed into it, which is kind of like a form that has validation attached to it:</p>
-			<pre class="brush: php; highlight:[29,30,31] notranslate" title="">
+			<pre class="brush: php; highlight:[34,35,36] notranslate" title="">
 				&lt;?php
+				use OrmModel;
 
-					class Model_User extends \Orm\Model
+				class Model_Message extends Model
+				{
+					protected static $_properties = array(
+						'id',
+						'name',
+						'message',
+						'created_at',
+						'updated_at',
+					);
+
+					protected static $_observers = array(
+						'OrmObserver_CreatedAt' =&gt; array(
+							'events' =&gt; array('before_insert'),
+							'mysql_timestamp' =&gt; false,
+						),
+						'OrmObserver_UpdatedAt' =&gt; array(
+							'events' =&gt; array('before_save'),
+							'mysql_timestamp' =&gt; false,
+						),
+					);
+
+					public static function validate($factory)
 					{
-						protected static $_properties = array(
-							'id',
-							'username',
-							'password',
-							'group',
-							'email',
-							'last_login',
-							'login_hash',
-							'profile_fields',
-							'created_at',
-							'updated_at'
-						);
+						$val = Validation::forge($factory);
+						$val-&gt;add_field('name', 'Name', 'required|max_length[255]');
+						$val-&gt;add_field('message', 'Message', 'required');
 
-						protected static $_observers = array(
-							'Orm\Observer_CreatedAt' => array(
-								'events' => array('before_insert'),
-								'mysql_timestamp' => false,
-							),
-							'Orm\Observer_UpdatedAt' => array(
-								'events' => array('before_save'),
-								'mysql_timestamp' => false,
-							),
-						);
-
-						public static function register(Fieldset $form)
-						{
-						}
+						return $val;
 					}
+
+					public static function populate_register_fieldset(Fieldset $form)
+					{
+					}
+
+				}
 			</pre>
 			<p>Now we need to attach fields to this form, and send it back to the controller.</p>
-			<pre class="brush: php; first-line: 29; highlight:[31,32,33,34,35,36] notranslate" title="">
-				public static function register(Fieldset $form)
+			<pre class="brush: php; first-line: 34; highlight:[36,37,38,39,40,41] notranslate" title="">
+				public static function populate_register_fieldset(Fieldset $form)
 				{
 					$form-&gt;add('username', 'Username:')-&gt;add_rule('required');
 					$form-&gt;add('password', 'Choose Password:', array('type'=&gt;'password'))-&gt;add_rule('required');
@@ -1306,29 +1318,43 @@
 			<h5 id="User_Controller_Registration_Function">User Controller Registration Function</h5>
 			<p>Now we&#8217;re going to go to the action_register function within the users controller.</p>
 			<p>We are going to change it from this:</p>
-			<pre class="brush: php; first-line: 18; notranslate" title="">
+			<pre class="brush: php; first-line: 20; notranslate" title="">
 				public function action_register()
 				{
+					$data[&quot;subnav&quot;] = array('register'=&gt; 'active' );
 					$this-&gt;template-&gt;title = 'Users &amp;raquo; Register';
-					$this-&gt;template-&gt;content = View::forge('users/register');
+					$this-&gt;template-&gt;content = View::forge('users/register', $data);
 				}
 			</pre>
 			<p>To this:</p>
-			<pre class="brush: php; first-line: 18; highlight:[20,21,22,23,24,26] notranslate" title="">
-				public function action_register()
+			<pre class="brush: php; first-line: 20; highlight:[20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41] notranslate" title="">
+				public function get_register($fieldset = null, $errors = null)
 				{
+					$data[&quot;subnav&quot;] = array('register'=&gt; 'active' );
 					$auth = Auth::instance();
-					$view = View::forge('users/register');
-					$form = Fieldset::forge('register');
-					Model_User::register($form);
-					$view-&gt;set('reg', $form-&gt;build(), false);
-					$this-&gt;template-&gt;title = 'User &amp;raquo; Register';
+					$view = View::forge('users/register', $data);
+
+					if (empty($fieldset))
+					{
+						$fieldset = Fieldset::forge('register');
+						Model_User::populate_register_fieldset($fieldset);
+					}
+
+					$view-&gt;set('reg', $fieldset-&gt;build(), false);
+					if ($errors) $view-&gt;set_safe('errors', $errors);
+					$this-&gt;template-&gt;title = 'Users &amp;raquo; Register';
 					$this-&gt;template-&gt;content = $view;
 				}
+
+				public function post_register()
+				{
+					$fieldset = Model_User::populate_register_fieldset(Fieldset::forge('register'));
+				}
 			</pre>
-			<p>We will use <code>$auth</code> to authenticate users, <code>$view</code> will be the view that will be displayed to the user, and <code>$form</code> will be the fieldset that we&#8217;re sending to the model. <code>Model_User::register($form)</code> just populates the form with the fields.</p>
+			<p>The reason for this fragmentation is that both methods will be more specified in what they do.</p>
+			<p>We will use <code>$auth</code> to authenticate users, <code>$view</code> will be the view that will be displayed to the user, and <code>$fieldset</code> will be the fieldset that we&#8217;re sending to the model. <code>Model_User::populate_register_fieldset($form)</code> just populates the form with the fields.</p>
 			<p>If we build the form in the view, we can see how this will work. Go to the user register view and add:</p>
-			<pre class="brush: php; first-line: 1; highlight:[2] notranslate" title="" id="User_Controller_Registration_Function_Last_Step">
+			<pre class="brush: php; first-line: 1; highlight:[7,8] notranslate" title="" id="User_Controller_Registration_Function_Last_Step">
 				&lt;ul class=&quot;nav nav-pills&quot;&gt;
 					&lt;li class='&lt;?php echo Arr::get($subnav, &quot;login&quot; ); ?&gt;'&gt;&lt;?php echo Html::anchor('users/login','Login');?&gt;&lt;/li&gt;
 					&lt;li class='&lt;?php echo Arr::get($subnav, &quot;logout&quot; ); ?&gt;'&gt;&lt;?php echo Html::anchor('users/logout','Logout');?&gt;&lt;/li&gt;
@@ -1341,30 +1367,19 @@
 			<p>Once you do this, you should see the registration form if you go to <a href="http://localhost/fuel_intro/public/users/register">http://localhost/fuel_intro/public/index.php/users/register</a>.</p>
 			<h5 id="Validating_the_Registration">Validating the Registration</h5>
 			<p><!-- This section needs cleanup and more clarity --></p>
-			<p>Now what happens when someone actually fills out the form? We need to have their registration validated. So we need to repopulate the form field with the values that the user typed in, and then send the whole form and authentication to a validation controller. Insert this into your users controller:</p>
-			<pre class="brush: php; first-line: 18; highlight:[25,26,27,28,29] notranslate" title="">
-				public function action_register()
+			<p>Now what happens when someone actually fills out the form? We need to have their registration validated. So we need to repopulate the form field with the values that the user typed in, and then send the whole form and authentication to a validation controller. Insert this into <code>post_register()</code> within your users controller:</p>
+			<pre class="brush: php; first-line: 38; highlight:[41,42] notranslate" title="">
+				public function post_register()
 				{
-					$auth = Auth::instance();
-					$view = View::forge('users/register');
-					$form = Fieldset::forge('register');
-					Model_User::register($form);
-
-					if (Input::post())
-					{
-						$form-&gt;repopulate();
-						$result = Model_User::validate_registration($form, $auth);
-					}
-
-					$view-&gt;set('reg', $form-&gt;build(), false);
-					$this-&gt;template-&gt;title = 'User &amp;raquo; Register';
-					$this-&gt;template-&gt;content = $view;
+					$fieldset = Model_User::populate_register_fieldset(Fieldset::forge('register'));
+					$fieldset-&gt;repopulate();
+					$result = Model_User::validate_registration($fieldset, Auth::instance());
 				}
 			</pre>
-			<p>Your user model now needs to take in the form and authentication, so add this function to it:</p>
-			<pre class="brush: php; first-line: 29; highlight:[39,40,41] notranslate" title="">
-				public static function register(Fieldset $form)
-				{
+			<p>Your user model now needs to take in the form and authentication, so add these functions to it:</p>
+			<pre class="brush: php; first-line: 30; highlight:[29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44] notranslate" title="">
+			public static function register(Fieldset $form)
+			{
 				$form-&gt;add('username', 'Username:')-&gt;add_rule('required');
 				$form-&gt;add('password', 'Choose Password', array('type'=> 'password'))-&gt;add_rule('required');
 				$form-&gt;add('password2', 'Re-type Password:', array('type' => 'password'))-&gt;add_rule('required');
@@ -1378,14 +1393,14 @@
 			}
 			</pre>
 			<p>Then we need to add a rule to the password field that will ensure that the user has typed in a matching password in the password2 field:</p>
-			<pre class="brush: php; first-line: 39; highlight:[41] notranslate" title="">
+			<pre class="brush: php; first-line: 41; highlight:[43] notranslate" title="">
 				public static function validate_registration(Fieldset $form, $auth)
 				{
 					$form-&gt;field('password')-&gt;add_rule('match_value', $form-&gt;field('password2')-&gt;get_attribute('value'));
 				}
 			</pre>
 			<p>Now we need to create a validation object and set messages to display what we want if the user enters in something incorrectly:</p>
-			<pre class="brush: php; first-line: 39; highlight:[42,43,44,45] notranslate" title="">
+			<pre class="brush: php; first-line: 41; highlight:[44,45,46,47] notranslate" title="">
 				public static function validate_registration(Fieldset $form, $auth)
 				{
 					$form-&gt;field('password')-&gt;add_rule('match_value', $form-&gt;field('password2')-&gt;get_attribute('value'));
@@ -1397,7 +1412,7 @@
 			</pre>
 			<p>For a full explanation of the set message feature, look at <a href="http://fuelphp.com/docs/classes/validation/validation.html#errors">Fuel&#8217;s documentation on error messages</a>.</p>
 			<p>Next, we try to run the validation to see if it passes or fails:</p>
-			<pre class="brush: php; first-line: 39; highlight:[47,48,49,50,51,52,53,54] notranslate" title="">
+			<pre class="brush: php; first-line: 41; highlight:[49,50,51,52,53,54,55,56] notranslate" title="">
 				public static function validate_registration(Fieldset $form, $auth)
 				{
 					$form-&gt;field('password')-&gt;add_rule('match_value', $form-&gt;field('password2')-&gt;get_attribute('value'));
@@ -1419,7 +1434,7 @@
 			<p>So, if the validation doesn&#8217;t pass, the <code>show_errors()</code> function turns the errors into an HTML list, and we return that and a boolean saying that errors were found.</p>
 			<h6 id="What_if_they_Pass">What if they Pass?</h6>
 			<p>If the user passes validation, then we get their username, password, and email from the form:</p>
-			<pre class="brush: php; first-line: 39; highlight:[49,50,51] notranslate" title="">
+			<pre class="brush: php; first-line: 41; highlight:[51,52,53] notranslate" title="">
 				public static function validate_registration(Fieldset $form, $auth)
 				{
 					$form-&gt;field('password')-&gt;add_rule('match_value', $form-&gt;field('password2')-&gt;get_attribute('value'));
@@ -1442,7 +1457,7 @@
 				}
 			</pre>
 			<p>Try to create the user in the database, and catch any errors if we find them:</p>
-			<pre class="brush: php; first-line: 47; highlight:[60,61,62,63,64,65,66,67] notranslate" title="">
+			<pre class="brush: php; first-line: 41; highlight:[54,55,56,57,58,59,60,61] notranslate" title="">
 				public static function validate_registration(Fieldset $form, $auth)
 				{
 					$form-&gt;field('password')-&gt;add_rule('match_value', $form-&gt;field('password2')-&gt;get_attribute('value'));
@@ -1473,7 +1488,7 @@
 				}
 			</pre>
 			<p>We&#8217;re going to be nice here and log the user in once they register. So if the <code>$user</code> object is present, we can use the <code>$auth</code> object we passed to log the person in:</p>
-			<pre class="brush: php; first-line: 47; highlight:[69,70,71,72] notranslate" title="">
+			<pre class="brush: php; first-line: 41; highlight:[63,64,65,66] notranslate" title="">
 				public static function validate_registration(Fieldset $form, $auth)
 				{
 					$form-&gt;field('password')-&gt;add_rule('match_value', $form-&gt;field('password2')-&gt;get_attribute('value'));
@@ -1509,7 +1524,7 @@
 				}
 			</pre>
 			<p>If the login doesn&#8217;t work, then we create an unordered list and return both that and the errors found array:</p>
-			<pre class="brush: php; first-line: 39; highlight:[65,66,67,68,69,70,71,72,73,74,75,76,77] notranslate" title="">
+			<pre class="brush: php; first-line: 41; highlight:[67,68,69,70,71,72,73,74,75,76,77,78,79] notranslate" title="">
 				public static function validate_registration(Fieldset $form, $auth)
 				{
 					$form-&gt;field('password')-&gt;add_rule('match_value', $form-&gt;field('password2')-&gt;get_attribute('value'));
@@ -1557,37 +1572,24 @@
 					}
 				}
 			</pre>
-			<p>We have two more things to do. First, go to <code>action_register()</code> on the users controller and add a check for errors, if there are no errors found, log the user in and redirect to the homepage:</p>
-			<pre class="brush: php; first-line: 18; highlight:[29,30,31,32,33,34,35,36,37] notranslate" title="">
-				public function action_register()
+			<p>We have two more things to do. First, go to <code>post_register()</code> on the users controller and add a check for errors, if there are no errors found, log the user in and redirect to the homepage:</p>
+			<pre class="brush: php; first-line: 38; highlight:[43,44,45,46,47,48,49] notranslate" title="">
+				public function post_register()
 				{
-					$auth = Auth::instance();
-					$view = View::forge('users/register');
-					$form = Fieldset::forge('register');
-					Model_User::register($form);
-
-					if (Input::post())
+					$fieldset = Model_User::populate_register_fieldset(Fieldset::forge('register'));
+					$fieldset-&gt;repopulate();
+					$result = Model_User::validate_registration($fieldset, Auth::instance());
+					if ($result['e_found'])
 					{
-						$form-&gt;repopulate();
-						$result = Model_User::validate_registration($form, $auth);
-						if ($result['e_found'])
-						{
-							$view-&gt;set('errors', $result['errors'], false);
-						}
-						else
-						{
-							Session::set_flash('success', 'User created.');
-							Response::redirect('./');
-						}
+						return $this-&gt;get_register($fieldset, $result['errors']);
 					}
 
-					$view-&gt;set('reg', $form-&gt;build(), false);
-					$this-&gt;template-&gt;title = 'User &amp;raquo; Register';
-					$this-&gt;template-&gt;content = $view;
+					Session::set_flash('success', 'User created.');
+					Response::redirect('./');
 				}
 			</pre>
 			<p>Second, go to the register view and check for errors:</p>
-			<pre class="brush: php; first-line: 2; highlight:[2] notranslate" title="">
+			<pre class="brush: php; first-line: 7; highlight:[7] notranslate" title="">
 				&lt;?php if (isset($errors)){echo $errors;}?&gt;
 				&lt;?php echo $reg; ?&gt;
 			</pre>
@@ -1595,12 +1597,13 @@
 			<h6 id="Regular_Logging_In_and_Out">Regular Logging In and Out</h6>
 			<p>At this point in the crash course we should be able to give you the code for this and expect you to understand it.</p>
 			<p>Add the following within the users controller:</p>
-			<pre class="brush: php; first-line: 6; highlight:[8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,28,33,34,35,36] notranslate" title="">
+			<pre class="brush: php; first-line: 6; highlight:[8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,29,34,35,36,37] notranslate" title="">
 				public function action_login()
 				{
-					$view = View::forge('users/login');
-					$form = Form::forge('login');
+					$data[&quot;subnav&quot;] = array('login'=&gt; 'active' );
 					$auth = Auth::instance();
+					$view = View::forge('users/login', $data);
+					$form = Form::forge('login');
 					$form-&gt;add('username', 'Username:');
 					$form-&gt;add('password', 'Password:', array('type' =&gt; 'password'));
 					$form-&gt;add('submit', ' ', array('type' =&gt; 'submit', 'value' =&gt; 'Login'));
@@ -1632,54 +1635,40 @@
 			<p>Don&#8217;t forget to echo the form in the login view! The code is very similar to <a href="#User_Controller_Registration_Function_Last_Step">the user registration view</a> with the exception of swapping <code>$reg</code> with <code>$form</code>.</p>
 			
 			<h5 id="Finishing_Touches">Finishing Touches</h5>
-			<p>Let&#8217;s quickly tidy up some of our code. Head over to the comments form view and remove the hidden field containing the id of the comment&#8217;s message:</p>
-			<pre class="brush: php; first-line: 10; highlight:[10] notranslate" title="">
-				&lt;?php echo Form::hidden('message_id', Input::post('message_id', isset($message) ? $message : '')); ?&gt;
-			</pre>
-			<p>Now in the comments controller, change the assignment of the comment&#8217;s <code>message_id</code> property to use the <code>$id</code> variable passed in rather than relying on the old hidden form:</p>
-			<pre class="brush: php; first-line: 32; highlight:[39] notranslate" title="">
-				public function action_create($id = null)
-				{
-					if (Input::post())
-					{
-						$comment = Model_Comment::forge(array(
-							'name' => Input::post('name'),
-							'comment' => Input::post('comment'),
-							'id' => $id, //previously: Input::post('message_id'),
-						));
-			</pre>
-			<p>Now we just need to add the name of the person making the message (instead of letting them type it in themselves), and give them editing rights to their own posts.</p>
+			<p>Let&#8217;s quickly tidy up some of our code. We just need to add the name of the person making the message (instead of letting them type it in themselves), and give them editing rights to their own posts.</p>
 			<p>Go to the _form.php files in both the comments and the messages views and replace the name input field with the user&#8217;s name.</p>
 			<p>In messages, from this:</p>
-			<pre class="brush: php; first-line: 5; notranslate" title="">
-				&lt;?php echo Form::label('Name', 'name'); ?&gt;
+			<pre class="brush: php; first-line: 4; notranslate" title="">
+				&lt;div class=&quot;form-group&quot;&gt;
+						&lt;?php echo Form::label('Name', 'name', array('class'=&gt;'control-label')); ?&gt;
 
-				&lt;div class="input"&gt;
-				&lt;?php echo Form::input('name', Input::post('name', isset($message) ? $message-&gt;name : '')); ?&gt;
+							&lt;?php echo Form::input('name', Input::post('name', isset($message) ? $message-&gt;name : ''), array('class' =&gt; 'col-md-4 form-control', 'placeholder'=&gt;'Name')); ?&gt;
+
+				&lt;/div&gt;
 			</pre>
 			<p>To this:</p>
-			<pre class="brush: php; first-line: 5; highlight:[8] notranslate" title="">
-				&lt;?php echo Form::label('Name', 'name'); ?&gt;
-
-				&lt;div class="input"&gt;
-				&lt;?php echo 'Name: '.Auth::instance()->get_screen_name(); ?&gt;
+			<pre class="brush: php; first-line: 4; highlight:[5,6] notranslate" title="">
+				&lt;div class=&quot;form-group&quot;&gt;
+					&lt;?php echo Form::label('Name', 'name', array('class'=&gt;'control-label')); ?&gt;
+					&lt;?php echo Auth::instance()-&gt;get_screen_name(); ?&gt;
+				&lt;/div&gt;
 			</pre>
 			<p>In comments, from this:</p>
-			<pre class="brush: php; first-line: 3; notranslate" title="">
-				&lt;?php echo Form::label('Name', 'name'); ?&gt;
+			<pre class="brush: php; first-line: 4; notranslate" title="">
+				&lt;?php echo Form::label('Name', 'name', array('class'=&gt;'control-label')); ?&gt;
 				&lt;?php echo Form::input('name', Input::post('name', isset($comment) ? $comment-&gt;name : '')); ?&gt;
 			</pre>
 			<p>To this:</p>
-			<pre class="brush: php; first-line: 3; highlight:[4] notranslate" title="">
-				&lt;?php echo Form::label('Name', 'name'); ?&gt;
-				&lt;?php echo 'Name: '.Auth::instance()->get_screen_name(); ?&gt;
+			<pre class="brush: php; first-line: 4; highlight:[5] notranslate" title="">
+				&lt;?php echo Form::label('Name', 'name', array('class'=&gt;'control-label')); ?&gt;
+				&lt;?php echo Auth::instance()-&gt;get_screen_name(); ?&gt;
 			</pre>
 			<p>Next, in both the message and comment controllers, replace the posted name with the user name in the <code>action_create()</code> function. Change it from this:</p>
-			<pre class="brush: php; first-line: 37; notranslate" title="">
+			<pre class="brush: php; first-line: 39; notranslate" title="">
 				'name' =&gt; Input::post('name'),
 			</pre>
 			<p>To this:</p>
-			<pre class="brush: php; first-line: 37; highlight:[37] notranslate" title="">
+			<pre class="brush: php; first-line: 39; highlight:[39] notranslate" title="">
 				'name' =&gt; Auth::instance()-&gt;get_screen_name(),
 			</pre>
 			<p>Since we don't have a name input form any more, and the message model is still expecting one, you'll have to remove that old requirement. Head over to the message model and remove the validation check for the name field:</p>
@@ -1715,12 +1704,12 @@
 				?&gt;
 			</pre>
 			<p>We should do the same check for comments. In the message view, find:</p>
-			<pre class="brush: php; first-line: 17; notranslate" title="">
+			<pre class="brush: php; first-line: 16; notranslate" title="">
 				&lt;li&gt;&lt;p&gt;&lt;?php echo Html::anchor('comments/edit/'.$comment-&gt;id.'/'. $message-&gt;id, 'Edit'); ?&gt;|
 				&lt;?php echo Html::anchor('comments/delete/'.$comment-&gt;id.'/'.$message-&gt;id, 'Delete', array('onclick' =&gt; "return confirm('Are you sure?')")); ?&gt;&lt;/li&gt;
 			</pre>
 			<p>And change it to:</p>
-			<pre class="brush: php; first-line: 17; highlight:[17,18,19,20] notranslate" title="">
+			<pre class="brush: php; first-line: 16; highlight:[16,17,18,19] notranslate" title="">
 				&lt;?php if ($comment-&gt;name == Auth::instance()-&gt;get_screen_name()) : ?&gt;
 					&lt;li&gt;&lt;p&gt;&lt;?php echo Html::anchor('comments/edit/'.$comment-&gt;id.'/'.$message-&gt;id, 'Edit'); ?&gt;|
 					&lt;?php echo Html::anchor('comments/delete/'.$comment-&gt;id.'/'.$message-&gt;id, 'Delete', array('onclick'=&gt; "return confirm('Are you sure?')")); ?&gt;&lt;/li&gt;
@@ -1729,14 +1718,16 @@
 			<p>Now you should be able to register users, log in separately, and only have the ability to edit or delete your own messages and comments!</p>
 			<h6 id="This_is_the_Last_Thing_I_promise">This Is the Last Thing, <em>I Promise</em></h6>
 			<p>The very last thing we&#8217;re going to do is to check if the user is logged in. If they are, allow them to make a message or comment.</p>
-			<p>Near the bottom of the message view, find the creation of the 'Add new Comment' anchor. Wrap it up in an <code>if</code> statement like so:</p>
-			<pre class="brush: php; first-line: 29; highlight:[29,31] notranslate" title="">
+			<p>Add this code towards the top of the message view:</p>
+			<pre class="brush: php; first-line: 9; highlight:[9,10,11] notranslate" title="">
 				&lt;?php if (Auth::instance()-&gt;check()) : ?&gt;
 					&lt;p&gt;&lt;?php echo Html::anchor('comments/create/'.$message-&gt;id, 'Add new Comment'); ?&gt;&lt;/p&gt;
 				&lt;?php endif; ?&gt;
+				&lt;h3&gt;Comments&lt;/h3&gt;
+				&lt;ul&gt;
 			</pre>
 			<p>Likewise at the bottom of the message&#8217;s index view:</p>
-			<pre class="brush: php; first-line: 37; highlight:[37,39] notranslate" title="">
+			<pre class="brush: php; first-line: 30; highlight:[30,31,32,33,34,35] notranslate" title="">
 				&lt;?php
 				if (Auth::instance()-&gt;check())
 				{
