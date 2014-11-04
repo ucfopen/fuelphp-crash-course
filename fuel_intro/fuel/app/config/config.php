@@ -1,19 +1,15 @@
 <?php
 /**
- * Fuel is a fast, lightweight, community driven PHP5 framework.
+ * Part of the Fuel framework.
  *
  * @package    Fuel
- * @version    1.5
+ * @version    1.7
  * @author     Fuel Development Team
  * @license    MIT License
- * @copyright  2010 - 2013 Fuel Development Team
+ * @copyright  2010 - 2014 Fuel Development Team
  * @link       http://fuelphp.com
  */
 
-/**
- * If you want to override the default configuration, add the keys you
- * want to change here, and assign new values to them.
- */
 
 return array(
 
@@ -75,6 +71,8 @@ return array(
 		// 'throttle'     => 10,
 		// Should notices from Error::notice() be shown?
 		// 'notices'      => true,
+		// Render previous contents or show it as HTML?
+		// 'render_prior' => false,
 	// ),
 
 	/**
@@ -121,6 +119,19 @@ return array(
 		// 'csrf_expiration'  => 0,
 
 		/**
+		 * A salt to make sure the generated security tokens are not predictable
+		 */
+		// 'token_salt'            => 'put your salt value here to make the token more secure',
+
+		/**
+		 * Allow the Input class to use X headers when present
+		 *
+		 * Examples of these are HTTP_X_FORWARDED_FOR and HTTP_X_FORWARDED_PROTO, which
+		 * can be faked which could have security implications
+		 */
+		// 'allow_x_headers'       => false,
+
+		/**
 		 * This input filter can be any normal PHP function as well as 'xss_clean'
 		 *
 		 * WARNING: Using xss_clean will cause a performance hit.
@@ -164,6 +175,7 @@ return array(
 		 * throw exceptions unless they are instances of the classes in this array.
 		 */
 		'whitelisted_classes' => array(
+			'Fuel\\Core\\Presenter',
 			'Fuel\\Core\\Response',
 			'Fuel\\Core\\View',
 			'Fuel\\Core\\ViewModel',
@@ -238,9 +250,9 @@ return array(
 	 *
 	 * Paths MUST end with a directory separator (the DS constant)!
 	 */
-	// 'package_paths' => array(
-	// 	//PKGPATH
-	// ),
+	'package_paths' => array(
+		PKGPATH
+	),
 
 
 	/**************************************************************************/

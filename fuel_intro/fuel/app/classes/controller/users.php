@@ -5,9 +5,10 @@ class Controller_Users extends Controller_Template
 
 	public function action_login()
 	{
-		$view = View::forge('users/login');
-		$form = Form::forge('login');
+		$data["subnav"] = array('login'=> 'active' );
 		$auth = Auth::instance();
+		$view = View::forge('users/login', $data);
+		$form = Form::forge('login');
 		$form->add('username', 'Username:');
 		$form->add('password', 'Password:', array('type' => 'password'));
 		$form->add('submit', ' ', array('type' => 'submit', 'value' => 'Login'));
@@ -36,37 +37,37 @@ class Controller_Users extends Controller_Template
 		Response::redirect('messages/');
 	}
 
-	public function action_register()
+	public function get_register($fieldset = null, $errors = null)
 	{
+		$data["subnav"] = array('register'=> 'active' );
 		$auth = Auth::instance();
-		$form = Fieldset::forge('register');
-		$view = View::forge('users/register');
-		Model_User::register($form);
+		$view = View::forge('users/register', $data);
 
-		if (Input::post())
+		if (empty($fieldset))
 		{
-			$form->repopulate();
-			$result = Model_User::validate_registration($form, $auth);
-			if ($result['e_found'])
-			{
-				$view->set('errors', $result['errors'], false);
-			}
-			else
-			{
-				Session::set_flash('success', 'User created.');
-				Response::redirect('./');
-			}
+			$fieldset = Fieldset::forge('register');
+			Model_User::populate_register_fieldset($fieldset);
 		}
 
-		if (Input::post())
-		{
-			$form->repopulate();
-			$result = Model_User::validate_registration($form, $auth);
-		}
-
-		$view->set('reg', $form->build(), false);
-		$this->template->title = 'User &raquo; Register';
+		$view->set('reg', $fieldset->build(), false);
+		if ($errors) $view->set_safe('errors', $errors);
+		$this->template->title = 'Users &raquo; Register';
 		$this->template->content = $view;
+	}
+
+
+	public function post_register()
+	{
+		$fieldset = Model_User::populate_register_fieldset(Fieldset::forge('register'));
+		$fieldset->repopulate();
+		$result = Model_User::validate_registration($fieldset, Auth::instance());
+		if ($result['e_found'])
+		{
+			return $this->get_register($fieldset, $result['errors']);
+		}
+
+		Session::set_flash('success', 'User created.');
+		Response::redirect('./');
 	}
 
 }

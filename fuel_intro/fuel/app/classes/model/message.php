@@ -30,4 +30,14 @@ class Model_Message extends Model
 		return $val;
 	}
 
+	public static function populate_register_fieldset(Fieldset $form)
+	{
+		$form->add('username', 'Username:')->add_rule('required');
+		$form->add('password', 'Choose Password:', array('type'=>'password'))->add_rule('required');
+		$form->add('password2', 'Re-type Password:', array('type' => 'password'))->add_rule('required');
+		$form->add('email', 'E-mail:')->add_rule('required')->add_rule('valid_email');
+		$form->add('submit', ' ', array('type'=>'submit', 'value' => 'Register'));
+		return $form;
+	}
+
 }

@@ -1,11 +1,11 @@
 <?php
-class Controller_Messages extends Controller_Template 
+class Controller_Messages extends Controller_Template
 {
 
 	public function action_index()
 	{
 		$messages = Model_Message::find('all');
-	 
+
 		$comment_links = array();
 		foreach ($messages as $message)
 		{
@@ -13,36 +13,44 @@ class Controller_Messages extends Controller_Template
 				->from('comments')
 				->where('message_id', $message->id)
 				->execute();
-	
+
 			$count = count($results);
-			$comment_links[$message->id] = "View | $count ".Inflector::pluralize('Comment', $count);
+
+			if ($count == 0)
+			{
+				$comment_links[$message->id] = 'View';
+			}
+			else
+			{
+				$comment_links[$message->id] = $count.' '.Inflector::pluralize('Comment', $count);
+			}
 		}
-	 
+
 		$view = View::forge('messages/index');
 		$view->set('comment_links', $comment_links);
 		$view->set('messages', $messages);
-		$this->template->title = 'Messages';
+		$this->template->title = "Messages";
 		$this->template->content = $view;
 	}
 
 	public function action_view($id = null)
 	{
-		is_null($id) and Response::redirect('Messages');
+		is_null($id) and Response::redirect('messages');
 
 		if ( ! $message = Model_Message::find($id))
 		{
 			Session::set_flash('error', 'Could not find message #'.$id);
-			Response::redirect('Messages');
+			Response::redirect('messages');
 		}
 
-		$comments = Model_Comment::query()->where('message_id', $id)->get();
+		$comments = Model_Comment::find('all', array('where' => array('message_id' => $id)));
 
 		$data = array(
 			'message' => $message,
 			'comments' => $comments
 		);
 
-		$this->template->title = 'Message';
+		$this->template->title = "Message";
 		$this->template->content = View::forge('messages/view', $data);
 
 	}
@@ -52,11 +60,11 @@ class Controller_Messages extends Controller_Template
 		if (Input::method() == 'POST')
 		{
 			$val = Model_Message::validate('create');
-			
+
 			if ($val->run())
 			{
 				$message = Model_Message::forge(array(
-					'name' => Input::post('name'),
+					'name' => Auth::instance()->get_screen_name(),
 					'message' => Input::post('message'),
 				));
 
@@ -78,19 +86,19 @@ class Controller_Messages extends Controller_Template
 			}
 		}
 
-		$this->template->title = 'Messages';
+		$this->template->title = "Messages";
 		$this->template->content = View::forge('messages/create');
 
 	}
 
 	public function action_edit($id = null)
 	{
-		is_null($id) and Response::redirect('Messages');
+		is_null($id) and Response::redirect('messages');
 
 		if ( ! $message = Model_Message::find($id))
 		{
 			Session::set_flash('error', 'Could not find message #'.$id);
-			Response::redirect('Messages');
+			Response::redirect('messages');
 		}
 
 		$val = Model_Message::validate('edit');
@@ -102,14 +110,14 @@ class Controller_Messages extends Controller_Template
 
 			if ($message->save())
 			{
-				Session::set_flash('success', 'Updated message #'.$id);
+				Session::set_flash('success', 'Updated message #' . $id);
 
 				Response::redirect('messages');
 			}
 
 			else
 			{
-				Session::set_flash('error', 'Could not update message #'.$id);
+				Session::set_flash('error', 'Could not update message #' . $id);
 			}
 		}
 
@@ -126,14 +134,14 @@ class Controller_Messages extends Controller_Template
 			$this->template->set_global('message', $message, false);
 		}
 
-		$this->template->title = 'Messages';
+		$this->template->title = "Messages";
 		$this->template->content = View::forge('messages/edit');
 
 	}
 
 	public function action_delete($id = null)
 	{
-		is_null($id) and Response::redirect('Messages');
+		is_null($id) and Response::redirect('messages');
 
 		if ($message = Model_Message::find($id))
 		{
@@ -150,6 +158,5 @@ class Controller_Messages extends Controller_Template
 		Response::redirect('messages');
 
 	}
-
 
 }

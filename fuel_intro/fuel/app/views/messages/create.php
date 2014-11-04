@@ -1,4 +1,4 @@
-<h2>New Message</h2>
+<h2>New <span class='muted'>Message</span></h2>
 <br>
 
 <?php echo render('messages/_form'); ?>
