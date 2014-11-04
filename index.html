@@ -115,10 +115,10 @@
 
 			<div class="os-switch">
 				<div class="windows">
-					<p>First and foremost, here&#8217;s what you&#8217;re going to need on Windows:</p>
+					<p>First and foremost, here's what you're going to need on Windows:</p>
 					<ol>
-						<li><a href="http://fuelphp.com">Fuel PHP framework</a> (we&#8217;re using v1.7.2)</li>
-						<li><a href="http://www.apachefriends.org/en/xampp.html">XAMPP</a> (if you&#8217;re having trouble installing this, <a href="http://keito.me/tutorials/xampp">go here for a tutorial</a>)</li>
+						<li><a href="http://fuelphp.com">Fuel PHP framework</a> (we're using v1.7.2)</li>
+						<li><a href="http://www.apachefriends.org/en/xampp.html">XAMPP</a> (if you're having trouble installing this, <a href="http://keito.me/tutorials/xampp">go here for a tutorial</a>)</li>
 						<li><a href="http://www.nextofwindows.com/how-to-addedit-environment-variables-in-windows-7/">PHP Environment Variables Configured in Windows</a> (for command line executions)</li>
 						<li>phpMyAdmin (it comes with XAMPP)</li>
 						<li>A basic understanding of the <a href="http://php-html.net/tutorials/model-view-controller-in-php/">Model-View-Controller (MVC) pattern</a>.</li>
@@ -126,9 +126,9 @@
 					</ol>
 				</div>
 				<div class="linux">
-					<p>First and foremost, here&#8217;s what you&#8217;re going to need on Linux/OSX:</p>
+					<p>First and foremost, here's what you're going to need on Linux/OSX:</p>
 					<ol>
-						<li><a href="http://fuelphp.com">Fuel PHP framework</a> (we&#8217;re using v1.7.2)</li>
+						<li><a href="http://fuelphp.com">Fuel PHP framework</a> (we're using v1.7.2)</li>
 						<li><a href="http://www.apachefriends.org/en/xampp.html">XAMPP</a> (for beginners) or any basic <a href="http://en.wikipedia.org/wiki/LAMP_(software_bundle)">LAMP package</a> <br>(many tutorials exist, here are some for a few popular linux distros: <a href="https://help.ubuntu.com/community/ApacheMySQLPHP">Ubuntu</a>, <a href="http://wiki.debian.org/LaMp">Debian</a>, <a href="http://en.opensuse.org/SDB:Linux_Apache_MySQL_PHP">SUSE</a>, and <a href="http://fedorasolved.org/server-solutions/lamp-stack">Fedora</a>)</li>
 						<li>phpMyAdmin (installation will vary depending on your os, XAMPP users have it already!)</li>
 						<li>A basic understanding of the <a href="http://php-html.net/tutorials/model-view-controller-in-php/">Model-View-Controller (MVC) pattern</a>.</li>
@@ -189,7 +189,7 @@
 			</div>
 
 			<h4>Config It Up</h4>
-			<p>For this tutorial we&#8217;re going to be using an <a href="http://en.wikipedia.org/wiki/Object-relational_mapping">orm package</a>, included in your install of Fuel. Head over to <code>/fuel/app/config/config.php</code> and uncomment the &#8220;always_load&#8221; array. Then uncomment the &#8220;packages&#8221; array and the &#8220;orm&#8221; package:</p>
+			<p>For this tutorial we're going to be using an <a href="http://en.wikipedia.org/wiki/Object-relational_mapping">orm package</a>, included in your install of Fuel. Head over to <code>/fuel/app/config/config.php</code> and uncomment the &#8220;always_load&#8221; array. Then uncomment the &#8220;packages&#8221; array and the &#8220;orm&#8221; package:</p>
 			<pre class="brush: php; first-line: 258; highlight:[261,274,275,276,312] notranslate" title="">
 				/**************************************************************************/
 				/* Always Load                                                            */
@@ -262,7 +262,7 @@
 			<p><img src="assets/images/gettin_configged_up_02a.jpg" alt="Screenshot showing the creation of a database from phpmyadmin." /></p>
 			
 			<p>We renamed the database to "fuel_intro" and changed the password to the default password for our mysql install. Aside from that, we left everything else alone since the defaults will work fine.</p> 
-			<p>Now, make these changes in the db configuration in Fuel&#8217;s development environment: <code>fuel/app/config/development/db.php</code></p>
+			<p>Now, make these changes in the db configuration in Fuel's development environment: <code>fuel/app/config/development/db.php</code></p>
 
 			<pre class="brush: php; first-line: 6; highlight:[9,10,11] notranslate" title="" >
 				return array(
@@ -292,12 +292,12 @@
 				</div>
 			</div>
 
-			<p>Seeing this means that Oil is successfully installed and working! Now let&#8217;s get to business.</p>
+			<p>Seeing this means that Oil is successfully installed and working! Now let's get to business.</p>
 			<h5 id="Every_Building_Needs_A_Scaffold">Every Building Needs a Scaffold</h5>
 			<p>Scaffolding in fuel allows you to quickly create a related controller, model (using ORM), and view for manipulating information.</p>
 			<p>What we want to end up with after creating the scaffold is a table with the following fields:</p>
 			<p><img src="assets/images/every_building_needs_a_scaffold_01a.jpg" alt="Screenshot of field names." /></p>
-			<p>The &#8216;id&#8217;, &#8216;created_at&#8217;, and &#8216;updated_at&#8217; columns are made automatically, so we only have to tell oil to make the 'name' and 'message' fields. Just feed your command prompt the following:</p>
+			<p>The &#8216;id', &#8216;created_at', and &#8216;updated_at' columns are made automatically, so we only have to tell oil to make the 'name' and 'message' fields. Just feed your command prompt the following:</p>
 			<p><code>php oil generate scaffold messages name:string message:text</code></p>
 
 			<div class="os-switch">
@@ -314,7 +314,7 @@
 
 			<p>The only weird thing about this is that the &#8220;string&#8221; type for the name is a shortcut that is really varchar[255].</p>
 			<p>If you look at your document tree, you can see that the controller, model, and view were created and populated with default content.</p>
-			<p>If you look at your database, you&#8217;ll notice that no table has been created. That&#8217;s because we need to migrate the database.</p>
+			<p>If you look at your database, you'll notice that no table has been created. That's because we need to migrate the database.</p>
 			<h6 id="Migra-wha">Migra-wha?</h6>
 			<p>A migration is like a version control scheme for your database. If you open up the file <code>/fuel/app/migrations/001_create_messages.php</code> you can see what is going to be generated when the migration runs. Checking the file before you run the migration is a good idea, at least to check for typos.</p>
 			<pre class="brush: php; notranslate" title="">
@@ -369,9 +369,9 @@
 				<div class="linux">
 					<div class="expando-button"><h5><span class="title">Troubleshooting</span>: running into a "not found" page <span class="click_to_expand">(click to show)</span></h5></div>
 					<div class="expando-content">
-						<p>If you have a LAMP package and you&#8217;re recieving a &#8220;Not Found&#8221; page when attempting to access messages, you may not have the proper Apache settings enabled. Navigate to <code>/etc/apache2/sites-available</code>, open the <code>default</code> file, and change the first two <code>AllowOverride</code> permissions to <code>All</code>.</p> 
+						<p>If you have a LAMP package and you're recieving a &#8220;Not Found&#8221; page when attempting to access messages, you may not have the proper Apache settings enabled. Navigate to <code>/etc/apache2/sites-available</code>, open the <code>default</code> file, and change the first two <code>AllowOverride</code> permissions to <code>All</code>.</p> 
 						<p><img src="assets/images/linux_troubleshooting_01.png" /></p>
-						<p>When you&#8217;re finished editing, you'll need to give your terminal the following command to enable <code>mod_rewrite</code>: </p>	
+						<p>When you're finished editing, you'll need to give your terminal the following command to enable <code>mod_rewrite</code>: </p>	
 						<p><code>sudo a2enmod rewrite</code></p>
 						<p>Restart apache using <code>sudo service apache2 restart</code> and reload your page.</p>
 					</div>
@@ -380,7 +380,7 @@
 
 			<p>If you see the following error, copy and paste the code into a new php file called crypt.php at <code>/fuel/app/config</code>.</p>
 			<p><img src="assets/images/cryptoerror1.7.jpg" alt="Image displaying an error message for lack of read write access to a non existant crypt.php file"/></p>
-			<p>If you look at the message, you&#8217;ll notice that all the layout is done using a table, so take a minute to make the code <a href="http://en.wikipedia.org/wiki/Semantic_HTML">semantic</a>.</p>
+			<p>If you look at the message, you'll notice that all the layout is done using a table, so take a minute to make the code <a href="http://en.wikipedia.org/wiki/Semantic_HTML">semantic</a>.</p>
 			<p>Go into <code>/fuel/app/views/messages/index.php</code> and change the following table into an unordered list:</p>
 
 			<div class="expando-button"><h5><span class="title">Check it out</span>: See the messages view before changes <span class="click_to_expand">(click to show)</span></h5></div>
@@ -450,7 +450,7 @@
 					&lt;?php echo Html::anchor('messages/create', 'Add new Message', array('class' =&gt; 'btn btn-success')); ?&gt;
 				&lt;/p&gt;
 			</pre>
-			<p>Now your code is more semantic, if not more understandable (If you don&#8217;t like the bullets or the list view, <a href="http://css.maxdesign.com.au/listutorial/horizontal_introduction.htm">you can take them away using CSS</a>).</p>
+			<p>Now your code is more semantic, if not more understandable (If you don't like the bullets or the list view, <a href="http://css.maxdesign.com.au/listutorial/horizontal_introduction.htm">you can take them away using CSS</a>).</p>
 			
 			<h5 id="New_Landing_Page">New Landing Page</h5>
 			<p>Remember the successful install page you visited immediately after installing fuel? What you were seeing on that page comes from a view as well. Through routing, fuel can redirect the browser to display views outside of the default structure. These routing directions are stored in <code>/fuel/app/config/routes.php</code>.</p>
@@ -486,7 +486,7 @@
 
 			<p>We <em>could</em> use a scaffold again to create everything necessary for comments, but let's do everything that the scaffolding command does by hand. This will give you an idea as to just how powerful oil commands are.</p>
 
-			<p>The first step is to create our controllers and views for the comments. We will be using oil&#8217;s generate command again to do this. Let&#8217;s watch:</p>
+			<p>The first step is to create our controllers and views for the comments. We will be using oil's generate command again to do this. Let's watch:</p>
 			<p><code>php oil generate controller comments edit create</code></p>
 
 			<div class="os-switch">
@@ -530,7 +530,7 @@
 			</pre>
 
 			<h6 id="Defaults">Defaults</h6>
-			<p>The default class name for the controller is Controller_NAME, and methods accessible through the url are action_NAME. So if you&#8217;re making your own methods or controllers, you should follow the conventions that are set forth in this file. </p>
+			<p>The default class name for the controller is Controller_NAME, and methods accessible through the url are action_NAME. So if you're making your own methods or controllers, you should follow the conventions that are set forth in this file. </p>
 			<p>Take careful note that the class ought to read "Controller_Comments", rather than the default "Controller_Comment". Older versions of fuel will autocorrect the name and make it singular.</p>
 
 			<p>Now, back in your action_create function, we need to make a few changes to prepare for the views we are about to build:</p>
@@ -550,11 +550,11 @@
 
 			<p>If you look at the Messages views (/fuel/app/views/messages/), you will see a file called &#8220;_form.php&#8221;. This is a form template for messages that gets called in the messages views and  should be recreated for the comments views as well.</p>
 			<p>Go ahead and create a new file called<code>/fuel/app/views/comments/_form.php</code>.</p>
-			<p>Since this is a form template, you&#8217;re going to start the file with new form tags. Rather than using straight HTML, Fuel has classes for HTML elements that we will use. To open a new form write the following:</p>
+			<p>Since this is a form template, you're going to start the file with new form tags. Rather than using straight HTML, Fuel has classes for HTML elements that we will use. To open a new form write the following:</p>
 			<pre class="brush: php; highlight:[1] notranslate" title="">
 				&lt;?php echo Form::open(array(&quot;class&quot;=&gt;&quot;form-horizontal&quot;)); ?&gt;
 			</pre>
-			<p>This is analogous to writing &#8220;<code>&lt;form class="form-horizontal" action="http://localhost/fuel_intro/public/index.php/comments/create" accept-charset="utf-8" method="post"&gt;</code>&#8221; so it&#8217;s a good idea to use these HTML elements when possible.</p>
+			<p>This is analogous to writing &#8220;<code>&lt;form class="form-horizontal" action="http://localhost/fuel_intro/public/index.php/comments/create" accept-charset="utf-8" method="post"&gt;</code>&#8221; so it's a good idea to use these HTML elements when possible.</p>
 			<p>Next, create a name field for the comment:</p>
 			<pre class="brush: php; highlight:[2,3,4,5,6] notranslate" title="">
 				&lt;?php echo Form::open(array(&quot;class&quot;=&gt;&quot;form-horizontal&quot;)); ?&gt;
@@ -568,7 +568,7 @@
 				<li><code>Form::label()</code> takes (in order) the text that will be displayed to the user and the id that should match the name attribute of the input field.</li>
 				<li><code>Form::input()</code> takes (in order) the name attribute of the form and the default value of that form element.</li>
 			</ul>
-			<p>You can repeat this code for the comment text as well. The only difference is that instead of <code>Form::input</code>, you&#8217;ll need to use <code>Form::textarea()</code>, which takes in the same parameters.</p>
+			<p>You can repeat this code for the comment text as well. The only difference is that instead of <code>Form::input</code>, you'll need to use <code>Form::textarea()</code>, which takes in the same parameters.</p>
 			<pre class="brush: php; highlight:[7,8,9,10] notranslate" title="">
 				&lt;?php echo Form::open(array(&quot;class&quot;=&gt;&quot;form-horizontal&quot;)); ?&gt;
 					&lt;fieldset&gt;
@@ -581,7 +581,7 @@
 							&lt;?php echo Form::textarea('comment', Input::post('comment', isset($comment) ? $comment-&gt;comment : ''), array('cols' =&gt; 60, 'rows' =&gt; 8)); ?&gt;
 						&lt;/div&gt;
 			</pre>
-			<p>Did you notice the extra bit of code at the end? The final parameter you can pass for the label, input, or textarea tags is an array of attributes. So when we write &#8220;<code>array('cols' =&gt; 60, 'rows' =&gt; 8));</code>&#8221; at the end of the textarea function,  it&#8217;s the same as saying &#8220;<code>&lt;textarea cols="60" rows="8"&gt;&lt;/textarea&gt;</code>&#8220;</p>
+			<p>Did you notice the extra bit of code at the end? The final parameter you can pass for the label, input, or textarea tags is an array of attributes. So when we write &#8220;<code>array('cols' =&gt; 60, 'rows' =&gt; 8));</code>&#8221; at the end of the textarea function,  it's the same as saying &#8220;<code>&lt;textarea cols="60" rows="8"&gt;&lt;/textarea&gt;</code>&#8220;</p>
 			<p>Next we just need to add the submit button, a hidden input to keep track of the message this comment is attached to, and close the form:</p>
 			<pre class="brush: php; highlight:[11,12,13,14,15,16] notranslate" title="">
 				&lt;?php echo Form::open(array(&quot;class&quot;=&gt;&quot;form-horizontal&quot;)); ?&gt;
@@ -668,9 +668,9 @@
 
 				}
 			</pre>
-			<h5 id="Why_Its_So_Small">Why It&#8217;s So Small</h5>
-			<p>Notice that there&#8217;s not much code there? That&#8217;s because the comment model extends a class called ORM, or the Object-relational mapper. You can take a look at <a href="http://fuelphp.com/docs/packages/orm/creating_models.html">some of the more complicated things ORM can do</a>, but for now we&#8217;re just going to stick to the defaults.</p>
-			<p>Since we made another model, we&#8217;re going to have to migrate to the newest version:</p>
+			<h5 id="Why_Its_So_Small">Why It's So Small</h5>
+			<p>Notice that there's not much code there? That's because the comment model extends a class called ORM, or the Object-relational mapper. You can take a look at <a href="http://fuelphp.com/docs/packages/orm/creating_models.html">some of the more complicated things ORM can do</a>, but for now we're just going to stick to the defaults.</p>
+			<p>Since we made another model, we're going to have to migrate to the newest version:</p>
 
 			<div class="os-switch">
 				<div class="windows">
@@ -698,7 +698,7 @@
 					$this-&gt;template->content = View::forge('comments/create', $data);
 				}
 			</pre>
-			<p>Notice that we are setting the <code>$id</code> to null by default. Now we need to check to make sure that they&#8217;ve completed the form, so we add an if statement:</p>
+			<p>Notice that we are setting the <code>$id</code> to null by default. Now we need to check to make sure that they've completed the form, so we add an if statement:</p>
 			<pre class="brush: php; first-line: 13; highlight:[15,16,17] notranslate" title="">
 				public function action_create($id = null)
 				{
@@ -712,7 +712,7 @@
 					$this->template->content = View::forge('comments/create', $data);
 				}
 			</pre>
-			<p>This is using Fuel&#8217;s Input class, but we could have just as easily used <code>"if ($_POST)</code>&#8221; as well.</p>
+			<p>This is using Fuel's Input class, but we could have just as easily used <code>"if ($_POST)</code>&#8221; as well.</p>
 			<p>But what about going to the form before submitting?</p>
 			<pre class="brush: php; first-line: 13; highlight:[18,19,20,21] notranslate" title="">
 				public function action_create($id = null)
@@ -731,7 +731,7 @@
 					$this->template->content = View::forge('comments/create', $data);
 				}
 			</pre>
-			<p>This means if they didn&#8217;t post anything, take the <code>$id</code> and turn it into a variable called <code>$message</code> that the view can use.</p>
+			<p>This means if they didn't post anything, take the <code>$id</code> and turn it into a variable called <code>$message</code> that the view can use.</p>
 			<p>Now we need to build a new comment model in order to save the comment into the database.</p>
 			<pre class="brush: php; first-line: 13; highlight:[17,18,19,20,21] notranslate" title="">
 				public function action_create($id = null)
@@ -782,7 +782,7 @@
 					$this->template->content = View::forge('comments/create', $data);
 				}
 			</pre>
-			<p>&#8216;And&#8217; is used here instead of &#8216;&amp;&amp;&#8217; because it&#8217;s part of the <a href="http://fuelphp.com/docs/general/coding_standards.html#comparison_logical">Fuel coding standards</a>.</p>
+			<p>&#8216;And' is used here instead of &#8216;&amp;&amp;' because it's part of the <a href="http://fuelphp.com/docs/general/coding_standards.html#comparison_logical">Fuel coding standards</a>.</p>
 			<p>If the <code>if</code> statement is successful, it will save the comment to the database, so we should now set a flash to show that to the user. <a href="http://fuelphp.com/docs/classes/session/usage.html#method_set_flash">Session Flashes</a> are for information with a limited lifespan, such as presenting success or failure information.</p>
 			<p>So we can set our flash and redirect our user back to the message they were viewing:</p>
 			<pre class="brush: php; first-line: 13; highlight:[25,26] notranslate" title="">
@@ -813,7 +813,7 @@
 					$this->template->content = View::forge('comments/create', $data);
 				}
 			</pre>
-			<p>or else we set the flash to say that the comment couldn&#8217;t be saved:</p>
+			<p>or else we set the flash to say that the comment couldn't be saved:</p>
 			<pre class="brush: php; first-line: 13; highlight:[28,29,30,31] notranslate" title="">
 				public function action_create($id = null)
 				{
@@ -847,7 +847,7 @@
 				}
 			</pre>
 			<h5 id="Creating_A_Comment_from_A_Message">Creating a Comment from a Message</h5>
-			<p>Now we&#8217;re going to add a link to the <code>view.php</code> file in the messages view, so you can add a comment to any message.</p>
+			<p>Now we're going to add a link to the <code>view.php</code> file in the messages view, so you can add a comment to any message.</p>
 			<p>Go to <code>/fuel/app/views/messages/view.php</code> and add:</p>
 
 			<pre class="brush: php; first-line: 1; highlight:[10] notranslate" title="">
@@ -915,7 +915,7 @@
 					$this-&gt;template-&gt;content = View::forge('comments/edit', $data);
 				}
 			</pre>
-			<p>The action <code>$comment-&gt;save()</code> updates the comment if it already exists in the database, or adds it if it doesn&#8217;t.</p>
+			<p>The action <code>$comment-&gt;save()</code> updates the comment if it already exists in the database, or adds it if it doesn't.</p>
 			<p>Note the global variable <code>$message</code>, which will keep track of the message id.
 			<p>Also note the <code>$form</code> variable, which will contain our form.</p>
 			<p>All that remains is to fix up the comment edit view. Go ahead and open up <code>fuel/app/views/comments/edit.php</code>. It'll wind up looking like the view for editing messages, with a few differences:
@@ -950,7 +950,7 @@
 			</pre>
 			<p>In the next section we aim to accomplish two things: showing the number of comments that a message has and showing the comments in a list when we view the message.</p>
 			<h5 id="Number_of_Comments">Number of Comments</h5>
-			<p>Open up the messages controller. At this point you should be pretty good at navigating the file tree, so we&#8217;ll stop giving you paths to things you&#8217;ve seen) and take a look at action_index:</p>
+			<p>Open up the messages controller. At this point you should be pretty good at navigating the file tree, so we'll stop giving you paths to things you've seen) and take a look at action_index:</p>
 			<pre class="brush: php; first-line: 5; notranslate" title="">
 				public function action_index()
 				{
@@ -970,7 +970,7 @@
 					$this-&gt;template-&gt;content = $view;
 				}
 			</pre>
-			<p>Just under the messages array we&#8217;re going to declare an array called $comment_links, and then loop through the messages:</p>
+			<p>Just under the messages array we're going to declare an array called $comment_links, and then loop through the messages:</p>
 			<pre class="brush: php; first-line: 5; highlight:[9,10,11,12] notranslate" title="">
 				public function action_index()
 				{
@@ -986,7 +986,7 @@
 					$this-&gt;template-&gt;content = $view;
 				}
 			</pre>
-			<p>We need to retrieve the comments associated with this particular message, so we query the database for comments that match the message&#8217;s id. So far we have been using models to retrieve information from the database, and we could do that here using the <a href="http://fuelphp.com/docs/packages/orm/crud.html#/find_chaining" ?>Model's query method</a>,  but Fuel also has a DB class that we'd like to show you. </p>
+			<p>We need to retrieve the comments associated with this particular message, so we query the database for comments that match the message's id. So far we have been using models to retrieve information from the database, and we could do that here using the <a href="http://fuelphp.com/docs/packages/orm/crud.html#/find_chaining" ?>Model's query method</a>,  but Fuel also has a DB class that we'd like to show you. </p>
 			<pre class="brush: php; first-line: 5; highlight:[12,13,14,15] notranslate" title="">
 				public function action_index()
 				{
@@ -1007,7 +1007,7 @@
 				}
 			</pre>
 			<p>The <code>DB::select()</code> method builds a SQL query to retrieve all the comments. This is analogous to &#8220;<code>SELECT * FROM 'comments' WHERE message_id = $message-&gt;id</code>&#8220;</p>
-			<p>Now we just need to count the number of results and add that number to the $comment_links array. To make the message's comments easy to access, we&#8217;re going to make the comment array key match the message id:</p>
+			<p>Now we just need to count the number of results and add that number to the $comment_links array. To make the message's comments easy to access, we're going to make the comment array key match the message id:</p>
 			<pre class="brush: php; first-line: 5; highlight:[12,17,18] notranslate" title="">
 				public function action_index()
 				{
@@ -1102,7 +1102,7 @@
 			<pre class="brush: php; first-line: 9; highlight:[9] nostranslate" title="">
 				&lt;li&gt;&lt;?php echo Html::anchor('messages/view/'.$message-&gt;id, $comment_links[$message-&gt;id]); ?&gt;&lt;/li&gt;
 			</pre>
-			<p>What we did was modify the &#8220;View&#8221; message link to include the number of comments, if any are present. At the moment, there shouldn&#8217;t be any.
+			<p>What we did was modify the &#8220;View&#8221; message link to include the number of comments, if any are present. At the moment, there shouldn't be any.
 			</p>
 			<p>Now if you go to <a href="http://localhost/fuel_intro/public/messages/">http://localhost/fuel_intro/public/messages/</a> you should see the number of comments each message has.</p>
 			<h6 id="Showing_the_Comments">Showing the Comments</h6>
@@ -1157,8 +1157,8 @@
 			<hr>
 			<h3 id="part3">Part 3 &#8211; Adding a Login System</h3>
 			<h4 id="Login_Page_and_User_Creation">Creating Users and Login</h4>
-			<p>At this point we&#8217;ve made our messages and comments system. However, we don&#8217;t want just anyone to be able to edit/delete messages, and it would be nice if messages were associated with some kind of username, so we&#8217;re going to make a simple and generic user system for our messages.</p>
-			<p>First add the &#8216;auth&#8217; package to the package list in the config file. That&#8217;s <code>fuel/app/config/config.php</code>, in case you forgot.</p>
+			<p>At this point we've made our messages and comments system. However, we don't want just anyone to be able to edit/delete messages, and it would be nice if messages were associated with some kind of username, so we're going to make a simple and generic user system for our messages.</p>
+			<p>First add the &#8216;auth' package to the package list in the config file. That's <code>fuel/app/config/config.php</code>, in case you forgot.</p>
 			<pre class="brush: php; first-line: 274; highlight:[276] notranslate" title="">
 				'packages'	=&gt; array(
 					'orm',
@@ -1197,7 +1197,7 @@
 			</div>
 
 
-			<p>The only thing that should be explained on this line is groups. Here&#8217;s the default group number definitions:</p>
+			<p>The only thing that should be explained on this line is groups. Here's the default group number definitions:</p>
 			<dl>
 				<dt>
 					-1  =</dt>
@@ -1228,7 +1228,7 @@
 			</div>
 
 				<h5 id="The_Default_Table">The Default Table</h5>
-				<p>The auth package defaults to a user table called &#8220;users&#8221; by default, so we don't need to do change any configuration options here. But it&#8217;s good to know where to find the default table name, and how to change it. The auth package has it's own configurations located within the package directory, the following file defines what the user table is called.</p>
+				<p>The auth package defaults to a user table called &#8220;users&#8221; by default, so we don't need to do change any configuration options here. But it's good to know where to find the default table name, and how to change it. The auth package has it's own configurations located within the package directory, the following file defines what the user table is called.</p>
 				<p><code>/fuel/packages/auth/config/simpleauth.php</code>:</p>
 				<pre class="brush: php; first-line: 36; notranslate" title="">
 					/**
@@ -1259,9 +1259,9 @@
 								?&gt;
 					&lt;?php if (Session::get_flash('success')): ?&gt;
 			</pre>
-			<p>This checks to see if a user is logged in (we&#8217;ll call the object with the user&#8217;s info in it <code>$user_info</code>), if they&#8217;re not logged in, then it builds an unordered list that links to a registration page.</p>
+			<p>This checks to see if a user is logged in (we'll call the object with the user's info in it <code>$user_info</code>), if they're not logged in, then it builds an unordered list that links to a registration page.</p>
 			<h5 id="Registration_Model">Registration Model</h5>
-			<p>We&#8217;re going to create the registration form using the model and passing it with the controller. Create a function at the bottom of the user model. It&#8217;s going to have an empty form called a Fieldset passed into it, which is kind of like a form that has validation attached to it:</p>
+			<p>We're going to create the registration form using the model and passing it with the controller. Create a function at the bottom of the user model. It's going to have an empty form called a Fieldset passed into it, which is kind of like a form that has validation attached to it:</p>
 			<pre class="brush: php; highlight:[34,35,36] notranslate" title="">
 				&lt;?php
 				use OrmModel;
@@ -1314,9 +1314,9 @@
 					return $form;
 				}
 			</pre>
-			<p>The <code>add()</code> function adds a certain field with the field&#8217;s name, label, and attributes in that order. The <code>add_rule()</code> function adds a validation rule to the field. All the rules available by default can be found <a href="http://fuelphp.com/docs/classes/validation/validation.html#rules_table">here</a>.</p>
+			<p>The <code>add()</code> function adds a certain field with the field's name, label, and attributes in that order. The <code>add_rule()</code> function adds a validation rule to the field. All the rules available by default can be found <a href="http://fuelphp.com/docs/classes/validation/validation.html#rules_table">here</a>.</p>
 			<h5 id="User_Controller_Registration_Function">User Controller Registration Function</h5>
-			<p>Now we&#8217;re going to go to the action_register function within the users controller.</p>
+			<p>Now we're going to go to the action_register function within the users controller.</p>
 			<p>We are going to change it from this:</p>
 			<pre class="brush: php; first-line: 20; notranslate" title="">
 				public function action_register()
@@ -1352,7 +1352,7 @@
 				}
 			</pre>
 			<p>The reason for this fragmentation is that both methods will be more specified in what they do.</p>
-			<p>We will use <code>$auth</code> to authenticate users, <code>$view</code> will be the view that will be displayed to the user, and <code>$fieldset</code> will be the fieldset that we&#8217;re sending to the model. <code>Model_User::populate_register_fieldset($form)</code> just populates the form with the fields.</p>
+			<p>We will use <code>$auth</code> to authenticate users, <code>$view</code> will be the view that will be displayed to the user, and <code>$fieldset</code> will be the fieldset that we're sending to the model. <code>Model_User::populate_register_fieldset($form)</code> just populates the form with the fields.</p>
 			<p>If we build the form in the view, we can see how this will work. Go to the user register view and add:</p>
 			<pre class="brush: php; first-line: 1; highlight:[7,8] notranslate" title="" id="User_Controller_Registration_Function_Last_Step">
 				&lt;ul class=&quot;nav nav-pills&quot;&gt;
@@ -1410,7 +1410,7 @@
 					$val-&gt;set_message('match_value', 'The passwords must match');
 				}
 			</pre>
-			<p>For a full explanation of the set message feature, look at <a href="http://fuelphp.com/docs/classes/validation/validation.html#errors">Fuel&#8217;s documentation on error messages</a>.</p>
+			<p>For a full explanation of the set message feature, look at <a href="http://fuelphp.com/docs/classes/validation/validation.html#errors">Fuel's documentation on error messages</a>.</p>
 			<p>Next, we try to run the validation to see if it passes or fails:</p>
 			<pre class="brush: php; first-line: 41; highlight:[49,50,51,52,53,54,55,56] notranslate" title="">
 				public static function validate_registration(Fieldset $form, $auth)
@@ -1431,7 +1431,7 @@
 					}
 				}
 			</pre>
-			<p>So, if the validation doesn&#8217;t pass, the <code>show_errors()</code> function turns the errors into an HTML list, and we return that and a boolean saying that errors were found.</p>
+			<p>So, if the validation doesn't pass, the <code>show_errors()</code> function turns the errors into an HTML list, and we return that and a boolean saying that errors were found.</p>
 			<h6 id="What_if_they_Pass">What if they Pass?</h6>
 			<p>If the user passes validation, then we get their username, password, and email from the form:</p>
 			<pre class="brush: php; first-line: 41; highlight:[51,52,53] notranslate" title="">
@@ -1487,7 +1487,7 @@
 					}
 				}
 			</pre>
-			<p>We&#8217;re going to be nice here and log the user in once they register. So if the <code>$user</code> object is present, we can use the <code>$auth</code> object we passed to log the person in:</p>
+			<p>We're going to be nice here and log the user in once they register. So if the <code>$user</code> object is present, we can use the <code>$auth</code> object we passed to log the person in:</p>
 			<pre class="brush: php; first-line: 41; highlight:[63,64,65,66] notranslate" title="">
 				public static function validate_registration(Fieldset $form, $auth)
 				{
@@ -1523,7 +1523,7 @@
 					}
 				}
 			</pre>
-			<p>If the login doesn&#8217;t work, then we create an unordered list and return both that and the errors found array:</p>
+			<p>If the login doesn't work, then we create an unordered list and return both that and the errors found array:</p>
 			<pre class="brush: php; first-line: 41; highlight:[67,68,69,70,71,72,73,74,75,76,77,78,79] notranslate" title="">
 				public static function validate_registration(Fieldset $form, $auth)
 				{
@@ -1632,11 +1632,11 @@
 					Response::redirect('messages/');
 				}
 			</pre>
-			<p>Don&#8217;t forget to echo the form in the login view! The code is very similar to <a href="#User_Controller_Registration_Function_Last_Step">the user registration view</a> with the exception of swapping <code>$reg</code> with <code>$form</code>.</p>
+			<p>Don't forget to echo the form in the login view! The code is very similar to <a href="#User_Controller_Registration_Function_Last_Step">the user registration view</a> with the exception of swapping <code>$reg</code> with <code>$form</code>.</p>
 			
 			<h5 id="Finishing_Touches">Finishing Touches</h5>
-			<p>Let&#8217;s quickly tidy up some of our code. We just need to add the name of the person making the message (instead of letting them type it in themselves), and give them editing rights to their own posts.</p>
-			<p>Go to the _form.php files in both the comments and the messages views and replace the name input field with the user&#8217;s name.</p>
+			<p>Let's quickly tidy up some of our code. We just need to add the name of the person making the message (instead of letting them type it in themselves), and give them editing rights to their own posts.</p>
+			<p>Go to the _form.php files in both the comments and the messages views and replace the name input field with the user's name.</p>
 			<p>In messages, from this:</p>
 			<pre class="brush: php; first-line: 4; notranslate" title="">
 				&lt;div class=&quot;form-group&quot;&gt;
@@ -1687,7 +1687,7 @@
 					&lt;li&gt;&lt;?php echo Html::anchor('messages/delete/'.$message-&gt;id, 'Delete', array('onclick' =&gt; "return confirm('Are you sure?')")); ?&gt;&lt;/li&gt;
 				&lt;?php endif; ?&gt;
 			</pre>
-			<p>Since there&#8217;s also an Edit link inside each message, we need to put a check in the message view as well. This code:</p>
+			<p>Since there's also an Edit link inside each message, we need to put a check in the message view as well. This code:</p>
 			<pre class="brush: php; first-line: 11; notranslate" title="">
 				&lt;?php echo Html::anchor('messages/edit/'.$message->id, 'Edit'); ?&gt; |
 				&lt;?php echo Html::anchor('messages/', 'Back'); ?&gt;
@@ -1717,7 +1717,7 @@
 			</pre>
 			<p>Now you should be able to register users, log in separately, and only have the ability to edit or delete your own messages and comments!</p>
 			<h6 id="This_is_the_Last_Thing_I_promise">This Is the Last Thing, <em>I Promise</em></h6>
-			<p>The very last thing we&#8217;re going to do is to check if the user is logged in. If they are, allow them to make a message or comment.</p>
+			<p>The very last thing we're going to do is to check if the user is logged in. If they are, allow them to make a message or comment.</p>
 			<p>Add this code towards the top of the message view:</p>
 			<pre class="brush: php; first-line: 9; highlight:[9,10,11] notranslate" title="">
 				&lt;?php if (Auth::instance()-&gt;check()) : ?&gt;
@@ -1726,7 +1726,7 @@
 				&lt;h3&gt;Comments&lt;/h3&gt;
 				&lt;ul&gt;
 			</pre>
-			<p>Likewise at the bottom of the message&#8217;s index view:</p>
+			<p>Likewise at the bottom of the message's index view:</p>
 			<pre class="brush: php; first-line: 30; highlight:[30,31,32,33,34,35] notranslate" title="">
 				&lt;?php
 				if (Auth::instance()-&gt;check())
