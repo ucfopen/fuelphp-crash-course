@@ -7,13 +7,13 @@ We use this tutorial in our new employee training to teach incoming developers P
 
 Contributors
 ====================
-*	Kevin Baugh
-*	Keegan Berry
-*	Ian Turgeon
-*   Brandon Stull
-*   Mike Parks
-*   Chris McLean
-*   Eric Colon
+*	[Kevin Baugh](https://github.com/loraxx753)
+*	[Keegan Berry](https://github.com/keeeeeegan)
+*	[Ian Turgeon](https://github.com/iturgeon)
+* [Brandon Stull](https://github.com/FrenjaminBanklin)
+* Mike Parks
+* [Chris McLean](https://github.com/havok2905)
+* [Eric Colon](https://github.com/accell)
 
 Links
 =====
