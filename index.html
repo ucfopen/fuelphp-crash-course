@@ -11,7 +11,7 @@
 
 	<!-- Special Theme css -->
 	<link rel='stylesheet' type='text/css' media='screen' href='assets/css/fuelphptutorial.css' />
-	
+
 	<script type='text/javascript' src='assets/js/jquery-1.3.2.min.js'></script>
 
 	<meta id="syntaxhighlighteranchor" name="syntaxhighlighter-version" content="3.1.3" />
@@ -25,7 +25,7 @@
 
 		console.log('Your OS: '+OSName);
 
-	
+
 		$(".show-windows").click(function() {
 			scrollTo($(this), 'windows');
 		});
@@ -102,7 +102,7 @@
 			<h3>Before You Get Started</h3>
 
 			<p>This tutorial is here to introduce you to the FuelPHP framework by walking you through the creation of a simple messaging app.</p>
-			
+
 			<h4>Choose &#8211; Windows or Linux/OSX</h4>
 
 			<p>
@@ -129,8 +129,9 @@
 					<p>First and foremost, here's what you're going to need on Linux/OSX:</p>
 					<ol>
 						<li><a href="http://fuelphp.com">Fuel PHP framework</a> (we're using v1.7.2)</li>
-						<li><a href="http://www.apachefriends.org/en/xampp.html">XAMPP</a> (for beginners) or any basic <a href="http://en.wikipedia.org/wiki/LAMP_(software_bundle)">LAMP package</a> <br>(many tutorials exist, here are some for a few popular linux distros: <a href="https://help.ubuntu.com/community/ApacheMySQLPHP">Ubuntu</a>, <a href="http://wiki.debian.org/LaMp">Debian</a>, <a href="http://en.opensuse.org/SDB:Linux_Apache_MySQL_PHP">SUSE</a>, and <a href="http://fedorasolved.org/server-solutions/lamp-stack">Fedora</a>)</li>
-						<li>phpMyAdmin (installation will vary depending on your os, XAMPP users have it already!)</li>
+								<li>MySQL which can be installed on OSX with homebrew in the terminal using "brew install mysql" command ("apt-get install mysql" command for linux)</li>
+						<li>Database Management program of your choice (ex. <a href="http://www.sequelpro.com">Sequel Pro for OSX</a> or <a href="http://dbeaver.jkiss.org/">DBeaver for linux</a>)</li>
+						<li>PHP 5.4.0 or later which should come pre-installed with latest version of OSX (if not pre-installed on linux, run the command "sudo apt-get install php5")</li>
 						<li>A basic understanding of the <a href="http://php-html.net/tutorials/model-view-controller-in-php/">Model-View-Controller (MVC) pattern</a>.</li>
 						<li>At least a basic understanding of <a href="http://try.github.io/levels/1/challenges/1">Git</a> and version control systems.</li>
 					</ol>
@@ -139,54 +140,31 @@
 					Showing Instructions for: <div class="os-button show-linux">Linux/OSX</div> or <div class="os-button show-windows">Windows</div>
 				</div>
 			</div>
-			
+
 			<p>Keep in mind that the completed source code for this tutorial is available from the <a href="https://github.com/UCF/fuelphp-crash-course">Fuel Crash Course GitHub repository</a>.  Simply clone our repo and make sure you initialize all the sub-repos using <code>git submodule update --init</code></p>
 
 			<h3 id="part1">Part 1 &#8211; Creating a Messaging System</h3>
 
 			<h4 id="Basic_FuelPhp_Setup">Basic FuelPhp Setup</h4>
 
-			<p>Create a folder called &#8220;fuel_intro&#8221; in the htdocs folder of xampp.</p>
-
-			<p>Next, open up command line, navigate to that folder, and type in the following: <code>git clone https://github.com/fuel/fuel.git .</code> Don't forget the period at the end, that will clone the files into the directory you are currently in.</p>
-
-			<p>Now that the files have been clones, you have to update all of the <a href="https://getcomposer.org/doc/00-intro.md#introduction">PHP dependencies</a> by typing in the following command:</p>
-
-			<p><code>php composer.phar update</code></p>
-
-			<h4 id="Checking_Your_Work">Checking Your Work</h4>
-
-			<p>In your browser, navigate to <a href="http://localhost/fuel_intro/public">http://localhost/fuel_intro/public</a> and you should see the &#8220;successful install&#8221; page below from Fuel.</p>
-
-			<p><img src="assets/images/fuelsuccess.png" alt="Screenshot showing successful Fuel PHP install." /></p>
-			<div class="expando-button"><h5><span class="title">Troubleshooting</span>: When file permissions cause fuelphp errors <span class="click_to_expand">(click to show)</span></h5></div>
-			<div class="expando-content">
-				<div class="os-switch">
-					<div class="windows">
-						<h5>Troubleshooting</h5>
-						<p>If your page looks like the following screenshot, this means that Fuel does not have write permissions for the listed files, which it needs. If you do not receive any errors, feel free to skip over this next step, as it does not apply to you.</p>
-						<p><img src="assets/images/error01.png" alt="Screenshot showing a permissions error for fuel setup." /></p>
-						<p>Do the following to give the directories and files the proper permissions.</p>
-						<p><img src="assets/images/permissions.jpg" alt="Screenshot of how to handle the error in the command prompt. First Command: cd:/xampp/htdocs/fuel_intro, Second Command: CACLS fuel/app/config /e /p %username%:F, Third Command: CACLS fuel/app/logs /e /p %username%:F" /></p>
-						<p><code>%username%</code> is a special kind of variable in Windows which holds the name of the current logged in user and <code>CACLS</code> is a Windows function which allows you to change permissions on files and folders based on the user.</p>
-						<p>I would not suggest using these settings in a production environment, but for our purposes they work just fine. To learn more about Windows file permissions, you can read <a href="http://www.cyberciti.biz/tips/windows-change-access-permissions-from-the-command-line.html" target="_blank">Windows File Permissions</a>.</p>
-						<p>You could also type the following command into the command line for more help. <code>cacls /?</code></p>
-					</div>
-
-					<div class="linux">
-						<h5>Troubleshooting</h5>
-						<p>If, at any point in this tutorial, you run into something that resembles the following page, you may need to tweak your file and directory permissions using the <code>chmod</code> terminal command in order to have Fuel properly display a (meaningful) error message. </p>
-						<p><img src="assets/images/linux_permissions_01.png" alt="Screenshot showing incorrect permission setting." /></p>
-						<p>You'll need to recursively change the access to Fuel's <code>logs</code> directory as well as its subdirectories and files to read, write, and execute for all users. To do this, change directory in the terminal to <code>fuel/app</code> and enter the following command:</p>
-						<p><code>sudo chmod -R 777 logs</code>.</p>
-						<p><img src="assets/images/linux_permissions_02.png" alt="Screenshot showing incorrect permission setting." /></p>
-						<p>If you examine the directory using the <code>ls -la</code> command, you'll notice that all users have now been given <code>rwx</code> permissions. </p>
-					</div>
-					<div class="mini-os-switch">
-						Showing Instructions for: <div class="os-button show-linux">Linux/OSX</div> or <div class="os-button show-windows">Windows</div>
-					</div>
+		  <div class="os-switch">
+				<div class="windows">
+					<p>Create a folder called “fuel_intro” in the htdocs folder of xampp.</p>
+				</div>
+				<div class="linux">
+					<p>Create a folder called &#8220;fuel_intro&#8221; in the Documents folder of your home directory.</p>
+				</div>
+				<div class="mini-os-switch">
+					Showing Instructions for: <div class="os-button show-linux">Linux/OSX</div> or <div class="os-button show-windows">Windows</div>
 				</div>
 			</div>
+
+
+			<p>Next, open up command line, navigate to your new &#8220;fuel_intro&#8221; folder, and type in the following: <code>git clone git://github.com/fuel/fuel.git .</code> Don't forget the period at the end, that will clone the files into the directory you are currently in.</p>
+
+			<p>Now that the files have been clones, you have to update all of the <a href="https://getcomposer.org/doc/00-intro.md#introduction">PHP dependencies</a> by typing in the following commands:</p>
+
+			<p><code>php composer.phar self-update<br />php composer.phar update</code></p>
 
 			<h4>Config It Up</h4>
 			<p>For this tutorial we're going to be using an <a href="http://en.wikipedia.org/wiki/Object-relational_mapping">orm package</a>, included in your install of Fuel. Head over to <code>/fuel/app/config/config.php</code> and uncomment the &#8220;always_load&#8221; array. Then uncomment the &#8220;packages&#8221; array and the &#8220;orm&#8221; package:</p>
@@ -258,10 +236,26 @@
 				'server_gmt_offset'  =&gt 0,
 				'default_timezone'   =&gt 'America/New_York',
 			</pre>
-			<p>After doing that, go to phpmyadmin (<a href="http://localhost/phpmyadmin">http://localhost/phpmyadmin</a>) and create a database called &#8220;fuel_intro&#8221;. No need to create any tables now, we'll use Fuel to setup our tables.</p>
-			<p><img src="assets/images/gettin_configged_up_02a.jpg" alt="Screenshot showing the creation of a database from phpmyadmin." /></p>
-			
-			<p>We renamed the database to "fuel_intro" and changed the password to the default password for our mysql install. Aside from that, we left everything else alone since the defaults will work fine.</p> 
+
+
+			<p>After doing that, go to your database management software and connect to localhost using the 'root' account and password you set up while installing mysql server)
+				 and create a database called &#8220;fuel_intro&#8221;. No need to create any tables now, we'll use Fuel to setup our tables.</p>
+
+			<div class="os-switch">
+				<div class="windows">
+					<p><img src="assets/images/gettin_configged_up_02a.jpg" alt="Screenshot showing the creation of a database from phpmyadmin." /></p>
+				</div>
+				<div class="linux">
+					<p><img src="assets/images/gettin_configged_up_02c.png" alt="Screenshot showing the creation of a database from sequel pro." /></p>
+				</div>
+				<div class="mini-os-switch">
+					Showing Instructions for: <div class="os-button show-linux">Linux/OSX</div> or <div class="os-button show-windows">Windows</div>
+				</div>
+			</div>
+
+
+			<p>We renamed the database to "fuel_intro" and changed the password to the default password for our mysql install. Aside from that, we left
+				 everything else alone since the defaults will work fine.</p>
 			<p>Now, make these changes in the db configuration in Fuel's development environment: <code>fuel/app/config/development/db.php</code></p>
 
 			<pre class="brush: php; first-line: 6; highlight:[9,10,11] notranslate" title="" >
@@ -275,7 +269,60 @@
 					),
 				);
 			</pre>
-			
+
+			<h4 id="Checking_Your_Work">Checking Your Work</h4>
+
+			<div class="os-switch">
+				<div class="windows">
+					<p>In your browser, navigate to <a href="http://localhost/fuel_intro/public">http://localhost/fuel_intro/public</a> and you should see the &#8220;successful install&#8221; page below from Fuel.</p>
+				</div>
+				<div class="linux">
+					<p>
+							In order to run your php built in server do the following:
+							<ol>
+								<li>Navigate to "fuel_intro/public"</li>
+								<li>Run the command "php -S localhost:8000"</li>
+								<li>In your browser, navigate to <a href="http://localhost:8000/">http://localhost:8000/</a>
+							</ol>
+
+							and you should see the &#8220;successful install&#8221; page below from Fuel.
+					</p>
+				</div>
+				<div class="mini-os-switch">
+					Showing Instructions for: <div class="os-button show-linux">Linux/OSX</div> or <div class="os-button show-windows">Windows</div>
+				</div>
+			</div>
+
+			<p><img src="assets/images/fuelsuccess.png" alt="Screenshot showing successful Fuel PHP install." /></p>
+			<div class="expando-button"><h5><span class="title">Troubleshooting</span>: When file permissions cause fuelphp errors <span class="click_to_expand">(click to show)</span></h5></div>
+			<div class="expando-content">
+				<div class="os-switch">
+					<div class="windows">
+						<h5>Troubleshooting</h5>
+						<p>If your page looks like the following screenshot, this means that Fuel does not have write permissions for the listed files, which it needs. If you do not receive any errors, feel free to skip over this next step, as it does not apply to you.</p>
+						<p><img src="assets/images/error01.png" alt="Screenshot showing a permissions error for fuel setup." /></p>
+						<p>Do the following to give the directories and files the proper permissions.</p>
+						<p><img src="assets/images/permissions.jpg" alt="Screenshot of how to handle the error in the command prompt. First Command: cd:/xampp/htdocs/fuel_intro, Second Command: CACLS fuel/app/config /e /p %username%:F, Third Command: CACLS fuel/app/logs /e /p %username%:F" /></p>
+						<p><code>%username%</code> is a special kind of variable in Windows which holds the name of the current logged in user and <code>CACLS</code> is a Windows function which allows you to change permissions on files and folders based on the user.</p>
+						<p>I would not suggest using these settings in a production environment, but for our purposes they work just fine. To learn more about Windows file permissions, you can read <a href="http://www.cyberciti.biz/tips/windows-change-access-permissions-from-the-command-line.html" target="_blank">Windows File Permissions</a>.</p>
+						<p>You could also type the following command into the command line for more help. <code>cacls /?</code></p>
+					</div>
+
+					<div class="linux">
+						<h5>Troubleshooting</h5>
+						<p>If, at any point in this tutorial, you run into something that resembles the following page, you may need to tweak your file and directory permissions using the <code>chmod</code> terminal command in order to have Fuel properly display a (meaningful) error message. </p>
+						<p><img src="assets/images/linux_permissions_01.png" alt="Screenshot showing incorrect permission setting." /></p>
+						<p>You'll need to recursively change the access to Fuel's <code>logs</code> directory as well as its subdirectories and files to read, write, and execute for all users. To do this, change directory in the terminal to <code>fuel/app</code> and enter the following command:</p>
+						<p><code>sudo chmod -R 777 logs</code>.</p>
+						<p><img src="assets/images/linux_permissions_02.png" alt="Screenshot showing incorrect permission setting." /></p>
+						<p>If you examine the directory using the <code>ls -la</code> command, you'll notice that all users have now been given <code>rwx</code> permissions. </p>
+					</div>
+					<div class="mini-os-switch">
+						Showing Instructions for: <div class="os-button show-linux">Linux/OSX</div> or <div class="os-button show-windows">Windows</div>
+					</div>
+				</div>
+			</div>
+
 			<h4 id="Oil_Slick">Oil Slick</h4>
 			<p>Fuel has a cool command line utility called Oil that lets you set up a lot of your controllers and tables automatically.</p>
 			<p>Bring up Command Prompt, type in the file path of your Fuel installation, and then run <code>php oil</code>. You should see a bit of oil usage documentation.</p>
@@ -296,7 +343,20 @@
 			<h5 id="Every_Building_Needs_A_Scaffold">Every Building Needs a Scaffold</h5>
 			<p>Scaffolding in fuel allows you to quickly create a related controller, model (using ORM), and view for manipulating information.</p>
 			<p>What we want to end up with after creating the scaffold is a table with the following fields:</p>
-			<p><img src="assets/images/every_building_needs_a_scaffold_01a.jpg" alt="Screenshot of field names." /></p>
+
+			<div class="os-switch">
+				<div class="windows">
+					<p><img src="assets/images/every_building_needs_a_scaffold_01a.jpg" alt="Screenshot of field names." /></p>
+				</div>
+				<div class="linux">
+					<p><img src="assets/images/every_building_needs_a_scaffold_01c.png" alt="Screenshot of field names." /></p>
+				</div>
+				<div class="mini-os-switch">
+					Showing Instructions for: <div class="os-button show-linux">Linux/OSX</div> or <div class="os-button show-windows">Windows</div>
+				</div>
+			</div>
+
+
 			<p>The &#8216;id', &#8216;created_at', and &#8216;updated_at' columns are made automatically, so we only have to tell oil to make the 'name' and 'message' fields. Just feed your command prompt the following:</p>
 			<p><code>php oil generate scaffold messages name:string message:text</code></p>
 
@@ -369,9 +429,9 @@
 				<div class="linux">
 					<div class="expando-button"><h5><span class="title">Troubleshooting</span>: running into a "not found" page <span class="click_to_expand">(click to show)</span></h5></div>
 					<div class="expando-content">
-						<p>If you have a LAMP package and you're recieving a &#8220;Not Found&#8221; page when attempting to access messages, you may not have the proper Apache settings enabled. Navigate to <code>/etc/apache2/sites-available</code>, open the <code>default</code> file, and change the first two <code>AllowOverride</code> permissions to <code>All</code>.</p> 
+						<p>If you have a LAMP package and you're recieving a &#8220;Not Found&#8221; page when attempting to access messages, you may not have the proper Apache settings enabled. Navigate to <code>/etc/apache2/sites-available</code>, open the <code>default</code> file, and change the first two <code>AllowOverride</code> permissions to <code>All</code>.</p>
 						<p><img src="assets/images/linux_troubleshooting_01.png" /></p>
-						<p>When you're finished editing, you'll need to give your terminal the following command to enable <code>mod_rewrite</code>: </p>	
+						<p>When you're finished editing, you'll need to give your terminal the following command to enable <code>mod_rewrite</code>: </p>
 						<p><code>sudo a2enmod rewrite</code></p>
 						<p>Restart apache using <code>sudo service apache2 restart</code> and reload your page.</p>
 					</div>
@@ -451,7 +511,7 @@
 				&lt;/p&gt;
 			</pre>
 			<p>Now your code is more semantic, if not more understandable (If you don't like the bullets or the list view, <a href="http://css.maxdesign.com.au/listutorial/horizontal_introduction.htm">you can take them away using CSS</a>).</p>
-			
+
 			<h5 id="New_Landing_Page">New Landing Page</h5>
 			<p>Remember the successful install page you visited immediately after installing fuel? What you were seeing on that page comes from a view as well. Through routing, fuel can redirect the browser to display views outside of the default structure. These routing directions are stored in <code>/fuel/app/config/routes.php</code>.</p>
 			<p>By default there are two routes: the landing page and the 404 page.</p>
@@ -477,7 +537,7 @@
 
 			<!--  PART 2  -->
 			<hr>
-			
+
 			<h3 id="part2">Part 2 &#8211; Adding Comments</h3>
 
 			<h4 id="New_Comments">New Comments</h4>
@@ -1020,7 +1080,7 @@
 							-&gt;from('comments')
 							-&gt;where('message_id', $message-&gt;id)
 							-&gt;execute();
-						
+
 						$count = count($results);
 						$comment_links[$message-&gt;id] = "View | $count Comment(s)";
 					}
@@ -1045,7 +1105,7 @@
 							-&gt;execute();
 
 						$count = count($results);
-						
+
 						if ($count == 0)
 						{
 							$comment_links[$message-&gt;id] = 'View';
@@ -1633,7 +1693,7 @@
 				}
 			</pre>
 			<p>Don't forget to echo the form in the login view! The code is very similar to <a href="#User_Controller_Registration_Function_Last_Step">the user registration view</a> with the exception of swapping <code>$reg</code> with <code>$form</code>.</p>
-			
+
 			<h5 id="Finishing_Touches">Finishing Touches</h5>
 			<p>Let's quickly tidy up some of our code. We just need to add the name of the person making the message (instead of letting them type it in themselves), and give them editing rights to their own posts.</p>
 			<p>Go to the _form.php files in both the comments and the messages views and replace the name input field with the user's name.</p>
@@ -1755,7 +1815,7 @@
 				}
 			</pre>
 		<p>Now instead of always showing links for logging in or registering, once a user is logged in their name will be displayed along with a link to log out!</p>
-		
+
 		<h4 id="Finished">Finished!</h4>
 		<p>Congratulations! You now have a working understanding of Fuel along with this neat little messaging system!</p>
 		<p class="footnote">For questions, comments, or suggestions, let us know on Twitter <a href="http://www.twitter.com/techrangers">@Techrangers</a>!</p>
