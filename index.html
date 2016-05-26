@@ -129,9 +129,9 @@
 					<p>First and foremost, here's what you're going to need on Linux/OSX:</p>
 					<ol>
 						<li><a href="http://fuelphp.com">Fuel PHP framework</a> (we're using v1.7.2)</li>
-								<li>MySQL which can be installed on OSX with homebrew in the terminal using "brew install mysql" command ("apt-get install mysql" command for linux)</li>
+						<li>MySQL, which can be installed on OSX with homebrew in the terminal using "brew install mysql" command (Use your equivalent package manager to install mysql for linux)</li>
 						<li>Database Management program of your choice (ex. <a href="http://www.sequelpro.com">Sequel Pro for OSX</a> or <a href="http://dbeaver.jkiss.org/">DBeaver for linux</a>)</li>
-						<li>PHP 5.4.0 or later which should come pre-installed with latest version of OSX (if not pre-installed on linux, run the command "sudo apt-get install php5")</li>
+						<li>PHP 5.4.0 or later which should come pre-installed with latest version of OSX (if not pre-installed on linux use execute "install php5" with your package manager)</li>
 						<li>A basic understanding of the <a href="http://php-html.net/tutorials/model-view-controller-in-php/">Model-View-Controller (MVC) pattern</a>.</li>
 						<li>At least a basic understanding of <a href="http://try.github.io/levels/1/challenges/1">Git</a> and version control systems.</li>
 					</ol>
@@ -238,7 +238,7 @@
 			</pre>
 
 
-			<p>After doing that, go to your database management software and connect to localhost using the 'root' account and password you set up while installing mysql server)
+			<p>After doing that, go to your database management software and connect to localhost using the 'root' account and password you set up while installing mysql server (Note: The default MySQL port is 3306)
 				 and create a database called &#8220;fuel_intro&#8221;. No need to create any tables now, we'll use Fuel to setup our tables.</p>
 
 			<div class="os-switch">
@@ -253,10 +253,7 @@
 				</div>
 			</div>
 
-
-			<p>We renamed the database to "fuel_intro" and changed the password to the default password for our mysql install. Aside from that, we left
-				 everything else alone since the defaults will work fine.</p>
-			<p>Now, make these changes in the db configuration in Fuel's development environment: <code>fuel/app/config/development/db.php</code></p>
+			<p>Now, make these changes in the db configuration in Fuel's development environment: <code>fuel/app/config/development/db.php</code></p> (Add a password if your password is not blank.)
 
 			<pre class="brush: php; first-line: 6; highlight:[9,10,11] notranslate" title="" >
 				return array(
@@ -278,9 +275,9 @@
 				</div>
 				<div class="linux">
 					<p>
-							In order to run your php built in server do the following:
+							In order to run your php built-in server do the following:
 							<ol>
-								<li>Navigate to "fuel_intro/public"</li>
+								<li>Navigate to "fuel_intro/fuel"</li>
 								<li>Run the command "php -S localhost:8000"</li>
 								<li>In your browser, navigate to <a href="http://localhost:8000/">http://localhost:8000/</a>
 							</ol>
