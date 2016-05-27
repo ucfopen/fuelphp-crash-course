@@ -291,31 +291,20 @@
 			</div>
 
 			<p><img src="assets/images/fuelsuccess.png" alt="Screenshot showing successful Fuel PHP install." /></p>
-			<div class="expando-button"><h5><span class="title">Troubleshooting</span>: When file permissions cause fuelphp errors <span class="click_to_expand">(click to show)</span></h5></div>
-			<div class="expando-content">
-				<div class="os-switch">
-					<div class="windows">
-						<h5>Troubleshooting</h5>
-						<p>If your page looks like the following screenshot, this means that Fuel does not have write permissions for the listed files, which it needs. If you do not receive any errors, feel free to skip over this next step, as it does not apply to you.</p>
-						<p><img src="assets/images/error01.png" alt="Screenshot showing a permissions error for fuel setup." /></p>
-						<p>Do the following to give the directories and files the proper permissions.</p>
-						<p><img src="assets/images/permissions.jpg" alt="Screenshot of how to handle the error in the command prompt. First Command: cd:/xampp/htdocs/fuel_intro, Second Command: CACLS fuel/app/config /e /p %username%:F, Third Command: CACLS fuel/app/logs /e /p %username%:F" /></p>
-						<p><code>%username%</code> is a special kind of variable in Windows which holds the name of the current logged in user and <code>CACLS</code> is a Windows function which allows you to change permissions on files and folders based on the user.</p>
-						<p>I would not suggest using these settings in a production environment, but for our purposes they work just fine. To learn more about Windows file permissions, you can read <a href="http://www.cyberciti.biz/tips/windows-change-access-permissions-from-the-command-line.html" target="_blank">Windows File Permissions</a>.</p>
-						<p>You could also type the following command into the command line for more help. <code>cacls /?</code></p>
-					</div>
-
-					<div class="linux">
-						<h5>Troubleshooting</h5>
-						<p>If, at any point in this tutorial, you run into something that resembles the following page, you may need to tweak your file and directory permissions using the <code>chmod</code> terminal command in order to have Fuel properly display a (meaningful) error message. </p>
-						<p><img src="assets/images/linux_permissions_01.png" alt="Screenshot showing incorrect permission setting." /></p>
-						<p>You'll need to recursively change the access to Fuel's <code>logs</code> directory as well as its subdirectories and files to read, write, and execute for all users. To do this, change directory in the terminal to <code>fuel/app</code> and enter the following command:</p>
-						<p><code>sudo chmod -R 777 logs</code>.</p>
-						<p><img src="assets/images/linux_permissions_02.png" alt="Screenshot showing incorrect permission setting." /></p>
-						<p>If you examine the directory using the <code>ls -la</code> command, you'll notice that all users have now been given <code>rwx</code> permissions. </p>
-					</div>
-					<div class="mini-os-switch">
-						Showing Instructions for: <div class="os-button show-linux">Linux/OSX</div> or <div class="os-button show-windows">Windows</div>
+			<div class="os-switch">
+				<div class="windows">
+					<div class="expando-button"><h5><span class="title">Troubleshooting</span>: When file permissions cause fuelphp errors <span class="click_to_expand">(click to show)</span></h5></div>
+					<div class="expando-content">
+							<div class="windows">
+								<h5>Troubleshooting</h5>
+								<p>If your page looks like the following screenshot, this means that Fuel does not have write permissions for the listed files, which it needs. If you do not receive any errors, feel free to skip over this next step, as it does not apply to you.</p>
+								<p><img src="assets/images/error01.png" alt="Screenshot showing a permissions error for fuel setup." /></p>
+								<p>Do the following to give the directories and files the proper permissions.</p>
+								<p><img src="assets/images/permissions.jpg" alt="Screenshot of how to handle the error in the command prompt. First Command: cd:/xampp/htdocs/fuel_intro, Second Command: CACLS fuel/app/config /e /p %username%:F, Third Command: CACLS fuel/app/logs /e /p %username%:F" /></p>
+								<p><code>%username%</code> is a special kind of variable in Windows which holds the name of the current logged in user and <code>CACLS</code> is a Windows function which allows you to change permissions on files and folders based on the user.</p>
+								<p>I would not suggest using these settings in a production environment, but for our purposes they work just fine. To learn more about Windows file permissions, you can read <a href="http://www.cyberciti.biz/tips/windows-change-access-permissions-from-the-command-line.html" target="_blank">Windows File Permissions</a>.</p>
+								<p>You could also type the following command into the command line for more help. <code>cacls /?</code></p>
+							</div>
 					</div>
 				</div>
 			</div>
@@ -419,21 +408,6 @@
 
 			<h4 id="Prettying_Up_The_Code">Prettying Up The Code</h4>
 			<p>Navigate to &#8220;<a href="http://localhost/fuel_intro/public/messages">http://localhost/fuel_intro/public/messages</a>&#8221; and add a message.</p>
-
-			<div class="os-switch">
-				<div class="windows">
-				</div>
-				<div class="linux">
-					<div class="expando-button"><h5><span class="title">Troubleshooting</span>: running into a "not found" page <span class="click_to_expand">(click to show)</span></h5></div>
-					<div class="expando-content">
-						<p>If you have a LAMP package and you're recieving a &#8220;Not Found&#8221; page when attempting to access messages, you may not have the proper Apache settings enabled. Navigate to <code>/etc/apache2/sites-available</code>, open the <code>default</code> file, and change the first two <code>AllowOverride</code> permissions to <code>All</code>.</p>
-						<p><img src="assets/images/linux_troubleshooting_01.png" /></p>
-						<p>When you're finished editing, you'll need to give your terminal the following command to enable <code>mod_rewrite</code>: </p>
-						<p><code>sudo a2enmod rewrite</code></p>
-						<p>Restart apache using <code>sudo service apache2 restart</code> and reload your page.</p>
-					</div>
-				</div>
-			</div>
 
 			<p>If you see the following error, copy and paste the code into a new php file called crypt.php at <code>/fuel/app/config</code>.</p>
 			<p><img src="assets/images/cryptoerror1.7.jpg" alt="Image displaying an error message for lack of read write access to a non existant crypt.php file"/></p>
