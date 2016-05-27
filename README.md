@@ -11,7 +11,7 @@ Contributors
 *	[Keegan Berry](https://github.com/keeeeeegan)
 *	[Ian Turgeon](https://github.com/iturgeon)
 * [Brandon Stull](https://github.com/FrenjaminBanklin)
-* Mike Parks
+* [Mike Parks](https://github.com/michealparks)
 * [Chris McLean](https://github.com/havok2905)
 * [Eric Colon](https://github.com/accell)
 
