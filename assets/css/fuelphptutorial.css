@@ -201,16 +201,16 @@ h6 {
 a:link, a:active, a:hover {
 	color: #8d50ff;
 }
- 
+
 a:visited, .active {
 	color: #b400ff;
 }
- 
+
 a:hover {
 	color: #8d50ff;
 	text-decoration:none;
 }
- 
+
 a:active {
 	background: #8d50ff;
 	color:#fff;
@@ -390,6 +390,45 @@ dl.sameline dd {
 pre {
 	display:block;
 	float:none;
+}
+
+.console{
+	width: 100%;
+	padding-top: 0.5em;
+	border-radius: 20px;
+	background-color: white;
+	margin-bottom: 2em;
+	text-align: center;
+}
+.console .cursor{
+	width: 100%;
+	float: left;
+	width: 0.5em;
+	height: 1em;
+	background-color: rgba(211,211,211, 0.5);
+}
+
+code.command {color: white; font-weight: bold; background-color:black;
+	text-align: left;
+	white-space: pre-line;
+	font-family: monospace;
+	display: block;
+	margin: 6px 0 6px 0;
+	padding: 12px 0 12px 12px;
+	border-style: solid;
+	border-width: thin;
+	border-color: black;
+	height: 400px;
+	float: none;
+	overflow: auto;
+}
+
+code span.green{
+	color: green;
+}
+
+.tab{
+	margin-left: 5em;
 }
 
 .post {

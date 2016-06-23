@@ -108,7 +108,7 @@
 			<p>
 				<div class="os-switch">
 					<div class="os-button show-linux">Linux/OSX Instructions</div> or
-					<div class="os-button show-windows">Windows Instructions</div> or
+					<div class="os-button show-windows">Windows Instructions</div>
 				</div>
 			</p>
 
@@ -130,6 +130,7 @@
 					<p>First and foremost, here's what you're going to need on Linux/OSX:</p>
 					<ol>
 						<li><a href="http://fuelphp.com">Fuel PHP framework</a> (we're using v1.7.2)</li>
+						<li><a href="http://www.virtualbox.org">Virtual Box</a></li>
 						<li>Docker - can be installed on mac through homebrew (brew install docker), or visit <a href="https://docs.docker.com/engine/installation/linux/">Docker's installation for Linux documentation.</a></li>
 						<li>Docker Machine - can be installed on mac through homebrew (brew install docker), or visit <a href="https://docs.docker.com/engine/installation/linux/">Docker's installation for Linux documentation.</a></li>
 						<li>Docker Compose</li> -
@@ -155,23 +156,202 @@
 					<p>Create a folder called “fuel_intro” in the htdocs folder of xampp.</p>
 				</div>
 				<div class="linux">
+					<p><strong>This is a basic setup of FuelPHP with Docker. The instructions of setting up Docker are given, but not explained. If you are curious about what is going on, visit this <a href="#">Docker Tutorial</a></strong></p>
 					<p>Create a folder named &#8220;fuel_intro&#8221; in your &#8220;Documents&#8221; directory (&#8220;fuel_intro&#8221; can be place anywhere within your home directory if desired).
-					<p>Next, create a folder named &#8220;app&#8221; and a folder name &#8220;docker_builds&#8221; in the newly created &#8220;fuel_intro&#8221; folder.</p>
+					<p>Next, create a folder named &#8220;app&#8221;, a folder named &#8220;docker_builds&#8221;, and a folder name &#8220;config&#8221; in the newly created &#8220;fuel_intro&#8221; folder.</p>
+
+					<p>In &#8220;fuel_intro&#8221;, create a file named <em>docker-compose.yaml</em> and edit it with the following contents: </p>
+					<strong>Note: This file is very sensitive when it comes to indenting and additional spaces. Typing this file out manually in a text editor rather than copying and pasting is highly recommended!</strong>
+					<pre class="brush: php; first-line: ; highlight:[261,274,275,276,312] notranslate" style="margin: 1em;" title="">
+						version: '2'
+
+						services:
+						  nginx:
+						    image: nginx:stable-alpine
+						    ports:
+						      - "80:80"
+						    volumes:
+						      - ./app/public:/var/www/html/public:ro
+						      - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+						      - ./config/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf:ro
+						    links:
+						      - phpfpm
+
+						  phpfpm:
+						    build:
+						      context: .
+						      dockerfile: docker_builds/Dockerfile.phpfpm
+						    ports:
+						      - "9000:9000"
+						    environment:
+						      - DB_HOST=mysql
+						      - DB_NAME=fuel
+						      - DB_USER=user
+						      - DB_PASS=secret
+						    volumes:
+						      - ./app:/var/www/html:rw
+						      - ./config/php:/usr/local/etc/php/conf.d:ro
+						    links:
+						      - mysql
+
+						  mysql:
+						    image: mysql:5.5.47
+						    environment:
+						      - MYSQL_ROOT_PASSWORD=secret
+						      - MYSQL_USER=user
+						      - MYSQL_PASWORD=secret
+						      - MYSQL_DATABASE=fuel
+						    ports:
+						      - "3306:3306"
+					</pre>
+
+					<p>Now create a file named <em>Dockerfile.phpfpm</em> within &#8220;docker_builds&#8221;, and edit its contents to be :</p>
+
+					<pre class="brush: php; first-line: 1; highlight:[261,274,275,276,312] notranslate" style="margin: 1em;" title="">
+						FROM php:5-fpm
+
+						RUN apt-get -y update && apt-get install -y \
+							php5-mysql \
+							git \
+							zip \
+							unzip
+
+						RUN docker-php-ext-install pdo pdo_mysql
+
+						# Make sure composer is installed globally
+						RUN bash -c "curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer"
+
+						RUN sed -i "s/^www-data:x:[0-9]*/www-data:x:1000/" /etc/passwd
+					</pre>
+
+
+					<p>We also need to create configuration files for our nginx server. In the &#8220;config&#8221; folder, create a folder named &#8220;nginx&#8221;.</p>
+					<p>Within the &#8220;nginx&#8221; folder, create a file name &#8220;nginx.conf&#8221; and a folder named &#8220;conf.d&#8221;.</p>
+					<p>Within the &#8220;conf.d&#8221; folder, create a file name &#8220;default.conf&#8221;.</p>
+
+					<p>Now we can edit &#8220;nginx.conf&#8221; with the following contents: </p>
+
+					<pre class="brush: php; first-line: 1; highlight:[261,274,275,276,312] notranslate" style="margin: 1em;" title="">
+						user  nginx;
+						worker_processes  1;
+
+						error_log  /var/log/nginx/error.log warn;
+						pid        /var/run/nginx.pid;
+
+
+						events {
+						    worker_connections  1024;
+						}
+
+
+						http {
+						    include       /etc/nginx/mime.types;
+						    default_type  application/octet-stream;
+
+						    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+						                      '$status $body_bytes_sent "$http_referer" '
+						                      '"$http_user_agent" "$http_x_forwarded_for"';
+
+						    access_log  /var/log/nginx/access.log  main;
+
+						    sendfile        off;
+						    #tcp_nopush     on;
+
+						    keepalive_timeout  65;
+
+						    #gzip  on;
+
+						    include /etc/nginx/conf.d/*.conf;
+						}
+					</pre>
+
+					<p>And we can edit the &#8220;default.conf&#8221; to contain the following code:</p>
+
+					<pre class="brush: php; first-line: 1; highlight:[261,274,275,276,312] notranslate" style="margin: 1em;" title="">
+						server {
+						    listen       80;
+						    server_name  localhost;
+
+						    #charset koi8-r;
+						    #access_log  /var/log/nginx/log/host.access.log  main;
+
+						    location / {
+						        root   /var/www/html/public;
+						        index  index.php index.html index.htm;
+						    }
+
+						    #error_page  404              /404.html;
+
+						    # redirect server error pages to the static page /50x.html
+						    #
+						    error_page   500 502 503 504  /50x.html;
+						    location = /50x.html {
+						        root   /var/www/html;
+						    }
+
+						    # proxy the PHP scripts to Apache listening on 127.0.0.1:80
+						    #
+						    #location ~ \.php$ {
+						    #    proxy_pass   http://127.0.0.1;
+						    #}
+
+						    # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+						    #
+						    location ~ \.php$ {
+						        fastcgi_pass   phpfpm:9000;
+						        fastcgi_index  index.php;
+						        include        fastcgi_params;
+						        fastcgi_param  SCRIPT_FILENAME /var/www/html/public$fastcgi_script_name;
+						    }
+
+						    # deny access to .htaccess files, if Apache's document root
+						    # concurs with nginx's one
+						    #
+						    #location ~ /\.ht {
+						    #    deny  all;
+						    #}
+						}
+					</pre>
+
+					<p>Finally, go to the terminal, and we will run a few commands.
+
+					<p>The first command sets up our docker virtual machine (requires Virtual Box!!)</p>
+					<p><code>$ docker-machine create --driver virtualbox default</code></p>
+
+					<p>The second command links docker with the docker machine.</p>
+					<p><code>$ eval "$(docker-machine env default)"</code></p>
+
+					<p>The next command will build all of our containers, and allow our webserver to run!</p>
+					<p><code>$ docker-compose up</code></p>
+
+					<p>To exit the server, hit <em>control + c</em>. To restart the server just type the previous command (it will not take as long the first time).</p>
+
+					<p>The server to host your web application is now set up! Now, exit the server so we can get back to coding!!!</p>
+
+					<p>The last command will give you your machine's IP address, which you will need for later</p>
+
+					<p><code>$ docker-machine ls</code></p>
+
+					<p>The IP address under the <em>URL</em> header, is the IP address of your webserver and sql server. You will need this IP later! However, for now you can just continue on to the next section of the tutorial.</p>
+
+					<p>Open up command line, navigate to your new &#8220;fuel_intro/app&#8221; folder, and type in the following commands: </p>
+					<p><code>$ rmdir public</code></p>
+					<p><code>$ git clone git://github.com/fuel/fuel.git .</code></p>
+					<p><strong>Don't forget the period at the end, that will clone the files into the directory you are currently in.</strong></p>
+
+					<p>Now that the files have been cloned, you have to update all of the <a href="https://getcomposer.org/doc/00-intro.md#introduction">PHP dependencies</a> by typing in the following commands:</p>
+
+					<p><code>$ php composer.phar self-update</code></p>
+					<p><code>$ php composer.phar update</code></p>
+
 				</div>
 				<div class="mini-os-switch">
 					Showing Instructions for: <div class="os-button show-linux">Linux/OSX</div> or <div class="os-button show-windows">Windows</div>
 				</div>
 			</div>
 
-
-			<p>Next, open up command line, navigate to your new &#8220;fuel_intro&#8221; folder, and type in the following: <code>git clone git://github.com/fuel/fuel.git .</code> Don't forget the period at the end, that will clone the files into the directory you are currently in.</p>
-
-			<p>Now that the files have been cloned, you have to update all of the <a href="https://getcomposer.org/doc/00-intro.md#introduction">PHP dependencies</a> by typing in the following commands:</p>
-
-			<p><code>php composer.phar self-update<br />php composer.phar update</code></p>
-
 			<h4>Config It Up</h4>
-			<p>For this tutorial we're going to be using an <a href="http://en.wikipedia.org/wiki/Object-relational_mapping">orm package</a>, included in your install of Fuel. Head over to <code>/fuel/app/config/config.php</code> and uncomment the &#8220;always_load&#8221; array. Then uncomment the &#8220;packages&#8221; array and the &#8220;orm&#8221; package:</p>
+			<p>For this tutorial we're going to be using an <a href="http://en.wikipedia.org/wiki/Object-relational_mapping">orm package</a>, included in your install of Fuel. Head over to <code>app/fuel/app/config/config.php</code> and uncomment the &#8220;always_load&#8221; array. Then uncomment the &#8220;packages&#8221; array and the &#8220;orm&#8221; package:</p>
 			<pre class="brush: php; first-line: 258; highlight:[261,274,275,276,312] notranslate" title="">
 				/**************************************************************************/
 				/* Always Load                                                            */
@@ -242,14 +422,16 @@
 			</pre>
 
 
-			<p>After doing that, go to your database management software and connect to localhost using the 'root' account and password you set up while installing mysql server (Note: The default MySQL port is 3306)
-				 and create a database called &#8220;fuel_intro&#8221;. No need to create any tables now, we'll use Fuel to setup our tables.</p>
+			<p>After doing that, go to your database management software and connect to IP_OF_DOCKER_MACHINE (localhost on Windows) using the 'root' account and password 'secret' (Note: The default MySQL port is 3306, and the username and password are defined in <em>docker-compose.yaml</em>.)</p>
+			<p>Click on <em>Choose Database</em>, and you should see fuel at the bottom. If fuel is there, then you are good to go!!</p>
+
 
 			<div class="os-switch">
 				<div class="windows">
 					<p><img src="assets/images/gettin_configged_up_02a.jpg" alt="Screenshot showing the creation of a database from phpmyadmin." /></p>
 				</div>
 				<div class="linux">
+					<!-- TODO: change this image -->
 					<p><img src="assets/images/gettin_configged_up_02c.png" alt="Screenshot showing the creation of a database from sequel pro." /></p>
 				</div>
 				<div class="mini-os-switch">
@@ -263,14 +445,14 @@
 				return array(
 					'default' => array(
 						'connection'  => array(
-							'dsn'        => 'mysql:host=localhost;dbname=fuel_intro',
+							'dsn'        => 'mysql:host=IP_OF_DOCKER_MACHINE;dbname=fuel', //for Windows use host=localhost and dbname=fuel_intro
 							'username'   => 'root',
-							'password'   => '',
+							'password'   => 'secret', //password will be blank (unless explicity set for Windows users)
 						),
 					),
 				);
 			</pre>
-
+			<strong>Note: IP_OF_DOCKER_MACHINE should be replaced with the IP (without port) of the <code>docker-machine ls</code> command.</strong>
 			<h4 id="Checking_Your_Work">Checking Your Work</h4>
 
 			<div class="os-switch">
@@ -279,13 +461,7 @@
 				</div>
 				<div class="linux">
 					<p>
-							In order to run your php built-in server do the following:
-							<ol>
-								<li>Navigate to "fuel_intro/"</li>
-								<li>Run the command "php oil server"</li>
-								<li>In your browser, navigate to <a href="http://localhost:8000/">http://localhost:8000/</a>
-							</ol>
-
+							In your browser, navigate to <a>http://IP_OF_DOCKER_MACHINE</a>
 							and you should see the &#8220;successful install&#8221; page below from Fuel.
 					</p>
 				</div>
@@ -349,13 +525,26 @@
 
 			<p>The &#8216;id', &#8216;created_at', and &#8216;updated_at' columns are made automatically, so we only have to tell oil to make the 'name' and 'message' fields. Just feed your command prompt the following:</p>
 			<p><code>php oil generate scaffold messages name:string message:text</code></p>
-
 			<div class="os-switch">
 				<div class="windows">
 					<p><img src="assets/images/every_building_needs_a_scaffold_02.jpg" alt="Running php scaffold for messages: php oil generate scaffold messages name:string message:text." /></p>
 				</div>
 				<div class="linux">
-					<p><img src="assets/images/every_building_needs_a_scaffold_02.png" alt="Running php scaffold for messages: php oil generate scaffold messages name:string message:text." /></p>
+					<div class="console">
+						<span class="console-header">fuel_intro/app -- -bash</span>
+						<code class=command>vagrant@precise64:~/Documents/fuel_intro/app$ php oil generate scaffold messages name:string message:text
+						<span class="green"><span class="tab"></span>Creating migration: /Users/sa119937/Projects/fuel_intro/app/fuel/app/migrations/001_create_messages.php</span>
+					  <span class="green"><span class="tab"></span>Creating model: /Users/sa119937/Projects/fuel_intro/app/fuel/app/classes/model/message.php</span>
+						<span class="green"><span class="tab"></span>Creating controller: /Users/sa119937/Projects/fuel_intro/app/fuel/app/classes/controller/messages.php</span>
+						<span class="green"><span class="tab"></span>Creating view: /Users/sa119937/Projects/fuel_intro/app/fuel/app/views/messages/index.php</span>
+						<span class="green"><span class="tab"></span>Creating view: /Users/sa119937/Projects/fuel_intro/app/fuel/app/views/messages/view.php</span>
+						<span class="green"><span class="tab"></span>Creating view: /Users/sa119937/Projects/fuel_intro/app/fuel/app/views/messages/create.php</span>
+						<span class="green"><span class="tab"></span>Creating view: /Users/sa119937/Projects/fuel_intro/app/fuel/app/views/messages/edit.php</span>
+						<span class="green"><span class="tab"></span>Creating view: /Users/sa119937/Projects/fuel_intro/app/fuel/app/views/messages/_form.php</span>
+						<span class="green"><span class="tab"></span>Creating view: /Users/sa119937/Projects/fuel_intro/app/fuel/app/views/template.php</span>
+						vagrant@precise64:~/Documents/fuel_intro/app$
+						</code>
+					</div>
 				</div>
 				<div class="mini-os-switch">
 					Showing Instructions for: <div class="os-button show-linux">Linux/OSX</div> or <div class="os-button show-windows">Windows</div>
@@ -393,20 +582,28 @@
 			</pre>
 			<p>Since we know what the migration is going to create, go ahead and run it. That'll be:</p>
 			<p><code>php oil refine migrate</code></p>
-
+			<p><strong>Make sure your Docker containers are up and running when performing the migration. You can start the containers by running the following command in your "fuel_intro" folder:</strong></p>
+			<p><code>$ docker-compose up</code></p>
 			<div class="os-switch">
 				<div class="windows">
 					<p><img src="assets/images/Migra_wha_01.jpg" alt="Running php migrate for scaffold: php oil refine migrate." /></p>
 				</div>
 				<div class="linux">
-					<p><img src="assets/images/Migra_wha_01.png" alt="Running php migrate for scaffold: php oil refine migrate." /></p>
+					<div class="console">
+						<span class="console-header">fuel_intro/app -- -bash</span>
+						<code class=command>vagrant@precise64:~/Documents/fuel_intro/app$ php oil refine migrate
+						<span class="green">Performed migrations for app:default:</span>
+						001_create_messages
+						vagrant@precise64:~/Documents/fuel_intro/app$
+						</code>
+					</div>
 				</div>
 				<div class="mini-os-switch">
 					Showing Instructions for: <div class="os-button show-linux">Linux/OSX</div> or <div class="os-button show-windows">Windows</div>
 				</div>
 			</div>
 
-			<p>Quick Note: If you encounter errors migrating with oil, you may need to change this dp.php file to read <code>'mysql:host=127.0.0.1;dbname=fuel_intro'</code>.</p>
+			<p>Quick Note: In Windows, if you encounter errors migrating with oil, you may need to change this dp.php file to read <code>'mysql:host=127.0.0.1;dbname=fuel_intro'</code>.</p>
 
 			<p>Now the table has been created, and you can add messages to it! Take a look at your database, you should see something like <a href="#Every_Building_Needs_A_Scaffold">the screenshot from before</a>.</p>
 
@@ -529,7 +726,15 @@
 					<p><img src="assets/images/new_comments_01.jpg" alt="Running php generate for comments: php oil generate controller comments edit create." /></p>
 				</div>
 				<div class="linux">
-					<p><img src="assets/images/new_comments_01.png" alt="Running php generate for comments: php oil generate controller comments edit create." /></p>
+					<div class="console">
+						<span class="console-header">fuel_intro/app -- -bash</span>
+						<code class=command>vagrant@precise64:~/Documents/fuel_intro/app$ php oil generate controller comments edit create
+						<span class="green"><span class="tab"></span>Creating view: /Users/sa119937/Projects/fuel_intro/app/fuel/app/views/comments/edit.php</span>
+						<span class="green"><span class="tab"></span>Creating view: /Users/sa119937/Projects/fuel_intro/app/fuel/app/views/comments/create.php</span>
+						<span class="green"><span class="tab"></span>Creating controller: /Users/sa119937/Projects/fuel_intro/app/fuel/app/classes/controller/comments.php</span>
+						vagrant@precise64:~/Documents/fuel_intro/app$
+						</code>
+					</div>
 				</div>
 				<div class="mini-os-switch">
 					Showing Instructions for: <div class="os-button show-linux">Linux/OSX</div> or <div class="os-button show-windows">Windows</div>
@@ -666,13 +871,19 @@
 					<p><img src="assets/images/modeling_01.jpg" alt="Running php oil generate model comment name:string comment:text message_id:int" /></p>
 				</div>
 				<div class="linux">
-					<p><img src="assets/images/modeling_01.png" alt="Running php oil generate model comment name:string comment:text message_id:int" /></p>
-				</div>
+					<div class="console">
+						<span class="console-header">fuel_intro/app -- -bash</span>
+						<code class=command>vagrant@precise64:~/Documents/fuel_intro/app$ php oil generate model comment name:string comment:text message_id:int
+						<span class="green"><span class="tab"></span>Creating model: /Users/sa119937/Projects/fuel_intro/app/fuel/app/classes/model/comment.php</span>
+					  <span class="green"><span class="tab"></span>Creating migration: /Users/sa119937/Projects/fuel_intro/app/fuel/app/migrations/002_create_comments.php</span>
+						vagrant@precise64:~/Documents/fuel_intro/app$
+						</code>
+					</div>
 				<div class="mini-os-switch">
 					Showing Instructions for: <div class="os-button show-linux">Linux/OSX</div> or <div class="os-button show-windows">Windows</div>
 				</div>
+				</div>
 			</div>
-
 			<p>This command created comment.php in the <code>fuel/app/classes/model</code> folder. If you open up the file you should see this:</p>
 			<pre class="brush: php; notranslate" title="">
 				&lt;?php
@@ -712,7 +923,17 @@
 					<p><img src="assets/images/migra_wha_02.jpg" alt="Running php oil refine migrate" /></p>
 				</div>
 				<div class="linux">
-					<p><img src="assets/images/migra_wha_02.png" alt="Running php oil refine migrate" /></p>
+					<div class="console">
+						<span class="console-header">fuel_intro/app -- -bash</span>
+						<code class=command>vagrant@precise64:~/Documents/fuel_intro/app$ php oil generate scaffold messages name:string message:text
+						<span class="green"><span class="tab"></span>Creating model: /Users/sa119937/Projects/fuel_intro/app/fuel/app/classes/model/comment.php</span>
+					  <span class="green"><span class="tab"></span>Creating migration: /Users/sa119937/Projects/fuel_intro/app/fuel/app/migrations/002_create_comments.php</span>
+						vagrant@precise64:~/Documents/fuel_intro/app$ php oil refine migrate
+						<span class="green">Performed migrations for app:default:</span>
+						002_create_comments
+						vagrant@precise64:~/Documents/fuel_intro/app$
+						</code>
+					</div>
 				</div>
 				<div class="mini-os-switch">
 					Showing Instructions for: <div class="os-button show-linux">Linux/OSX</div> or <div class="os-button show-windows">Windows</div>
@@ -1208,7 +1429,16 @@
 					<p><img src="assets/images/login_page_and_user_creation_01.jpg" alt="Running php oil controller users login logout register in the command line." /></p>
 				</div>
 				<div class="linux">
-					<p><img src="assets/images/login_page_and_user_creation_01.png" alt="Running php oil controller users login logout register in the command line." /></p>
+					<div class="console">
+						<span class="console-header">fuel_intro/app -- -bash</span>
+						<code class=command>vagrant@precise64:~/Documents/fuel_intro/app$ php oil g controller users login logout register
+						<span class="green"><span class="tab"></span>Creating view: /Users/sa119937/Projects/fuel_intro/app/fuel/app/views/users/login.php</span>
+					  <span class="green"><span class="tab"></span>Creating view: /Users/sa119937/Projects/fuel_intro/app/fuel/app/views/users/logout.php</span>
+						<span class="green"><span class="tab"></span>Creating view: /Users/sa119937/Projects/fuel_intro/app/fuel/app/views/users/register.php</span>
+						<span class="green"><span class="tab"></span>Creating controller: /Users/sa119937/Projects/fuel_intro/app/fuel/app/classes/controller/users.php</span>
+						vagrant@precise64:~/Documents/fuel_intro/app$
+						</code>
+					</div>
 				</div>
 				<div class="mini-os-switch">
 					Showing Instructions for: <div class="os-button show-linux">Linux/OSX</div> or <div class="os-button show-windows">Windows</div>
@@ -1224,7 +1454,14 @@
 					<p><img src="assets/images/login_page_and_user_creation_021.jpg" alt="Running php oil g model user username:string password:string group:int email:string last_login:string login_hash:string in the command line." /></p>
 				</div>
 				<div class="linux">
-					<p><img src="assets/images/login_page_and_user_creation_02.png" alt="Running php oil g model user username:string password:string group:int email:string last_login:string login_hash:string in the command line." /></p>
+					<div class="console">
+						<span class="console-header">fuel_intro/app -- -bash</span>
+						<code class=command>vagrant@precise64:~/Documents/fuel_intro/app$ php oil g model user username:string password:string group:int email:string last_login:string login_hash:string profile_fields:string
+						<span class="green"><span class="tab"></span>Creating model: /Users/sa119937/Projects/fuel_intro/app/fuel/app/classes/model/user.php</span>
+					  <span class="green"><span class="tab"></span>Creating migration: /Users/sa119937/Projects/fuel_intro/app/fuel/app/migrations/003_create_users.php</span>
+						vagrant@precise64:~/Documents/fuel_intro/app$
+						</code>
+					</div>
 				</div>
 				<div class="mini-os-switch">
 					Showing Instructions for: <div class="os-button show-linux">Linux/OSX</div> or <div class="os-button show-windows">Windows</div>
@@ -1255,7 +1492,14 @@
 					<p><img src="assets/images/login_page_and_user_creation_03.jpg" alt="php oil r migrate" /></p>
 				</div>
 				<div class="linux">
-					<p><img src="assets/images/login_page_and_user_creation_03.png" alt="php oil r migrate" /></p>
+					<div class="console">
+						<span class="console-header">fuel_intro/app -- -bash</span>
+						<code class=command>vagrant@precise64:~/Documents/fuel_intro/app$ php oil r migrate
+						<span class="green">Performed migrations for app:default:</span>
+					  003_create_users
+						vagrant@precise64:~/Documents/fuel_intro/app$
+						</code>
+					</div>
 				</div>
 				<div class="mini-os-switch">
 					Showing Instructions for: <div class="os-button show-linux">Linux/OSX</div> or <div class="os-button show-windows">Windows</div>
