@@ -408,7 +408,8 @@ pre {
 	background-color: rgba(211,211,211, 0.5);
 }
 
-code.command {color: white; font-weight: bold; background-color:black;
+code.command {
+	color: white; font-weight: bold; background-color:black;
 	text-align: left;
 	white-space: pre-line;
 	font-family: monospace;
