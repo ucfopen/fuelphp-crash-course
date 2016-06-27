@@ -395,7 +395,7 @@ pre {
 .console{
 	width: 100%;
 	padding-top: 0.5em;
-	border-radius: 20px;
+	border-radius: 5px;
 	background-color: white;
 	margin-bottom: 2em;
 	text-align: center;
