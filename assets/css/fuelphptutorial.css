@@ -110,8 +110,6 @@ html
 	border: solid 1px #ccc;
 	border-width: 0 1px 0 1px;
 	box-shadow: 0px 0px 10px rgba(50, 50, 50, 0.76);
-	-moz-box-shadow: 0px 0px 10px rgba(50, 50, 50, 0.76);
-	-webkit-box-shadow: 0px 0px 10px rgba(50, 50, 50, 0.76);
 	color: #282828;
 	margin: 0 auto;
 	margin-top: -45px;
@@ -328,11 +326,11 @@ img
 
 .expando-button
 {
+	-moz-transition: 0.5s; /* firefox */
+	-o-transition: 0.5s; /* opera */
 	background-color: #fad0fc;
 	border-radius: 10px;
 	cursor: pointer;
-	-moz-transition: 0.5s; /* firefox */
-	-o-transition: 0.5s; /* opera */
 	opacity: 0.6;
 	transition: 0.5s;
 	-webkit-transition: 0.5s; /* safari & chrome */
@@ -467,8 +465,6 @@ dl.sameline dd
 #nav-links
 {
 	box-shadow: 0px 5px 10px rgba(10, 10,10, 0.5);
-	-moz-box-shadow: 0px 5px 10px rgba(10,10, 10, 0.5);
-	-webkit-box-shadow: 0px 5px 10px rgba(10,10, 10, 0.5);
 	height: 32px;
 	margin:0;
 	padding-bottom:0;
