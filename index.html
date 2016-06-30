@@ -154,55 +154,45 @@
 		  <div class="os-switch">
 				<div class="windows">
 					<p>Create a folder called “fuel_intro” in the htdocs folder of xampp.</p>
+					<p>Next, open up command line, navigate to that folder, and type in the following:</p>
+					<p><code>git clone https://github.com/fuel/fuel.git . </code></p>
+					<p>Don't forget the period at the end, that will clone the files into the directory you are currently in.</p>
 				</div>
 				<div class="linux">
-					<p><strong>This is a basic setup of FuelPHP with Docker. The instructions of setting up Docker are given, but not explained. If you are curious about what is going on, visit this <a href="https://github.com/UCF/fuelphp-crash-course-docker">Docker Tutorial</a></strong></p>
-					<p>Create a folder named &#8220;fuel_intro&#8221; in your &#8220;Documents&#8221; directory (&#8220;fuel_intro&#8221; can be place anywhere within your home directory if desired).</p>
+					<h5>Setting Up Development Servers</h5>
+					<p>First, let's set up a docker architecture with an nginx web server, php backend, and mysql database.</p>
+					<ol>
+						<li>
+							Clone the fuelphp docker environment to some place in your home directory:</p>
+							<p><code>git clone https://github.com/UCF/fuelphp-crash-course-docker.git ~/Documents/</code>
+						</li>
+						<li>
+							<p>Clone fuelphp into a subdirectory of the docker environment called app:</p>
+							<p><code>git clone git://github.com/fuel/fuel.git ~/Documents/fuelphp-crash-course-docker/app</code></p>
+						</li>
+						<li>
+							<p>If you don't have a docker virtual machine set up yet, do that now. We'll name ours <em>default</em>:</p>
+							<p><code>docker-machine create --driver virtualbox default</code></p>
+						</li>
+						<li>
+							<p>Now make sure docker knows which docker-machine to talk to:</p>
+							<p><code>eval "$(docker-machine env default)"</code></p>
+						</li>
+					</ol>
 
-					<p>Open the terminal, and navigate to the newly created &#8220;fuel_intro&#8221; directory. Run the following command:
-
-					<p><code>git clone https://github.com/UCF/fuelphp-crash-course-docker.git .</code></p>
-					<p><strong>Don't forget the . (dot). This is required to clone into the directory you are in!</strong></p>
-
-					<p>Next, create a folder named &#8220;app&#8221; in &#8220;fuel_intro&#8221; directory.</p>
-
-					<p>Finally, go to the terminal, and we will run a few commands.</p>
-
-					<p>The first command sets up our docker virtual machine (requires Virtual Box!!)</p>
-					<p><code>docker-machine create --driver virtualbox default</code></p>
-
-					<p>The second command links docker with the docker machine.</p>
-					<p><code>eval "$(docker-machine env default)"</code></p>
-
-					<p>The next command will build all of our containers, and allow our webserver to run!</p>
+					<h5>Finishing Up</h5>
+					<p>You can run the servers now with:</p>
 					<p><code>docker-compose up</code></p>
-
-					<p>To exit the server, hit <em>control + c</em>. To restart the server just type the previous command (it will not take as long the first time).</p>
-
-					<p>The server to host your web application is now set up! Now, exit the server so we can get back to coding!!!</p>
-
-					<p>The final command will give you your machine's IP address, which you will need for later</p>
-
-					<p><code>docker-machine ls</code></p>
-
-					<p>The IP address under the <em>URL</em> header, is the IP address of your webserver and sql server. You will need this IP later! However, for now you can just continue on with the tutorial.</p>
-
-					<p>Open up command line, navigate to your new &#8220;fuel_intro/app&#8221; folder, and type in the following commands: </p>
-					<p><code>rmdir public</code></p>
-					<p><code>git clone git://github.com/fuel/fuel.git .</code></p>
-					<p><strong>Don't forget the period at the end, that will clone the files into the directory you are currently in.</strong></p>
-
-					<p>Now that the files have been cloned, you have to update all of the <a href="https://getcomposer.org/doc/00-intro.md#introduction">PHP dependencies</a> by typing in the following commands:</p>
-
-					<p><code>php composer.phar self-update</code></p>
-					<p><code>php composer.phar update</code></p>
-
+					<p>To stop the servers hit control + c.</p>
 				</div>
 				<div class="mini-os-switch">
 					Showing Instructions for: <div class="os-button show-linux">Linux/OSX</div> or <div class="os-button show-windows">Windows</div>
 				</div>
 			</div>
-
+			<h4>Installing Dependencies with Composer</h4>
+			<p>Now that the files have been cloned, you have to update all of the PHP dependencies by typing in the following commands:</p>
+			<p><code>php composer.phar self-update</code></p>
+			<p><code>php composer.phar update</code></p>
 			<h4>Config It Up</h4>
 			<p>For this tutorial we're going to be using an <a href="http://en.wikipedia.org/wiki/Object-relational_mapping">orm package</a>, included in your install of Fuel. Head over to <code>fuel/app/config/config.php</code> and uncomment the &#8220;always_load&#8221; array. Then uncomment the &#8220;packages&#8221; array and the &#8220;orm&#8221; package:</p>
 			<pre class="brush: php; first-line: 258; highlight:[261,274,275,276,312] notranslate" title="">
