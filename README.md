@@ -5,6 +5,11 @@ A quick tutorial to learn the Fuel PHP framework by building a quick messaging a
 
 We use this tutorial in our new employee training to teach incoming developers PHP and give them exposure to Fuel.
 
+View the Tutorial
+====================
+
+http://ucfopen.github.io/fuelphp-crash-course/
+
 Contributors
 ====================
 *	[Kevin Baugh](https://github.com/loraxx753)
@@ -16,7 +21,7 @@ Contributors
 * [Eric Colon](https://github.com/accell)
 
 Links
-=====
+====================
 *	[Techrangers on Twitter](http://www.twitter.com/techrangers "Twitter Techrangers")
 *	[This Tutorial Online](http://ucf.github.io/fuelphp-crash-course/ "Fuel Crash Course")
 *	[Techrangers](http://techrangers.cdl.ucf.edu "Techrangers")
